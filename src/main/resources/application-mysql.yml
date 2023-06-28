@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    url: ${rds.url}
+    username: ${rds.username}
+    password: ${rds.password}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        show_sql: ${hibernate.show-sql}
+    open-in-view: ${spring.jpa.open-in-view}
+    database: mysql
