@@ -3,7 +3,7 @@ name: todo-master-to-beanstalk
 on:
   push:
     branched:
-      - master # action 트리거 브랜치
+      - main # action 트리거 브랜치
   workflow_dispatch: # 수동 실행 옵션 (생략)
 
 jobs:

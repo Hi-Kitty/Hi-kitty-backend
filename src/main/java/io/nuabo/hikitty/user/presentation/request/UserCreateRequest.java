@@ -12,12 +12,12 @@ public class UserCreateRequest {
 
 
     @NotNull(message = "email cannot be null")
-    @Schema(description = "이메일",  example = "푸하하@naver.com")
+    @Schema(description = "이메일",  example = "33cks1423@naver.com")
     private final String email;
 
-    @NotNull(message = "nickname cannot be null")
-    @Schema(description = "nickname",  example = "푸항항")
-    private final String nickname;
+    @NotNull(message = "name cannot be null")
+    @Schema(description = "name",  example = "푸항항")
+    private final String name;
 
     @NotNull(message = "password cannot be null")
     @Schema(description = "password",  example = "12354721")
@@ -30,11 +30,11 @@ public class UserCreateRequest {
     @Builder
     public UserCreateRequest(
             @JsonProperty("email") String email,
-            @JsonProperty("nickname") String nickname,
+            @JsonProperty("name") String name,
             @JsonProperty("password") String password,
             @JsonProperty("role") Role role) {
         this.email = email;
-        this.nickname = nickname;
+        this.name = name;
         this.password = password;
         this.role = role;
     }

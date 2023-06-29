@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.HttpMediaTypeException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -100,6 +101,7 @@ public class GeneralExceptionHandler {
         }
         return newResponse(e, HttpStatus.BAD_REQUEST);
     }
+
     @ExceptionHandler(MultipartFileException.class)
     public ResponseEntity<?> handleMultipartFileException(Exception e) {
         log.debug("handleMultipartFileException occurred: {}", e.getMessage(), e);
@@ -128,4 +130,15 @@ public class GeneralExceptionHandler {
         return newResponse(e, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<?> handleHttpMessageNotReadableException(Exception e) {
+        log.error("Unexpected exception occurred: {}", e.getMessage(), e);
+        return newResponse(e, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(CertificationCodeNotMatchedException.class)
+    public ResponseEntity<?> handleCertificationCodeNotMatchedException(Exception e) {
+        log.error("Unexpected exception occurred: {}", e.getMessage(), e);
+        return newResponse(e, HttpStatus.NOT_ACCEPTABLE);
+    }
 }

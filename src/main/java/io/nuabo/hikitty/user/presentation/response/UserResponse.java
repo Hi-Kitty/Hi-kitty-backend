@@ -2,6 +2,7 @@ package io.nuabo.hikitty.user.presentation.response;
 
 
 import io.nuabo.hikitty.user.domain.Role;
+import io.nuabo.hikitty.user.domain.User;
 import io.nuabo.hikitty.user.domain.UserStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
@@ -32,5 +33,15 @@ public class UserResponse {
         this.name = name;
         this.role = role;
         this.status = status;
+    }
+
+    public static UserResponse from(User user) {
+        return UserResponse.builder()
+                .id(user.getId())
+                .email(user.getEmail())
+                .name(user.getName())
+                .role(user.getRole())
+                .status(user.getStatus())
+                .build();
     }
 }
