@@ -1,0 +1,59 @@
+package io.nuabo.hikitty.user.application;
+
+import io.nuabo.hikitty.user.mock.FakeMailSender;
+import io.nuabo.hikitty.user.mock.FakeMailSenderConfig;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+class CertificationServiceTest {
+
+    @Test
+    @DisplayName("이메일과 컨텐츠가 제대로 만들어져서 보내지는지 테스트한다.")
+    void send() {
+        // given
+        FakeMailSender fakeMailSender = new FakeMailSender();
+        FakeMailSenderConfig fakeMailSenderConfig = new FakeMailSenderConfig(
+                "http://localhost:8080/api/v0/users/",
+                "/verify?certificationCode=",
+                "제목입니다.",
+                "내용입니다: "
+        );
+        CertificationService certificationService = new CertificationService(fakeMailSender, fakeMailSenderConfig);
+
+        // when
+        certificationService.send("spring2@naver.com", 1L, "aaaaaaa-aaaa-aaaa-aaaaaaaaaaaa");
+
+        // then
+        assertThat(fakeMailSender.email).isEqualTo("spring2@naver.com");
+        assertThat(fakeMailSender.title).isEqualTo("제목입니다.");
+        assertThat(fakeMailSender.content).isEqualTo("내용입니다: " +
+                "http://localhost:8080/api/v0/users/" +
+                "1" +
+                "/verify?certificationCode=" +
+                "aaaaaaa-aaaa-aaaa-aaaaaaaaaaaa");
+
+    }
+
+    @Test
+    @DisplayName("인증코드를 생성한다.")
+    void generateCertificationUrl() {
+        // given
+        FakeMailSender fakeMailSender = new FakeMailSender();
+        FakeMailSenderConfig fakeMailSenderConfig = new FakeMailSenderConfig(
+                "http://localhost:8080/api/v0/users/",
+                "/verify?certificationCode=",
+                "제목입니다.",
+                "내용입니다: "
+        );
+        CertificationService certificationService = new CertificationService(fakeMailSender, fakeMailSenderConfig);
+
+        // when
+        String certificationUrl = certificationService.generateCertificationUrl(1L, "aaaaaaa-aaaa-aaaa-aaaaaaaaaaaa");
+
+        // then
+        assertThat(certificationUrl).isEqualTo("http://localhost:8080/api/v0/users/1/verify?certificationCode=aaaaaaa-aaaa-aaaa-aaaaaaaaaaaa");
+
+    }
+}

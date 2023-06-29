@@ -8,4 +8,4 @@ server:
 
 spring:
   profiles:
-    include: mysql, s3
+    include: mysql, s3, mail
