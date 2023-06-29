@@ -1,4 +1,4 @@
-package io.nuabo.hikitty.common.presentation;
+package io.nuabo.common.presentation;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
