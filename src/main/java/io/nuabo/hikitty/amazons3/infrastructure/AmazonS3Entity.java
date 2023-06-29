@@ -10,16 +10,18 @@ import org.hibernate.annotations.Where;
 @Table(name = "amazon_s3")
 @SQLDelete(sql = "update amazon_s3 set delete_at=now() where id=?")
 @Where(clause = "delete_at is null")
-
 public class AmazonS3Entity extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String originalName;
 
+    @Column(nullable = false)
     private String savedName;
 
+    @Column(nullable = false)
     private String url;
 
     public static AmazonS3Entity from(AmazonS3Upload amazonS3Upload) {
