@@ -33,8 +33,8 @@ class UserServiceTest {
                 "http://localhost:8080/api/v0/users/",
                 "/verify?certificationCode=",
                 "제목입니다.",
-                "내용입니다."
-        );
+                "내용입니다.",
+                "templateName", "templateValueName", "templateValueCertificationCode");
 
         TestPasswordEncoderHolder passwordEncoderHolder = new TestPasswordEncoderHolder();
         TestUuidHolder testUuidHolder = new TestUuidHolder("aaaaaaa-aaaa-aaaa-aaaaaaaaaaaa");

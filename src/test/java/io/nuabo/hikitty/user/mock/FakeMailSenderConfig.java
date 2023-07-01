@@ -9,11 +9,19 @@ public class FakeMailSenderConfig implements MailSenderConfig {
     private final String title;
     private final String content;
 
-    public FakeMailSenderConfig(String firstUrl, String secondUrl, String title, String content) {
+    private final String templateName;
+    private final String templateValueName;
+    private final String templateValueCertificationCode;
+
+
+    public FakeMailSenderConfig(String firstUrl, String secondUrl, String title, String content, String templateName, String templateValueName, String templateValueCertificationCode) {
         this.firstUrl = firstUrl;
         this.secondUrl = secondUrl;
         this.title = title;
         this.content = content;
+        this.templateName = templateName;
+        this.templateValueName = templateValueName;
+        this.templateValueCertificationCode = templateValueCertificationCode;
     }
 
 
@@ -35,5 +43,20 @@ public class FakeMailSenderConfig implements MailSenderConfig {
     @Override
     public String getContent() {
         return content;
+    }
+
+    @Override
+    public String getTemplateName() {
+        return templateName;
+    }
+
+    @Override
+    public String getTemplateValueName() {
+        return templateValueName;
+    }
+
+    @Override
+    public String getTemplateValueCertificationCode() {
+        return templateValueCertificationCode;
     }
 }

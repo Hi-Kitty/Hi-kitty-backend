@@ -6,6 +6,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 class CertificationServiceTest {
 
@@ -18,8 +19,11 @@ class CertificationServiceTest {
                 "http://localhost:8080/api/v0/users/",
                 "/verify?certificationCode=",
                 "제목입니다.",
-                "내용입니다: "
-        );
+                "내용입니다: ",
+                "templateName",
+                "templateValueName",
+                "templateValueCertificationCode"
+                );
         CertificationService certificationService = new CertificationService(fakeMailSender, fakeMailSenderConfig);
 
         // when
@@ -34,23 +38,31 @@ class CertificationServiceTest {
     }
 
     @Test
-    @DisplayName("인증코드를 생성한다.")
-    void generateCertificationUrl() {
+    @DisplayName("타임리프를 이용하여 이메일과 컨텐츠가 작성되는지 확인한다.")
+    void sendMailFromTemplate() {
         // given
         FakeMailSender fakeMailSender = new FakeMailSender();
         FakeMailSenderConfig fakeMailSenderConfig = new FakeMailSenderConfig(
                 "http://localhost:8080/api/v0/users/",
                 "/verify?certificationCode=",
                 "제목입니다.",
-                "내용입니다: "
+                "내용입니다: ",
+                "welcome",
+                "name",
+                "certificationCode"
         );
         CertificationService certificationService = new CertificationService(fakeMailSender, fakeMailSenderConfig);
 
         // when
-        String certificationUrl = certificationService.generateCertificationUrl(1L, "aaaaaaa-aaaa-aaaa-aaaaaaaaaaaa");
+        certificationService.sendMailFromTemplate("spring2@naver.com", "1278872", "template.html");
 
-        // then
-        assertThat(certificationUrl).isEqualTo("aaaaaaa-aaaa-aaaa-aaaaaaaaaaaa");
-
+        //
+        assertAll(
+                ()-> assertThat(fakeMailSender.email).isEqualTo("spring2@naver.com"),
+                () -> assertThat(fakeMailSender.title).isEqualTo("제목입니다."),
+                () -> assertThat(fakeMailSender.content).isEqualTo("template.html1278872")
+        );
     }
+
+
 }

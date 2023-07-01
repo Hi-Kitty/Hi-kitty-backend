@@ -8,4 +8,10 @@ public interface MailSenderConfig {
     String getTitle();
 
     String getContent();
+
+    String getTemplateName();
+
+    String getTemplateValueName();
+
+    String getTemplateValueCertificationCode();
 }

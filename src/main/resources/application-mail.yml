@@ -11,9 +11,19 @@ spring:
           timeout: 5000
           starttls:
             enable: true
+  thymeleaf:
+    suffix: .html
+    encoding: UTF-8
+    cache: false
+    mode: HTML
+    prefix: classpath:/templates/
+    check-template-location: true
 
 mail:
   first-url: ${mail.first.url}
   second-url: ${mail.second.url}
   title: ${mail.title}
   content: ${mail.content}
+  template: ${mail.template}
+  template-value-name: ${mail.template.value.name}
+  template-value-certification-code: ${mail.template.value.certification.code}
