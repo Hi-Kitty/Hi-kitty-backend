@@ -29,8 +29,8 @@ class UserControllerTest {
                         "http://localhost:8080/api/v0/users/",
                         "/verify?certificationCode=",
                         "제목입니다.",
-                        "내용입니다: "
-                )).build();
+                        "내용입니다: ",
+                        "templateName", "templateValueName", "templateValueCertificationCode")).build();
         UserCreateRequest userCreate = UserCreateRequest.builder()
                 .email("spring3@naver.com")
                 .role(Role.ROLE_DONER)
@@ -61,8 +61,8 @@ class UserControllerTest {
                         "http://localhost:8080/api/v0/users/",
                         "/verify?certificationCode=",
                         "제목입니다.",
-                        "내용입니다: "
-                )).build();
+                        "내용입니다: ",
+                        "templateName", "templateValueName", "templateValueCertificationCode")).build();
         container.userRepository.save(User.builder()
                 .id(1L)
                 .email("spring4@naver.com")

@@ -2,6 +2,9 @@ package io.nuabo.hikitty.user.mock;
 
 
 import io.nuabo.hikitty.user.application.port.MailSender;
+import jakarta.mail.MessagingException;
+
+import java.util.HashMap;
 
 public class FakeMailSender implements MailSender {
 
@@ -14,5 +17,12 @@ public class FakeMailSender implements MailSender {
         this.title = title;
         this.email = email;
         this.content = content;
+    }
+
+    @Override
+    public void sendMailFromTemplate(String email, String title, HashMap<String, String> values, String templateName) throws MessagingException {
+        this.title = title;
+        this.email = email;
+        this.content = values.get("name") + values.get("certificationCode");
     }
 }

@@ -18,6 +18,16 @@ public class MailSenderConfigImpl implements MailSenderConfig {
     @Value("${mail.content}")
     private String content;
 
+    @Value("${mail.template-name}")
+    private String templateName;
+
+    @Value("${mail.template-value-name}")
+    private String templateValueName;
+
+    @Value("${mail.template-value-certification-code}")
+    private String templateValueCertificationCode;
+
+
     @Override
     public String getFirstUrl() {
         return firstUrl;
@@ -35,5 +45,20 @@ public class MailSenderConfigImpl implements MailSenderConfig {
     @Override
     public String getContent() {
         return content;
+    }
+
+    @Override
+    public String getTemplateName() {
+        return templateName;
+    }
+
+    @Override
+    public String getTemplateValueName() {
+        return templateValueName;
+    }
+
+    @Override
+    public String getTemplateValueCertificationCode() {
+        return templateValueCertificationCode;
     }
 }

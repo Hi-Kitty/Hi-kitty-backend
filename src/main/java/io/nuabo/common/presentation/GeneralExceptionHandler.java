@@ -130,6 +130,11 @@ public class GeneralExceptionHandler {
         return newResponse(e, HttpStatus.UNSUPPORTED_MEDIA_TYPE);
     }
 
+    @ExceptionHandler(MessageException.class)
+    public ResponseEntity<?> handleMessageException(Exception e) {
+        return newResponse(e, HttpStatus.NOT_FOUND);
+    }
+
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     public ResponseEntity<?> handleMethodNotAllowedException(Exception e) {
         return newResponse(e, HttpStatus.METHOD_NOT_ALLOWED);
