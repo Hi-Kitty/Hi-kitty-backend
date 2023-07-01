@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
@@ -30,11 +31,12 @@ public class MailSenderImpl implements MailSender {
         mailSender.send(message);
     }
 
+    @Async
     @Override
     public void sendMailFromTemplate(String email, String title, HashMap<String, String> values, String templateName) throws MessagingException {
         MimeMessage message = mailSender.createMimeMessage();
-        MimeMessageHelper helper = null;
-            helper = new MimeMessageHelper(message, true);
+
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
             //메일 제목 설정
             helper.setSubject(title);
 
@@ -42,9 +44,7 @@ public class MailSenderImpl implements MailSender {
             helper.setTo(email);
             //템플릿에 전달할 데이터 설정
             Context context = new Context();
-            values.forEach((key, value)->{
-                context.setVariable(key, value);
-            });
+            values.forEach(context::setVariable);
 
             //메일 내용 설정 : 템플릿 프로세스
             String html = templateEngine.process(templateName, context);

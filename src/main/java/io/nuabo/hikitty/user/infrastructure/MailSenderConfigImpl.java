@@ -17,15 +17,15 @@ public class MailSenderConfigImpl implements MailSenderConfig {
 
     @Value("${mail.content}")
     private String content;
-
-    @Value("${mail.template-name}")
-    private String templateName;
-
-    @Value("${mail.template-value-name}")
-    private String templateValueName;
-
-    @Value("${mail.template-value-certification-code}")
-    private String templateValueCertificationCode;
+//
+//    @Value("${mail.template-name}")
+//    private String templateName;
+//
+//    @Value("${mail.template-value-name}")
+//    private String templateValueName;
+//
+//    @Value("${mail.template-value-certification-code}")
+//    private String templateValueCertificationCode;
 
 
     @Override
@@ -49,16 +49,16 @@ public class MailSenderConfigImpl implements MailSenderConfig {
 
     @Override
     public String getTemplateName() {
-        return templateName;
+        return "welcome";
     }
 
     @Override
     public String getTemplateValueName() {
-        return templateValueName;
+        return "name";
     }
 
     @Override
     public String getTemplateValueCertificationCode() {
-        return templateValueCertificationCode;
+        return "certificationCode";
     }
 }
