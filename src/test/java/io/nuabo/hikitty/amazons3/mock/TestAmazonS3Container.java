@@ -1,10 +1,13 @@
 package io.nuabo.hikitty.amazons3.mock;
 
 import io.nuabo.common.application.port.UuidHolder;
+import io.nuabo.hikitty.amazons3.application.port.AWSConnection;
 import io.nuabo.hikitty.amazons3.presentation.AmazonS3Controller;
-import io.nuabo.hikitty.amazons3.infrastructure.SystemObjectMetadataHolder;
-import io.nuabo.hikitty.amazons3.application.AmazonS3Service;
+import io.nuabo.hikitty.amazons3.application.AmazonS3ServiceImpl;
 import io.nuabo.hikitty.amazons3.application.port.AmazonS3Repository;
+import io.nuabo.hikitty.amazons3.presentation.port.AmazonS3Service;
+import io.nuabo.hikitty.user.mock.FakeAwsConnection;
+import io.nuabo.hikitty.user.mock.FakeObjectMetadataHolder;
 import lombok.Builder;
 
 
@@ -18,17 +21,17 @@ public class TestAmazonS3Container {
 
     @Builder
     public TestAmazonS3Container(UuidHolder uuidHolder, String bucket) {
-        TestAmazonS3ClientHolder s3ClientHolder = new TestAmazonS3ClientHolder(bucket);
 
+        FakeObjectMetadataHolder fakeObjectMetadataHolder = new FakeObjectMetadataHolder();
+        FakeAmazonS3ClientHolder fakeAmazonS3ClientHolder = new FakeAmazonS3ClientHolder(bucket);
+        AWSConnection fakeAwsConnection = new FakeAwsConnection(uuidHolder, fakeObjectMetadataHolder, fakeAmazonS3ClientHolder);
 
         this.amazonS3Repository = new FakeAmazonS3Repository();
 
 
-        this.amazonS3Service = AmazonS3Service.builder()
-                .amazonS3ClientHolder(s3ClientHolder)
+        this.amazonS3Service = AmazonS3ServiceImpl.builder()
+                .awsConnection(fakeAwsConnection)
                 .amazonS3Repository(amazonS3Repository)
-                .objectMetadataHolder(new SystemObjectMetadataHolder())
-                .uuidHolder(uuidHolder)
                 .build();
 
 

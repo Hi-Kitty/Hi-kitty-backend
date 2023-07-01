@@ -1,8 +1,11 @@
 package io.nuabo.hikitty.user.domain;
 
 import io.nuabo.common.domain.exception.CertificationCodeNotMatchedException;
+import io.nuabo.hikitty.mock.TestClockHolder;
 import io.nuabo.hikitty.mock.TestUuidHolder;
+import io.nuabo.hikitty.user.mock.TestPasswordEncoderHolder;
 import io.nuabo.hikitty.user.presentation.request.UserCreateRequest;
+import io.nuabo.hikitty.user.presentation.request.UserUpdateRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -34,6 +37,29 @@ class UserTest {
         assertThat(user.getPassword()).isEqualTo("12354721");
         assertThat(user.getStatus()).isEqualTo(UserStatus.PENDING);
         assertThat(user.getCertificationCode()).isEqualTo("aaaaaaa-aaaa-aaaa-aaaaaaaaaaaa");
+    }
+
+    @Test
+    @DisplayName("User는 인코딩된 비밀번호와 함께 생성할 수 있다.")
+    void register() {
+        // given
+        UserCreateRequest userCreate = UserCreateRequest.builder()
+                .email("spring3@naver.com")
+                .role(Role.ROLE_DONER)
+                .name("푸항항")
+                .password("12354721")
+                .build();
+        // when
+        User user = User.register(userCreate, new TestPasswordEncoderHolder(), new TestUuidHolder("aaaaaaa-aaaa-aaaa-aaaaaaaaaaaa"));
+
+        // then
+        assertThat(user.getId()).isNull();
+        assertThat(user.getEmail()).isEqualTo("spring3@naver.com");
+        assertThat(user.getName()).isEqualTo("푸항항");
+        assertThat(user.getPassword()).isEqualTo("12354721");
+        assertThat(user.getStatus()).isEqualTo(UserStatus.PENDING);
+        assertThat(user.getCertificationCode()).isEqualTo("aaaaaaa-aaaa-aaaa-aaaaaaaaaaaa");
+
     }
 
     @Test
@@ -114,6 +140,68 @@ class UserTest {
         assertThatThrownBy(()->
                 user.certificate("aaaaaaa-aaaa-aaaa-aaabbbb", user.getCertificationCode()))
                 .isInstanceOf(CertificationCodeNotMatchedException.class);
+    }
+
+    @Test
+    @DisplayName("로그인 시 lastLoginAt에 새로운 값이 들어간다.")
+    void login() {
+        // given
+        User user = User.builder()
+                .id(1L)
+                .email("spring3@naver.com")
+                .role(Role.ROLE_DONER)
+                .name("푸항항")
+                .password("12354721")
+                .status(UserStatus.ACTIVE)
+                .certificationCode("bbbbbbb-bbbb-bbbb-bbbbbbbbbbbb")
+                .lastLoginAt(100L)
+                .build();
+        // when
+        user = user.login(new TestClockHolder(200L));
+
+        // then
+        assertThat(user.getId()).isEqualTo(1L);
+        assertThat(user.getEmail()).isEqualTo("spring3@naver.com");
+        assertThat(user.getName()).isEqualTo("푸항항");
+        assertThat(user.getPassword()).isEqualTo("12354721");
+        assertThat(user.getStatus()).isEqualTo(UserStatus.ACTIVE);
+        assertThat(user.getCertificationCode()).isEqualTo("bbbbbbb-bbbb-bbbb-bbbbbbbbbbbb");
+        assertThat(user.getLastLoginAt()).isEqualTo(200L);
+
+    }
+
+    @Test
+    @DisplayName("User는 비밀번호 또는 이름을 변경할 수 있다.")
+    void update() {
+        // given
+        User user = User.builder()
+                .id(1L)
+                .email("spring3@naver.com")
+                .role(Role.ROLE_DONER)
+                .name("푸항항")
+                .password("12354721")
+                .status(UserStatus.ACTIVE)
+                .certificationCode("bbbbbbb-bbbb-bbbb-bbbbbbbbbbbb")
+                .lastLoginAt(100L)
+                .build();
+
+        UserUpdateRequest request = UserUpdateRequest.builder()
+                .name("푸항항2")
+                .password("222222")
+                .build();
+
+        // when
+        user = user.update(request);
+
+        // then
+        assertThat(user.getId()).isEqualTo(1L);
+        assertThat(user.getEmail()).isEqualTo("spring3@naver.com");
+        assertThat(user.getName()).isEqualTo("푸항항2");
+        assertThat(user.getPassword()).isEqualTo("222222");
+        assertThat(user.getStatus()).isEqualTo(UserStatus.ACTIVE);
+        assertThat(user.getCertificationCode()).isEqualTo("bbbbbbb-bbbb-bbbb-bbbbbbbbbbbb");
+        assertThat(user.getLastLoginAt()).isEqualTo(100L);
+
     }
 
 }

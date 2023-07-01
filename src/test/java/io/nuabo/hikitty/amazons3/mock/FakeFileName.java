@@ -1,10 +1,9 @@
 package io.nuabo.hikitty.amazons3.mock;
 import io.nuabo.common.application.port.UuidHolder;
-import io.nuabo.hikitty.amazons3.application.port.FileName;
 import lombok.Getter;
 
 @Getter
-public class FakeFileName implements FileName {
+public class FakeFileName {
     private final String originalFilename;
     private final String storeFilename;
     private final String keyName;

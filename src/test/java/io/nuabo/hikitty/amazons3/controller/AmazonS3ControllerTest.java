@@ -84,7 +84,7 @@ class AmazonS3ControllerTest {
         assertThatThrownBy(() -> {
             container.amazonS3Controller.getById(1L);
         }).isInstanceOf(ResourceNotFoundException.class)
-                .hasMessage("AmazonS3Service에서 ID 1를 찾을 수 없습니다.");
+                .hasMessage("AmazonS3ServiceImpl에서 ID 1를 찾을 수 없습니다.");
     }
 
 
@@ -123,14 +123,14 @@ class AmazonS3ControllerTest {
         assertThatThrownBy(() -> {
             container.amazonS3Controller.getByOriginalName("test.img");
         }).isInstanceOf(ResourceNotFoundException.class)
-                .hasMessage("AmazonS3Service에서 data: test.img를 찾을 수 없습니다.");
+                .hasMessage("AmazonS3ServiceImpl에서 data: test.img를 찾을 수 없습니다.");
     }
 
 
 
 
     private MockMultipartFile getMockMultipartFile(String fileName, String contentType, String path) throws IOException, IOException {
-        FileInputStream fileInputStream = new FileInputStream(new File(path));
+        FileInputStream fileInputStream = new FileInputStream(path);
         return new MockMultipartFile(fileName, fileName + "." + contentType, contentType, fileInputStream);
     }
 }

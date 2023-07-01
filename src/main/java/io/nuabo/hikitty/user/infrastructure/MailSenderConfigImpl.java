@@ -1,11 +1,9 @@
 package io.nuabo.hikitty.user.infrastructure;
 
 import io.nuabo.hikitty.user.application.port.MailSenderConfig;
-import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-@Getter
 @Component
 public class MailSenderConfigImpl implements MailSenderConfig {
     @Value("${mail.first-url}")

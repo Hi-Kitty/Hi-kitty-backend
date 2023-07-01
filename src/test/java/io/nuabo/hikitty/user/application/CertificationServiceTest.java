@@ -29,9 +29,6 @@ class CertificationServiceTest {
         assertThat(fakeMailSender.email).isEqualTo("spring2@naver.com");
         assertThat(fakeMailSender.title).isEqualTo("제목입니다.");
         assertThat(fakeMailSender.content).isEqualTo("내용입니다: " +
-                "http://localhost:8080/api/v0/users/" +
-                "1" +
-                "/verify?certificationCode=" +
                 "aaaaaaa-aaaa-aaaa-aaaaaaaaaaaa");
 
     }
@@ -53,7 +50,7 @@ class CertificationServiceTest {
         String certificationUrl = certificationService.generateCertificationUrl(1L, "aaaaaaa-aaaa-aaaa-aaaaaaaaaaaa");
 
         // then
-        assertThat(certificationUrl).isEqualTo("http://localhost:8080/api/v0/users/1/verify?certificationCode=aaaaaaa-aaaa-aaaa-aaaaaaaaaaaa");
+        assertThat(certificationUrl).isEqualTo("aaaaaaa-aaaa-aaaa-aaaaaaaaaaaa");
 
     }
 }

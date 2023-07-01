@@ -1,0 +1,8 @@
+security:
+  denied-uris: /api/v1/auth/**
+  jwt:
+    secret-key: ${security.key}
+    expiration-time-access: 3600000
+    expiration-time-refresh: 86400000
+    token-prefix: Bearer
+    header-string: Authorization

@@ -19,7 +19,7 @@ public class CertificationService {
     }
 
     public String generateCertificationUrl(long userId, String certificationCode) {
-        return mailSenderConfig.getFirstUrl() + userId + mailSenderConfig.getSecondUrl() + certificationCode;
+        return certificationCode;
     }
 
 

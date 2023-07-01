@@ -39,6 +39,7 @@ public class TestUserContainer {
                 .uuidHolder(uuidHolder)
                 .userRepository(this.userRepository)
                 .certificationService(this.certificationService)
+                .passwordEncoder(new TestPasswordEncoderHolder())
                 .build();
 
         this.userService = userService;

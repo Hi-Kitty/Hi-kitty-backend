@@ -14,4 +14,10 @@ public class LoginResponse {
     public LoginResponse(String token) {
         this.token = token;
     }
+
+    public static LoginResponse from(String token) {
+        return LoginResponse.builder()
+                .token(token)
+                .build();
+    }
 }

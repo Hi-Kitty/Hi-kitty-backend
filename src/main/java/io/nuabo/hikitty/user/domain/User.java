@@ -1,8 +1,12 @@
 package io.nuabo.hikitty.user.domain;
 
+import io.nuabo.common.application.port.ClockHolder;
 import io.nuabo.common.application.port.UuidHolder;
+
 import io.nuabo.common.domain.exception.CertificationCodeNotMatchedException;
+import io.nuabo.hikitty.security.application.port.PasswordEncoderHolder;
 import io.nuabo.hikitty.user.presentation.request.UserCreateRequest;
+import io.nuabo.hikitty.user.presentation.request.UserUpdateRequest;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -67,6 +71,43 @@ public class User {
                 .lastLoginAt(lastLoginAt)
                 .role(role)
                 .password(password)
+                .build();
+    }
+
+    public static User register(UserCreateRequest userCreateRequest, PasswordEncoderHolder passwordEncoder, UuidHolder uuidHolder) {
+        return User.builder()
+                .email(userCreateRequest.getEmail())
+                .name(userCreateRequest.getName())
+                .role(userCreateRequest.getRole())
+                .status(UserStatus.PENDING)
+                .certificationCode(uuidHolder.random())
+                .password(passwordEncoder.encode(userCreateRequest.getPassword()))
+                .build();
+    }
+
+    public User login(ClockHolder clockHolder) {
+        return User.builder()
+                .id(id)
+                .email(email)
+                .name(name)
+                .certificationCode(certificationCode)
+                .status(status)
+                .lastLoginAt(clockHolder.millis())
+                .role(role)
+                .password(password)
+                .build();
+    }
+
+    public User update(UserUpdateRequest userUpdate) {
+        return User.builder()
+                .id(id)
+                .email(email)
+                .name(userUpdate.getName() == null ? name : userUpdate.getName())
+                .certificationCode(certificationCode)
+                .status(status)
+                .lastLoginAt(lastLoginAt)
+                .role(role)
+                .password(userUpdate.getPassword() == null ? password : userUpdate.getPassword())
                 .build();
     }
 }
