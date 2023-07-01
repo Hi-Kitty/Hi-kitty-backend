@@ -18,6 +18,7 @@ spring:
     mode: HTML
     prefix: classpath:/templates/
     check-template-location: true
+    check-template: true
 
 mail:
   first-url: ${mail.first.url}
@@ -25,5 +26,5 @@ mail:
   title: ${mail.title}
   content: ${mail.content}
   template: ${mail.template}
-  template-value-name: ${mail.template.value.name}
-  template-value-certification-code: ${mail.template.value.certification.code}
+  template-value-name: ${mail.template-value-name}
+  template-value-certification-code: ${mail.template-value-certification-code}
