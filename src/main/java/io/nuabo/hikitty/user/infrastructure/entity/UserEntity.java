@@ -17,7 +17,6 @@ import java.util.List;
 
 @Getter
 @Entity(name = "user")
-@Table(name = "user")
 @SQLDelete(sql = "update user set delete_at=now() where id=?")
 @Where(clause = "delete_at is null")
 public class UserEntity extends BaseTimeEntity implements UserDetails {
