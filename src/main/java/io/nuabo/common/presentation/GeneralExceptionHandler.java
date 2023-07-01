@@ -1,4 +1,7 @@
 package io.nuabo.common.presentation;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.MalformedJwtException;
 import io.nuabo.common.domain.exception.*;
 import io.nuabo.common.domain.utils.ApiUtils;
 import jakarta.validation.ConstraintViolationException;
@@ -7,6 +10,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.web.HttpMediaTypeException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -15,8 +21,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 import java.lang.module.ResolutionException;
+import java.security.SignatureException;
 
-import static io.nuabo.common.domain.utils.ApiUtils.error;
 
 
 @Slf4j
@@ -31,7 +37,7 @@ public class GeneralExceptionHandler {
     private ResponseEntity<ApiUtils.ApiResult<?>> newResponse(String message, HttpStatus status) {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json");
-        return new ResponseEntity<>(error(message, status), headers, status);
+        return new ResponseEntity<>(ApiUtils.error(message, status), headers, status);
     }
 
     // 필요한 경우 적절한 예외타입을 선언하고 newResponse 메소드를 통해 응답을 생성하도록 합니다.
@@ -46,7 +52,8 @@ public class GeneralExceptionHandler {
     public ResponseEntity<?> handleNotFoundException(Exception e) {
         return newResponse(e, HttpStatus.NOT_FOUND);
     }
-    /*@ExceptionHandler(SignatureException.class)
+
+    @ExceptionHandler(SignatureException.class)
     public ResponseEntity<?> handleSignatureException() {
         return newResponse("토큰이 유효하지 않습니다.", HttpStatus.UNAUTHORIZED);
     }
@@ -74,15 +81,19 @@ public class GeneralExceptionHandler {
     @ExceptionHandler(InsufficientAuthenticationException.class)
     public ResponseEntity<?> handleInsufficientAuthenticationException() {
         return newResponse("토큰의 값이 비었습니다. 확인해주세요", HttpStatus.NOT_FOUND);
-    }*/
-
-
- /*   @ExceptionHandler({UnauthorizedException.class,
-        CertificationCodeNotMatchedException.class
+    }
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<?> handleBadCredentialsException() {
+        return newResponse("이메일과 비밀번호가 올바르지 않습니다. 다시 확인해주세요", HttpStatus.NOT_ACCEPTABLE);
+    }
+    @ExceptionHandler({UnauthorizedException.class
     })
     public ResponseEntity<?> handleUnauthorizedException(Exception e) {
         return newResponse(e, HttpStatus.UNAUTHORIZED);
-    }*/
+    }
+
+
+
 
     @ExceptionHandler({
             IllegalArgumentException.class,

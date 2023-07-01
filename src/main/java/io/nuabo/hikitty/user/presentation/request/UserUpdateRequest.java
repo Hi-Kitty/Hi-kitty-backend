@@ -12,7 +12,7 @@ public class UserUpdateRequest {
     @Schema(description = "name",  example = "푸항항")
     private final String name;
 
-    @Schema(description = "password",  example = "푸항항@naver.com")
+    @Schema(description = "password",  example = "password!!!!!")
     private final String password;
 
 

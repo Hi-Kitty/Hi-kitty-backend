@@ -4,6 +4,8 @@ import io.nuabo.common.domain.exception.ResourceNotFoundException;
 import io.nuabo.hikitty.user.application.port.UserRepository;
 import io.nuabo.hikitty.user.domain.User;
 import io.nuabo.hikitty.user.domain.UserStatus;
+import io.nuabo.hikitty.user.infrastructure.entity.UserEntity;
+import io.nuabo.hikitty.user.infrastructure.port.UserJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

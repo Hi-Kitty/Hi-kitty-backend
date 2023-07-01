@@ -9,6 +9,11 @@ import java.util.UUID;
 public class SystemUuidHolder implements UuidHolder {
     @Override
     public String random() {
-        return UUID.randomUUID().toString();
+        String randomUUIDString = UUID.randomUUID().toString().replaceAll("-", "");
+        String randomNumberString = randomUUIDString.substring(0, 8);
+
+        long randomNumber = Long.parseLong(randomNumberString, 16);
+        String formattedNumber = String.format("%08d", randomNumber);
+        return formattedNumber;
     }
 }

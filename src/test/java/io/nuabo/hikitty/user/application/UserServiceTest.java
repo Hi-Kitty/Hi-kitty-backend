@@ -2,17 +2,23 @@ package io.nuabo.hikitty.user.application;
 
 import io.nuabo.common.domain.exception.CertificationCodeNotMatchedException;
 import io.nuabo.common.domain.exception.ResourceNotFoundException;
+import io.nuabo.hikitty.amazons3.mock.FakeAmazonS3ClientHolder;
 import io.nuabo.hikitty.mock.TestUuidHolder;
+import io.nuabo.hikitty.user.application.port.UserProfileDto;
+import io.nuabo.hikitty.user.domain.Profile;
 import io.nuabo.hikitty.user.domain.Role;
 import io.nuabo.hikitty.user.domain.User;
 import io.nuabo.hikitty.user.domain.UserStatus;
-import io.nuabo.hikitty.user.mock.FakeMailSender;
-import io.nuabo.hikitty.user.mock.FakeMailSenderConfig;
-import io.nuabo.hikitty.user.mock.FakeUserRepository;
+import io.nuabo.hikitty.user.mock.*;
 import io.nuabo.hikitty.user.presentation.request.UserCreateRequest;
+import io.nuabo.hikitty.user.presentation.request.UserUpdateRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.mock.web.MockMultipartFile;
+
+import java.io.FileInputStream;
+import java.io.IOException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -29,12 +35,21 @@ class UserServiceTest {
                 "제목입니다.",
                 "내용입니다."
         );
+
+        TestPasswordEncoderHolder passwordEncoderHolder = new TestPasswordEncoderHolder();
+        TestUuidHolder testUuidHolder = new TestUuidHolder("aaaaaaa-aaaa-aaaa-aaaaaaaaaaaa");
+        FakeObjectMetadataHolder fakeObjectMetadataHolder = new FakeObjectMetadataHolder();
+        FakeAmazonS3ClientHolder fakeAmazonS3ClientHolder = new FakeAmazonS3ClientHolder("bucket");
+        FakeProfileRepository fakeProfileRepository = new FakeProfileRepository();
         this.userService = UserServiceImpl.builder()
-                .uuidHolder(new TestUuidHolder("aaaaaaa-aaaa-aaaa-aaaaaaaaaaaa"))
                 .userRepository(fakeUserRepository)
+                .uuidHolder(testUuidHolder)
                 .certificationService(new CertificationService(fakeMailSender, fakeMailSenderConfig))
+                .passwordEncoder(passwordEncoderHolder)
+                .profileRepository(fakeProfileRepository)
+                .awsConnection(new FakeAwsConnection(testUuidHolder, fakeObjectMetadataHolder, fakeAmazonS3ClientHolder))
                 .build();
-        fakeUserRepository.save(User.builder()
+        User user = User.builder()
                 .id(1L)
                 .email("spring2@naver.com")
                 .name("kok202")
@@ -43,7 +58,19 @@ class UserServiceTest {
                 .certificationCode("aaaaaaa-aaaa-aaaa-aaaaaaaaaaaa")
                 .status(UserStatus.ACTIVE)
                 .lastLoginAt(0L)
-                .build());
+                .build();
+        User lastUser = User.builder()
+                .id(3L)
+                .email("spring3@naver.com")
+                .name("푸항항")
+                .password("1234")
+                .role(Role.ROLE_DONER)
+                .certificationCode("aaaaaaa-aaaa-aaaa-aaaaaaaaaaaa")
+                .status(UserStatus.ACTIVE)
+                .lastLoginAt(0L)
+                .build();
+        fakeUserRepository.save(user);
+        fakeUserRepository.save(lastUser);
         fakeUserRepository.save(User.builder()
                 .id(2L)
                 .email("spring@naver.com")
@@ -53,6 +80,11 @@ class UserServiceTest {
                 .status(UserStatus.PENDING)
                 .lastLoginAt(0L)
                 .build());
+        fakeProfileRepository.save(Profile.builder()
+                .originalName("testImg.png")
+                .savedName("aaaaaaa-aaaa-aaaa-aaaaaaaaaaaa.png")
+                .url("https://bucket.s3.ap-northeast-2.amazonaws.com/nuabo/aaaaaaa-aaaa-aaaa-aaaaaaaaaaaa.jpg")
+                .build(), lastUser);
     }
 
 
@@ -130,7 +162,57 @@ class UserServiceTest {
     }
 
     @Test
-    void update() {
+    @DisplayName("userUpdate로 인해 user의 이메일과 패스워드 또는 profile이 변경된다.")
+    void update() throws IOException {
+        // given
+        UserUpdateRequest userUpdate = UserUpdateRequest.builder()
+                .name("spring3")
+                .password("12345678")
+                .build();
+        String fileName = "testImg";
+        String contentType = "jpg";
+        String filePath = "src/test/resources/img/testImg.png";
+
+        String email = "spring2@naver.com";
+        MockMultipartFile getMockMultipartFile = getMockMultipartFile(fileName, contentType, filePath);
+
+        // when
+        UserProfileDto userProfileDto = userService.update(email, userUpdate, getMockMultipartFile);
+
+        // then
+        User result = userService.getByEmail(email);
+        assertThat(result.getId()).isNotNull();
+        assertThat(result.getName()).isEqualTo("spring3");
+        assertThat(result.getPassword()).isEqualTo("12345678");
+        assertThat(result.getEmail()).isEqualTo("spring2@naver.com");
+        assertThat(userProfileDto.getUrl()).isEqualTo("https://bucket.s3.ap-northeast-2.amazonaws.com/nuabo/aaaaaaa-aaaa-aaaa-aaaaaaaaaaaa.jpg");
+        assertThat(userProfileDto.getOriginalName()).isEqualTo("testImg.jpg");
+
+
+    } @Test
+    @DisplayName("userUpdate로 인해 user의 이메일과 패스워드가 변경된다.")
+    void updateNotImg() {
+        // given
+        UserUpdateRequest userUpdate = UserUpdateRequest.builder()
+                .name("spring3")
+                .password("12345678")
+                .build();
+        String email = "spring2@naver.com";
+        MockMultipartFile getMockMultipartFile = null;
+
+        // when
+        UserProfileDto userProfileDto = userService.update(email, userUpdate, getMockMultipartFile);
+
+        // then
+        User result = userService.getByEmail(email);
+        assertThat(result.getId()).isNotNull();
+        assertThat(result.getName()).isEqualTo("spring3");
+        assertThat(result.getPassword()).isEqualTo("12345678");
+        assertThat(result.getEmail()).isEqualTo("spring2@naver.com");
+        assertThat(userProfileDto.getUrl()).isEqualTo(null);
+        assertThat(userProfileDto.getOriginalName()).isEqualTo(null);
+
+
     }
 
 
@@ -156,5 +238,45 @@ class UserServiceTest {
                 .verifyEmail(2, "aaaa-aaaa-aaaa-aaaaaaaaaaaa"))
                 .isInstanceOf(CertificationCodeNotMatchedException.class);
 
+    }
+
+    @Test
+    @DisplayName("user가 있고 profile 사진 정보가 없을 시 user 정보만 가져온다.")
+    void getUserAndProfileOnlyUser() {
+        // given
+        String email = "spring2@naver.com";
+
+        // when
+         UserProfileDto userProfileDto = userService.getUserAndProfile(email);
+
+        // then
+        assertThat(userProfileDto.getUrl()).isEqualTo(null);
+        assertThat(userProfileDto.getOriginalName()).isEqualTo(null);
+        assertThat(userProfileDto.getName()).isEqualTo("kok202");
+        assertThat(userProfileDto.getEmail()).isEqualTo("spring2@naver.com");
+    }
+
+    @Test
+    @DisplayName("user정보와 profile 사진 정보를 가져온다.")
+    void getUserAndProfile() {
+        // given
+        String email = "spring3@naver.com";
+
+        // when
+        UserProfileDto userProfileDto = userService.getUserAndProfile(email);
+
+        // then
+        assertThat(userProfileDto.getUrl()).isEqualTo("https://bucket.s3.ap-northeast-2.amazonaws.com/nuabo/aaaaaaa-aaaa-aaaa-aaaaaaaaaaaa.jpg");
+        assertThat(userProfileDto.getOriginalName()).isEqualTo("testImg.png");
+        assertThat(userProfileDto.getName()).isEqualTo("푸항항");
+        assertThat(userProfileDto.getEmail()).isEqualTo("spring3@naver.com");
+    }
+
+
+
+
+    private MockMultipartFile getMockMultipartFile(String fileName, String contentType, String path) throws IOException {
+        FileInputStream fileInputStream = new FileInputStream(path);
+        return new MockMultipartFile(fileName, fileName + "." + contentType, contentType, fileInputStream);
     }
 }

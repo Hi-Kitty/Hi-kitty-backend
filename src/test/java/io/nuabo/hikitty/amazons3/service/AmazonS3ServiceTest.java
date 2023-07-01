@@ -1,13 +1,15 @@
 package io.nuabo.hikitty.amazons3.service;
 
 import io.nuabo.common.domain.exception.ResourceNotFoundException;
+import io.nuabo.hikitty.amazons3.application.AmazonS3ServiceImpl;
+import io.nuabo.hikitty.amazons3.application.port.AWSConnection;
 import io.nuabo.hikitty.amazons3.domain.AmazonS3Upload;
-import io.nuabo.hikitty.amazons3.infrastructure.SystemObjectMetadataHolder;
-import io.nuabo.hikitty.amazons3.application.AmazonS3Service;
 import io.nuabo.hikitty.mock.TestUuidHolder;
 import io.nuabo.hikitty.amazons3.mock.FakeAmazonS3Repository;
 import io.nuabo.hikitty.amazons3.mock.FakeFileName;
-import io.nuabo.hikitty.amazons3.mock.TestAmazonS3ClientHolder;
+import io.nuabo.hikitty.amazons3.mock.FakeAmazonS3ClientHolder;
+import io.nuabo.hikitty.user.mock.FakeAwsConnection;
+import io.nuabo.hikitty.user.mock.FakeObjectMetadataHolder;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -24,22 +26,21 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 @Slf4j
 class AmazonS3ServiceTest {
 
-    private AmazonS3Service amazonS3Service;
+    private AmazonS3ServiceImpl amazonS3Service;
 
     @BeforeEach
     void init() {
 
         // given
         String bucket = "nuabo-bucket";
-        TestAmazonS3ClientHolder s3ClientHolder = new TestAmazonS3ClientHolder(bucket);
+        FakeAmazonS3ClientHolder s3ClientHolder = new FakeAmazonS3ClientHolder(bucket);
         FakeAmazonS3Repository amazonS3Repository = new FakeAmazonS3Repository();
         TestUuidHolder uuidHolder = new TestUuidHolder("aaaaaaa-aaaa-aaaa-aaaaaaaaaaaa");
-
-        amazonS3Service = AmazonS3Service.builder()
-                .amazonS3ClientHolder(s3ClientHolder)
+        FakeObjectMetadataHolder fakeObjectMetadataHolder = new FakeObjectMetadataHolder();
+        AWSConnection fakeAwsConnection = new FakeAwsConnection(uuidHolder, fakeObjectMetadataHolder, s3ClientHolder);
+        amazonS3Service = AmazonS3ServiceImpl.builder()
+                .awsConnection(fakeAwsConnection)
                 .amazonS3Repository(amazonS3Repository)
-                .objectMetadataHolder(new SystemObjectMetadataHolder())
-                .uuidHolder(uuidHolder)
                 .build();
 
         // case 1
@@ -121,10 +122,9 @@ class AmazonS3ServiceTest {
         Long id = 3L;
 
         // when then
-        assertThatThrownBy(() -> {
-            amazonS3Service.getById(id);
-        }).isInstanceOf(ResourceNotFoundException.class)
-        .hasMessage("AmazonS3Service에서 ID 3를 찾을 수 없습니다.");
+        assertThatThrownBy(() ->
+                amazonS3Service.getById(id)).isInstanceOf(ResourceNotFoundException.class)
+        .hasMessage("AmazonS3ServiceImpl에서 ID 3를 찾을 수 없습니다.");
     }
     @Test
     @DisplayName("AmazonS3Service는 originalName값으로 AmazonS3Upload 객체를 조회할 수 있다.")
@@ -146,17 +146,16 @@ class AmazonS3ServiceTest {
 
         String name = "originalFilename333";
         // when then
-        assertThatThrownBy(() -> {
-            amazonS3Service.getByOriginalName(name);
-        }).isInstanceOf(ResourceNotFoundException.class)
-        .hasMessage("AmazonS3Service에서 data: originalFilename333를 찾을 수 없습니다.");
+        assertThatThrownBy(() ->
+                amazonS3Service.getByOriginalName(name)).isInstanceOf(ResourceNotFoundException.class)
+        .hasMessage("AmazonS3ServiceImpl에서 data: originalFilename333를 찾을 수 없습니다.");
     }
 
 
 
 
-    private MockMultipartFile getMockMultipartFile(String fileName, String contentType, String path) throws IOException, IOException {
-        FileInputStream fileInputStream = new FileInputStream(new File(path));
+    private MockMultipartFile getMockMultipartFile(String fileName, String contentType, String path) throws IOException {
+        FileInputStream fileInputStream = new FileInputStream(path);
         return new MockMultipartFile(fileName, fileName + "." + contentType, contentType, fileInputStream);
     }
 

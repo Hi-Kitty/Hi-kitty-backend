@@ -2,7 +2,7 @@ package io.nuabo.hikitty.amazons3.domain;
 
 import io.nuabo.hikitty.mock.TestUuidHolder;
 import io.nuabo.hikitty.amazons3.mock.FakeFileName;
-import io.nuabo.hikitty.amazons3.mock.TestAmazonS3ClientHolder;
+import io.nuabo.hikitty.amazons3.mock.FakeAmazonS3ClientHolder;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -25,7 +25,7 @@ class AmazonS3UploadTest {
         String storeFilename = fileName.getStoreFilename();
         String originalFilename = fileName.getOriginalFilename();
         String keyName = fileName.getKeyName();
-        TestAmazonS3ClientHolder s3ClientHolder = new TestAmazonS3ClientHolder(bucket);
+        FakeAmazonS3ClientHolder s3ClientHolder = new FakeAmazonS3ClientHolder(bucket);
         String imgUrl = s3ClientHolder.getAmazonS3FromAWS(keyName);
 
         // when

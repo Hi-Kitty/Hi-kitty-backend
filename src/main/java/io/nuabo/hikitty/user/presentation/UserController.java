@@ -1,10 +1,10 @@
 package io.nuabo.hikitty.user.presentation;
 
 import io.nuabo.common.domain.utils.ApiUtils.ApiResult;
+import io.nuabo.hikitty.security.application.AuthenticationServiceImpl;
 import io.nuabo.hikitty.user.domain.User;
 import io.nuabo.hikitty.user.presentation.port.UserService;
 import io.nuabo.hikitty.user.presentation.request.LoginRequest;
-import io.nuabo.hikitty.user.presentation.request.UserUpdateRequest;
 import io.nuabo.hikitty.user.presentation.request.UserCreateRequest;
 import io.nuabo.hikitty.user.presentation.response.LoginResponse;
 import io.nuabo.hikitty.user.presentation.response.UserResponse;
@@ -14,12 +14,8 @@ import jakarta.validation.Valid;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.net.URI;
 
 import static io.nuabo.common.domain.utils.ApiUtils.success;
 
@@ -27,11 +23,12 @@ import static io.nuabo.common.domain.utils.ApiUtils.success;
 @Tag(name = "유저 - 기부자, 모금자 보완 관련 통합 API")
 @Builder
 @RestController
-@RequestMapping("/api/v0/auth")
+@RequestMapping("/api/v1/users")
 @RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
+    private final AuthenticationServiceImpl authenticationServiceImpl;
 
     @Operation(summary = "회원가입")
     @PostMapping
@@ -47,11 +44,10 @@ public class UserController {
             @PathVariable long id,
             @RequestParam String certificationCode) {
         userService.verifyEmail(id, certificationCode);
-        return ResponseEntity.status(HttpStatus.FOUND)
-                .location(URI.create("http://localhost:3000"))
-                .build();
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
+    @Operation(summary = "유저 정보 조회", description = "id 값을 입력하세요")
     @GetMapping("/{id}")
     public ResponseEntity<ApiResult<UserResponse>> getById(@PathVariable long id) {
         return ResponseEntity.status(HttpStatus.OK)
@@ -63,16 +59,9 @@ public class UserController {
     public ResponseEntity<ApiResult<LoginResponse>> login(
             @Valid @RequestBody LoginRequest request
     ) {
-        return null;
+        String token = authenticationServiceImpl.authenticate(request);
+        return ResponseEntity.ok(success(LoginResponse.from(token)));
     }
 
-    // security 필요
-    @Operation(summary = "유저 정보 수정", description = "토큰 값을 입력하고 이미지, 닉네임 비밀번호를 입력하세요.")
-    @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<ApiResult<UserUpdateRequest>> updatePassword(
-            @RequestPart UserUpdateRequest request,
-            @RequestPart(value = "img", required = false) MultipartFile img
-    ) {
-        return null;
-    }
+
 }

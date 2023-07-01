@@ -2,9 +2,9 @@ package io.nuabo.hikitty.amazons3.presentation;
 
 import io.nuabo.common.domain.utils.ApiUtils;
 import io.nuabo.common.domain.utils.ApiUtils.ApiResult;
+import io.nuabo.hikitty.amazons3.presentation.port.AmazonS3Service;
 import io.nuabo.hikitty.amazons3.presentation.response.AmazonS3Response;
 import io.nuabo.hikitty.amazons3.domain.AmazonS3Upload;
-import io.nuabo.hikitty.amazons3.application.AmazonS3Service;
 import io.nuabo.hikitty.amazons3.presentation.response.ApiAmazonS3Response;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
