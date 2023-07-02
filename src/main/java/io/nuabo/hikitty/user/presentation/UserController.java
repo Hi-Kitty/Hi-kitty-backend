@@ -4,6 +4,7 @@ import io.nuabo.common.domain.utils.ApiUtils.ApiResult;
 import io.nuabo.hikitty.security.application.AuthenticationServiceImpl;
 import io.nuabo.hikitty.user.domain.User;
 import io.nuabo.hikitty.user.presentation.port.UserService;
+import io.nuabo.hikitty.user.presentation.request.EmailRequest;
 import io.nuabo.hikitty.user.presentation.request.LoginRequest;
 import io.nuabo.hikitty.user.presentation.request.UserCreateRequest;
 import io.nuabo.hikitty.user.presentation.response.LoginResponse;
@@ -63,5 +64,13 @@ public class UserController {
         return ResponseEntity.ok(success(LoginResponse.from(token)));
     }
 
+
+    @Operation(summary = "기존 회원 확인", description = "이메일을 통해서 기존 회원 여부")
+    @GetMapping("/exists")
+    public ResponseEntity<ApiResult<Boolean>> existsByEmail(
+           @Valid @ModelAttribute EmailRequest emailRequest
+            ) {
+        return ResponseEntity.ok(success(userService.existsByEmail(emailRequest.getEmail())));
+    }
 
 }

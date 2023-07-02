@@ -104,4 +104,9 @@ public class UserServiceImpl implements UserService {
                 .map(profile -> UserProfileDto.merge(profile, user))
                 .orElse(UserProfileDto.from(user));
     }
+
+    @Override
+    public Boolean existsByEmail(String email) {
+        return userRepository.findByEmailAndStatus(email, UserStatus.ACTIVE).isPresent();
+    }
 }
