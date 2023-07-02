@@ -18,4 +18,6 @@ public interface UserService {
     void verifyEmail(long id, String certificationCode);
 
     UserProfileDto getUserAndProfile(String email);
+
+    Boolean existsByEmail(String email);
 }
