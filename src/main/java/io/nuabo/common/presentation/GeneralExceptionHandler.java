@@ -6,6 +6,7 @@ import io.nuabo.common.domain.exception.*;
 import io.nuabo.common.domain.utils.ApiUtils;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -165,5 +166,9 @@ public class GeneralExceptionHandler {
         return newResponse("10MB안으로 가능합니다!!", HttpStatus.BAD_REQUEST);
     }
 
-
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<?> handleDataIntegrityViolationException(Exception e) {
+        log.error("Unexpected exception occurred: {}", e.getMessage(), e);
+        return newResponse(e.getMessage() + "데이터의 크기를 확인해주세요!!", HttpStatus.BAD_REQUEST);
+    }
 }

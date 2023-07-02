@@ -1,8 +1,6 @@
 name: todo-master-to-beanstalk
 
 on:
-  push:
-    branches: [ main ] # main 브랜치에 push 이벤트가 발생하면 action이 작동
   pull_request: # PR 이벤트가 발생하면 action이 작동
     branches: [ main ]
 
