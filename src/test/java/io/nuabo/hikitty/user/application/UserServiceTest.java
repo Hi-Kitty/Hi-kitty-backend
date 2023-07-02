@@ -3,6 +3,7 @@ package io.nuabo.hikitty.user.application;
 import io.nuabo.common.domain.exception.CertificationCodeNotMatchedException;
 import io.nuabo.common.domain.exception.ResourceNotFoundException;
 import io.nuabo.hikitty.amazons3.mock.FakeAmazonS3ClientHolder;
+import io.nuabo.hikitty.mock.TestDefaultImageConfig;
 import io.nuabo.hikitty.mock.TestUuidHolder;
 import io.nuabo.hikitty.user.application.port.UserProfileDto;
 import io.nuabo.hikitty.user.domain.Profile;
@@ -41,9 +42,16 @@ class UserServiceTest {
         FakeObjectMetadataHolder fakeObjectMetadataHolder = new FakeObjectMetadataHolder();
         FakeAmazonS3ClientHolder fakeAmazonS3ClientHolder = new FakeAmazonS3ClientHolder("bucket");
         FakeProfileRepository fakeProfileRepository = new FakeProfileRepository();
+        TestDefaultImageConfig testDefaultImageConfig = TestDefaultImageConfig.builder()
+                .defaultImageFundraiserUrl("defaultImageFundraiserUrl")
+                .defaultImageDonerUrl("defaultImageDonerUrl")
+                .defaultImageDonerOriginalName("defaultImageDonerOriginalName")
+                .defaultImageFundraiserOriginalName("defaultImageFundraiserOriginalName")
+                .build();
         this.userService = UserServiceImpl.builder()
                 .userRepository(fakeUserRepository)
                 .uuidHolder(testUuidHolder)
+                .defaultImageConfig(testDefaultImageConfig)
                 .certificationService(new CertificationService(fakeMailSender, fakeMailSenderConfig))
                 .passwordEncoder(passwordEncoderHolder)
                 .profileRepository(fakeProfileRepository)
@@ -85,6 +93,18 @@ class UserServiceTest {
                 .savedName("aaaaaaa-aaaa-aaaa-aaaaaaaaaaaa.png")
                 .url("https://bucket.s3.ap-northeast-2.amazonaws.com/nuabo/aaaaaaa-aaaa-aaaa-aaaaaaaaaaaa.jpg")
                 .build(), lastUser);
+
+        User testUser = User.builder()
+                .id(5L)
+                .email("test@naver.com")
+                .name("kok202")
+                .password("1234")
+                .role(Role.ROLE_DONER)
+                .certificationCode("aaaaaaa-aaaa-aaaa-aaaaaaaaaaaa")
+                .status(UserStatus.ACTIVE)
+                .lastLoginAt(0L)
+                .build();
+        fakeUserRepository.save(testUser);
     }
 
 
@@ -244,7 +264,7 @@ class UserServiceTest {
     @DisplayName("user가 있고 profile 사진 정보가 없을 시 user 정보만 가져온다.")
     void getUserAndProfileOnlyUser() {
         // given
-        String email = "spring2@naver.com";
+        String email = "test@naver.com";
 
         // when
          UserProfileDto userProfileDto = userService.getUserAndProfile(email);
@@ -253,7 +273,7 @@ class UserServiceTest {
         assertThat(userProfileDto.getUrl()).isEqualTo(null);
         assertThat(userProfileDto.getOriginalName()).isEqualTo(null);
         assertThat(userProfileDto.getName()).isEqualTo("kok202");
-        assertThat(userProfileDto.getEmail()).isEqualTo("spring2@naver.com");
+        assertThat(userProfileDto.getEmail()).isEqualTo("test@naver.com");
     }
 
     @Test

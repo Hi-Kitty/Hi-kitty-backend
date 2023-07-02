@@ -100,11 +100,10 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public UserProfileDto getUserAndProfile(String email) {
         User user = getByEmail(email);
-        log.info("user: {}", user.getId());
-
 
         return profileRepository.findByUserId(user.getId())
                 .map(profile -> UserProfileDto.merge(profile, user))
