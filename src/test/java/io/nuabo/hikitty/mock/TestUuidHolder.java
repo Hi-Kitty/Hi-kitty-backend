@@ -14,6 +14,11 @@ public class TestUuidHolder implements UuidHolder {
     }
 
     @Override
+    public String randomNumber() {
+        return uuid;
+    }
+
+    @Override
     public String random() {
         return uuid;
     }

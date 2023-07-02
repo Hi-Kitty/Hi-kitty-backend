@@ -65,4 +65,10 @@ public class FakeUserRepository implements UserRepository {
     public Optional<User> findByEmail(String email) {
         return data.stream().filter(item -> item.getEmail().equals(email)).findAny();
     }
+
+    @Override
+    public User getByEmailAndStatus(String email, UserStatus active) {
+        return findByEmailAndStatus(email, active).orElseThrow(()->
+                new ResourceNotFoundException("Users", email));
+    }
 }

@@ -1,5 +1,6 @@
 package io.nuabo.hikitty.board.domain;
 
+import io.nuabo.hikitty.board.presentation.request.BoardCreateRequest;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -35,5 +36,16 @@ public class Board {
         this.currentAmount = currentAmount;
         this.endAt = endAt;
         this.createdAt = createdAt;
+    }
+
+    public static Board from(BoardCreateRequest boardCreateRequest) {
+        return Board.builder()
+                .title(boardCreateRequest.getTitle())
+                .subTitle(boardCreateRequest.getSubTitle())
+                .content(boardCreateRequest.getContent())
+                .targetAmount(boardCreateRequest.getTargetAmount())
+                .endAt(boardCreateRequest.getEndAt())
+                .currentAmount(0L)
+                .build();
     }
 }

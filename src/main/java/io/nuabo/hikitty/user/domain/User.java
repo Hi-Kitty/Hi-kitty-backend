@@ -41,7 +41,7 @@ public class User {
                 .name(userCreateRequest.getName())
                 .role(userCreateRequest.getRole())
                 .status(UserStatus.PENDING)
-                .certificationCode(uuidHolder.random())
+                .certificationCode(uuidHolder.randomNumber())
                 .password(userCreateRequest.getPassword())
                 .build();
     }
@@ -53,7 +53,7 @@ public class User {
                     .name(name)
                     .role(role)
                     .status(UserStatus.PENDING)
-                    .certificationCode(uuidHolder.random())
+                    .certificationCode(uuidHolder.randomNumber())
                     .password(password)
                     .build();
     }
@@ -80,7 +80,7 @@ public class User {
                 .name(userCreateRequest.getName())
                 .role(userCreateRequest.getRole())
                 .status(UserStatus.PENDING)
-                .certificationCode(uuidHolder.random())
+                .certificationCode(uuidHolder.randomNumber())
                 .password(passwordEncoder.encode(userCreateRequest.getPassword()))
                 .build();
     }

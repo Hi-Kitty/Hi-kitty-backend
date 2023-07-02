@@ -4,5 +4,6 @@ public interface JwtConfig {
 
     String[] getDeniedUris();
 
+    String[] getPermitUrisByFundraiser();
     String getSecret();
 }

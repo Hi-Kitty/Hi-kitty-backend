@@ -12,10 +12,17 @@ public class JwtConfigImpl implements JwtConfig{
     @Value("${security.jwt.secret-key}")
     private String secret;
 
+    @Value("${security.premit-uris-by-fundraiser}")
+    private String[] permitUrisByFundraiser;
 
     @Override
     public String[] getDeniedUris() {
         return deniedUris;
+    }
+
+    @Override
+    public String[] getPermitUrisByFundraiser() {
+        return permitUrisByFundraiser;
     }
 
     @Override

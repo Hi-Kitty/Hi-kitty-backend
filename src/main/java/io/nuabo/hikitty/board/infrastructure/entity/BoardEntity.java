@@ -1,6 +1,7 @@
 package io.nuabo.hikitty.board.infrastructure.entity;
 
 import io.nuabo.common.infrastructure.BaseTimeEntity;
+import io.nuabo.hikitty.board.domain.Board;
 import jakarta.persistence.*;
 import lombok.Getter;
 import org.hibernate.annotations.Comment;
@@ -39,4 +40,28 @@ public class BoardEntity extends BaseTimeEntity {
     @Column(nullable = false)
     private LocalDateTime endAt;
 
+    public static BoardEntity from(Board board) {
+        BoardEntity boardEntity = new BoardEntity();
+        boardEntity.id = board.getId();
+        boardEntity.title = board.getTitle();
+        boardEntity.subTitle = board.getSubTitle();
+        boardEntity.content = board.getContent();
+        boardEntity.targetAmount = board.getTargetAmount();
+        boardEntity.currentAmount = board.getCurrentAmount();
+        boardEntity.endAt = board.getEndAt();
+        return boardEntity;
+    }
+
+    public Board toModel() {
+        return Board.builder()
+                .id(id)
+                .title(title)
+                .subTitle(subTitle)
+                .content(content)
+                .targetAmount(targetAmount)
+                .currentAmount(currentAmount)
+                .endAt(endAt)
+                .createdAt(this.getCreateAt())
+                .build();
+    }
 }

@@ -1,0 +1,8 @@
+default:
+  image:
+    doner:
+      url: https://nuabo-bucket.s3.ap-northeast-2.amazonaws.com/nuabo/2969919424.png
+      original-name: donerImg.png
+    fundraiser:
+      url: https://nuabo-bucket.s3.ap-northeast-2.amazonaws.com/nuabo/284607720.png
+      original-name: fundraiserImg.png

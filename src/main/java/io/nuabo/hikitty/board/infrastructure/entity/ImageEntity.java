@@ -1,6 +1,7 @@
 package io.nuabo.hikitty.board.infrastructure.entity;
 
 import io.nuabo.common.infrastructure.BaseTimeEntity;
+import io.nuabo.hikitty.board.domain.Image;
 import jakarta.persistence.*;
 import lombok.Getter;
 import org.hibernate.annotations.SQLDelete;
@@ -29,4 +30,23 @@ public class ImageEntity extends BaseTimeEntity {
     @Column(nullable = false)
     private String url;
 
+    public static ImageEntity from(Image image) {
+        ImageEntity imageEntity = new ImageEntity();
+        imageEntity.id = image.getId();
+        imageEntity.boardEntity = BoardEntity.from(image.getBoard());
+        imageEntity.originalName = image.getOriginalName();
+        imageEntity.savedName = image.getSavedName();
+        imageEntity.url = image.getUrl();
+        return imageEntity;
+    }
+
+    public Image toModel() {
+        return Image.builder()
+                .id(id)
+                .board(boardEntity.toModel())
+                .originalName(originalName)
+                .savedName(savedName)
+                .url(url)
+                .build();
+    }
 }

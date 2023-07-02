@@ -18,5 +18,5 @@ public interface UserRepository {
     Optional<User> findById(long id);
 
     Optional<User> findByEmail(String email);
-
+    User getByEmailAndStatus(String email, UserStatus active);
 }

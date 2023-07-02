@@ -8,3 +8,9 @@ cloud:
       secret-key: ${amazons3.secretKey}
     s3:
       bucket: ${amazons3.bucket}
+
+spring:
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB

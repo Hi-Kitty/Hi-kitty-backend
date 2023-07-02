@@ -1,10 +1,13 @@
 package io.nuabo.hikitty.board.infrastructure.entity;
 
 import io.nuabo.common.infrastructure.BaseTimeEntity;
+import io.nuabo.hikitty.board.domain.Plan;
 import jakarta.persistence.*;
 import lombok.Getter;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
+
+import java.util.List;
 
 
 @Getter
@@ -25,6 +28,29 @@ public class PlanEntity extends BaseTimeEntity {
     private String reason;
 
     @Column(nullable = false)
-    private String amount;
+    private Long amount;
 
+    public static PlanEntity from(Plan plan) {
+        PlanEntity planEntity = new PlanEntity();
+        planEntity.id = plan.getId();
+        planEntity.boardEntity = BoardEntity.from(plan.getBoard());
+        planEntity.reason = plan.getReason();
+        planEntity.amount = plan.getAmount();
+        return planEntity;
+    }
+
+    public static List<PlanEntity> froms(List<Plan> plans) {
+        return plans.stream()
+                .map(PlanEntity::from)
+                .toList();
+    }
+
+    public Plan toModel() {
+        return Plan.builder()
+                .id(id)
+                .board(boardEntity.toModel())
+                .reason(reason)
+                .amount(amount)
+                .build();
+    }
 }
