@@ -43,6 +43,7 @@ public class SecurityConfig {
         http.authorizeHttpRequests(
                 auth ->
                         auth
+                                .requestMatchers(jwtConfig.getPermitUrisByFundraiser()).hasRole("FUNDRAISER")
                                 .requestMatchers(jwtConfig.getDeniedUris()).hasRole("DONER")
                                 .anyRequest().permitAll()
         );

@@ -47,7 +47,6 @@ public class UserServiceImpl implements UserService {
         }
 
         user = userRepository.save(user);
-//        certificationService.send(userCreateRequest.getEmail(), user.getId(), user.getCertificationCode());
         certificationService.sendMailFromTemplate(userCreateRequest.getEmail(), user.getCertificationCode(), userCreateRequest.getName());
         return user;
     }

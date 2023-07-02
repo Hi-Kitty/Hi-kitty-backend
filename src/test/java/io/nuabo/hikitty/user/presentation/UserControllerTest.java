@@ -2,6 +2,7 @@ package io.nuabo.hikitty.user.presentation;
 
 import io.nuabo.common.domain.exception.CertificationCodeNotMatchedException;
 import io.nuabo.common.domain.utils.ApiUtils;
+import io.nuabo.hikitty.mock.TestUuidHolder;
 import io.nuabo.hikitty.user.domain.Role;
 import io.nuabo.hikitty.user.domain.User;
 import io.nuabo.hikitty.user.domain.UserStatus;
@@ -24,7 +25,7 @@ class UserControllerTest {
     void create() {
         // given
         TestUserContainer container = TestUserContainer.builder()
-                .uuidHolder(() -> "aaaaaaa-aaaa-aaaa-aaaaaaaaaaaa")
+                .uuidHolder(new TestUuidHolder("aaaaaaa-aaaa-aaaa-aaaaaaaaaaaa"))
                 .mailSenderConfig(new FakeMailSenderConfig(
                         "http://localhost:8080/api/v0/users/",
                         "/verify?certificationCode=",
@@ -56,7 +57,7 @@ class UserControllerTest {
     void verifyEmail() {
         // given
         TestUserContainer container = TestUserContainer.builder()
-                .uuidHolder(() -> "aaaaaaa-aaaa-aaaa-aaaaaaaaaaaa")
+                .uuidHolder(new TestUuidHolder("aaaaaaa-aaaa-aaaa-aaaaaaaaaaaa"))
                 .mailSenderConfig(new FakeMailSenderConfig(
                         "http://localhost:8080/api/v0/users/",
                         "/verify?certificationCode=",

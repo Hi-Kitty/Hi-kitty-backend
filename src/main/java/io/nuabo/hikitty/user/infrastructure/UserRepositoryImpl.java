@@ -46,4 +46,9 @@ public class UserRepositoryImpl implements UserRepository {
     public Optional<User> findByEmail(String email) {
         return userJpaRepository.findByEmail(email).map(UserEntity::toModel);
     }
+
+    @Override
+    public User getByEmailAndStatus(String email, UserStatus active) {
+        return findByEmailAndStatus(email, active).orElseThrow(() -> new ResourceNotFoundException("users", email));
+    }
 }

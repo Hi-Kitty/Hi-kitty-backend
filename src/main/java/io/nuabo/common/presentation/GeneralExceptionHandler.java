@@ -18,6 +18,7 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 import java.lang.module.ResolutionException;
@@ -157,4 +158,12 @@ public class GeneralExceptionHandler {
         log.error("Unexpected exception occurred: {}", e.getMessage(), e);
         return newResponse(e, HttpStatus.NOT_ACCEPTABLE);
     }
+
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public ResponseEntity<?> handleMaxUploadSizeExceededException(Exception e) {
+        log.error("Unexpected exception occurred: {}", e.getMessage(), e);
+        return newResponse("10MB안으로 가능합니다!!", HttpStatus.BAD_REQUEST);
+    }
+
+
 }

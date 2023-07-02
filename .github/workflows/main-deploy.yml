@@ -2,8 +2,10 @@ name: todo-master-to-beanstalk
 
 on:
   push:
-    branched:
-      - main # action 트리거 브랜치
+    branches: [ main ] # main 브랜치에 push 이벤트가 발생하면 action이 작동
+  pull_request: # PR 이벤트가 발생하면 action이 작동
+    branches: [ main ]
+
   workflow_dispatch: # 수동 실행 옵션 (생략)
 
 jobs:

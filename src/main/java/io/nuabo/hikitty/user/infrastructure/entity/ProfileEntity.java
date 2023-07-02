@@ -11,7 +11,6 @@ import org.hibernate.annotations.Where;
 
 @Getter
 @Entity(name = "profile")
-@Table(name = "profile")
 @SQLDelete(sql = "update profile set delete_at=now() where id=?")
 @Where(clause = "delete_at is null")
 public class ProfileEntity extends BaseTimeEntity {
