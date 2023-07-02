@@ -273,6 +273,32 @@ class UserServiceTest {
     }
 
 
+    @Test
+    @DisplayName("이메일 존재 여부 확인 - true")
+    void existByEmail() {
+        // given
+        String email = "spring2@naver.com";
+
+        // when
+        boolean result = userService.existsByEmail(email);
+
+        // then
+        assertThat(result).isTrue();
+
+    }
+    @Test
+    @DisplayName("이메일 존재 여부 확인 - false")
+    void existByEmailFalse() {
+        // given
+        String email = "spring@naver.com";
+
+        // when
+        boolean result = userService.existsByEmail(email);
+
+        // then
+        assertThat(result).isFalse();
+
+    }
 
 
     private MockMultipartFile getMockMultipartFile(String fileName, String contentType, String path) throws IOException {

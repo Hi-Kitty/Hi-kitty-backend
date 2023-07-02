@@ -1,13 +1,14 @@
 package io.nuabo.hikitty.user.presentation;
 
 import io.nuabo.common.domain.exception.CertificationCodeNotMatchedException;
-import io.nuabo.common.domain.utils.ApiUtils;
+import io.nuabo.common.domain.utils.ApiUtils.ApiResult;
 import io.nuabo.hikitty.mock.TestUuidHolder;
 import io.nuabo.hikitty.user.domain.Role;
 import io.nuabo.hikitty.user.domain.User;
 import io.nuabo.hikitty.user.domain.UserStatus;
 import io.nuabo.hikitty.user.mock.FakeMailSenderConfig;
 import io.nuabo.hikitty.user.mock.TestUserContainer;
+import io.nuabo.hikitty.user.presentation.request.EmailRequest;
 import io.nuabo.hikitty.user.presentation.request.UserCreateRequest;
 import io.nuabo.hikitty.user.presentation.response.UserResponse;
 import org.junit.jupiter.api.DisplayName;
@@ -39,7 +40,7 @@ class UserControllerTest {
                 .password("12354721")
                 .build();
 //        // when
-        ResponseEntity<ApiUtils.ApiResult<UserResponse>> result = container.userController.create(userCreate);
+        ResponseEntity<ApiResult<UserResponse>> result = container.userController.create(userCreate);
 //        // then
         assertThat(result.getStatusCode()).isEqualTo(HttpStatusCode.valueOf(201));
         assertThat(result.getBody()).isNotNull();
@@ -117,7 +118,7 @@ class UserControllerTest {
                 .certificationCode("aaaaaaa-aaaa-aaaa-aaaaaaaaaaaa")
                 .build());
         // when
-        ResponseEntity<ApiUtils.ApiResult<UserResponse>> result = container.userController.getById(1L);
+        ResponseEntity<ApiResult<UserResponse>> result = container.userController.getById(1L);
 
         // then
         assertThat(result.getStatusCode()).isEqualTo(HttpStatusCode.valueOf(200));
@@ -128,5 +129,34 @@ class UserControllerTest {
         assertThat(result.getBody().getResponse().getStatus()).isEqualTo(UserStatus.ACTIVE);
         assertThat(result.getBody().getResponse().getRole()).isEqualTo(Role.ROLE_DONER);
     }
+
+    @Test
+    @DisplayName("Contoller에서 getByEmail은 Active 상태인 유저를 찾을 수 있다")
+    void getByEmail() {
+        // given
+        TestUserContainer container = TestUserContainer.builder()
+                .build();
+        container.userRepository.save(User.builder()
+                .id(1L)
+                .email("spring4@naver.com")
+                .role(Role.ROLE_DONER)
+                .name("푸항항2")
+                .password("222222")
+                .status(UserStatus.ACTIVE)
+                .certificationCode("aaaaaaa-aaaa-aaaa-aaaaaaaaaaaa")
+                .build());
+        EmailRequest emailRequest = EmailRequest.builder()
+                .email("spring4@naver.com")
+                .build();
+        // when
+        ResponseEntity<ApiResult<Boolean>> result = container.userController.existsByEmail(emailRequest);
+
+        // then
+        assertThat(result.getStatusCode()).isEqualTo(HttpStatusCode.valueOf(200));
+        assertThat(result.getBody()).isNotNull();
+        assertThat(result.getBody().getResponse()).isEqualTo(true);
+
+    }
+
 
 }
