@@ -40,8 +40,10 @@ public class BoardEntity extends BaseTimeEntity {
     @Column(nullable = false)
     private LocalDateTime endAt;
 
+    @Column(nullable = false)
     private Long fundraiserId;
 
+    @Column(nullable = false)
     private String fundraiserName;
 
     private String fundraiserProfileName;

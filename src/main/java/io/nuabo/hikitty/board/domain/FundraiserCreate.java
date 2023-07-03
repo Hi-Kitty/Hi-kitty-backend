@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 
 @Getter
-public class Fundraiser {
+public class FundraiserCreate {
 
     private final Long id;
 
@@ -21,7 +21,7 @@ public class Fundraiser {
     private final LocalDateTime createdAt;
 
     @Builder
-    public Fundraiser(Long id, String name, String profileName, String profileUrl, LocalDateTime createdAt) {
+    public FundraiserCreate(Long id, String name, String profileName, String profileUrl, LocalDateTime createdAt) {
         this.id = id;
         this.name = name;
         this.profileName = profileName;
@@ -29,8 +29,8 @@ public class Fundraiser {
         this.createdAt = createdAt;
     }
 
-    public static Fundraiser from(User user, Profile profile) {
-        return Fundraiser.builder()
+    public static FundraiserCreate from(User user, Profile profile) {
+        return FundraiserCreate.builder()
                 .id(user.getId())
                 .name(user.getName())
                 .profileName(profile.getOriginalName())
@@ -38,8 +38,8 @@ public class Fundraiser {
                 .build();
     }
 
-    public static Fundraiser from(User user, String imageBasename, String imageBaseUrl) {
-        return Fundraiser.builder()
+    public static FundraiserCreate from(User user, String imageBasename, String imageBaseUrl) {
+        return FundraiserCreate.builder()
                 .id(user.getId())
                 .name(user.getName())
                 .profileName(imageBasename)
