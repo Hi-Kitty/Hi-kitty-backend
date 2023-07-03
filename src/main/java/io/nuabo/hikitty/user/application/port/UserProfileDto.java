@@ -50,4 +50,13 @@ public class UserProfileDto {
                 .role(user.getRole())
                 .build();
     }
+
+    public static Profile merge(User user, String defaultImageUrl, String defaultImageOriginalName) {
+        return Profile.builder()
+                .originalName(defaultImageOriginalName)
+                .savedName(defaultImageUrl)
+                .url(defaultImageUrl)
+                .user(user)
+                .build();
+    }
 }

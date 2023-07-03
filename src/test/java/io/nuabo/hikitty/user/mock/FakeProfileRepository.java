@@ -49,8 +49,9 @@ public class FakeProfileRepository implements ProfileRepository {
 
     @Override
     public Optional<Profile> findByUserId(long userId) {
+        log.info("{}",userId);
         log.info("{}",profileData.stream().map(item -> item.getUser().getId()));
-        return profileData.stream().filter(item ->   item.getUser().getId().equals(userId)).findAny();
+        return profileData.stream().filter(item -> item.getUser().getId().equals(userId)).findAny();
     }
 
     @Override

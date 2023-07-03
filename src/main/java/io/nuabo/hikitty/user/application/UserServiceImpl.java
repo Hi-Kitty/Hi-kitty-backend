@@ -1,5 +1,6 @@
 package io.nuabo.hikitty.user.application;
 
+import io.nuabo.common.application.port.DefaultImageConfig;
 import io.nuabo.common.application.port.UuidHolder;
 import io.nuabo.common.domain.exception.ResourceNotFoundException;
 import io.nuabo.hikitty.amazons3.application.port.AWSConnection;
@@ -9,6 +10,7 @@ import io.nuabo.hikitty.user.application.port.ProfileRepository;
 import io.nuabo.hikitty.user.application.port.UserProfileDto;
 import io.nuabo.hikitty.user.application.port.UserRepository;
 import io.nuabo.hikitty.user.domain.Profile;
+import io.nuabo.hikitty.user.domain.Role;
 import io.nuabo.hikitty.user.domain.User;
 import io.nuabo.hikitty.user.domain.UserStatus;
 import io.nuabo.hikitty.user.presentation.port.UserService;
@@ -36,6 +38,8 @@ public class UserServiceImpl implements UserService {
     private final ProfileRepository profileRepository;
     private final PasswordEncoderHolder passwordEncoder;
     private final AWSConnection awsConnection;
+
+    private final DefaultImageConfig defaultImageConfig;
     @Transactional
     @Override
     public User create(UserCreateRequest userCreateRequest) {
@@ -96,17 +100,32 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public UserProfileDto getUserAndProfile(String email) {
         User user = getByEmail(email);
-        log.info("user: {}", user.getId());
+
         return profileRepository.findByUserId(user.getId())
                 .map(profile -> UserProfileDto.merge(profile, user))
-                .orElse(UserProfileDto.from(user));
+                .orElse(getDefaultProfile(user));
     }
 
     @Override
     public Boolean existsByEmail(String email) {
         return userRepository.findByEmailAndStatus(email, UserStatus.ACTIVE).isPresent();
+    }
+
+    private UserProfileDto getDefaultProfile(User user) {
+        Profile profile;
+        if (user.getRole() == Role.ROLE_DONER) {
+            profile = UserProfileDto.merge(user,
+                    defaultImageConfig.getDefaultImageDonerUrl(),
+                    defaultImageConfig.getDefaultImageDonerOriginalName());
+        } else {
+            profile = UserProfileDto.merge(user,
+                    defaultImageConfig.getDefaultImageFundraiserUrl(),
+                    defaultImageConfig.getDefaultImageFundraiserOriginalName());
+        }
+        return UserProfileDto.merge(profile, user);
     }
 }
