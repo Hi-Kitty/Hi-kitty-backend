@@ -9,6 +9,6 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface ImageJpaRepository extends JpaRepository<ImageEntity, Long> {
 
-    @Query("select i from image i join fetch i.boardEntity")
+    @Query("select i from image i join fetch i.boardEntity ORDER BY i.createAt DESC")
     Page<ImageEntity> findAll(Pageable pageable);
 }
