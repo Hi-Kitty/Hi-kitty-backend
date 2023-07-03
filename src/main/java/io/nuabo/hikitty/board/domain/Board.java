@@ -91,7 +91,7 @@ public class Board {
     }
 
 
-    public static Board from(BoardCreateRequest boardCreateRequest, Fundraiser fundraiser) {
+    public static Board from(BoardCreateRequest boardCreateRequest, FundraiserCreate fundraiserCreate) {
         return Board.builder()
                 .title(boardCreateRequest.getTitle())
                 .subTitle(boardCreateRequest.getSubTitle())
@@ -99,10 +99,10 @@ public class Board {
                 .targetAmount(boardCreateRequest.getTargetAmount())
                 .endAt(boardCreateRequest.getEndAt())
                 .currentAmount(0L)
-                .fundraiserProfileName(fundraiser.getProfileName())
-                .fundraiserName(fundraiser.getName())
-                .fundraiserProfileUrl(fundraiser.getProfileUrl())
-                .fundraiserId(fundraiser.getId())
+                .fundraiserProfileName(fundraiserCreate.getProfileName())
+                .fundraiserName(fundraiserCreate.getName())
+                .fundraiserProfileUrl(fundraiserCreate.getProfileUrl())
+                .fundraiserId(fundraiserCreate.getId())
                 .build();
     }
 }
