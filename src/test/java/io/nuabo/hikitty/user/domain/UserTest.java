@@ -3,6 +3,7 @@ package io.nuabo.hikitty.user.domain;
 import io.nuabo.common.domain.exception.CertificationCodeNotMatchedException;
 import io.nuabo.hikitty.mock.TestClockHolder;
 import io.nuabo.hikitty.mock.TestUuidHolder;
+import io.nuabo.hikitty.security.application.port.PasswordEncoderHolder;
 import io.nuabo.hikitty.user.mock.TestPasswordEncoderHolder;
 import io.nuabo.hikitty.user.presentation.request.UserCreateRequest;
 import io.nuabo.hikitty.user.presentation.request.UserUpdateRequest;
@@ -173,6 +174,7 @@ class UserTest {
     @Test
     @DisplayName("User는 비밀번호 또는 이름을 변경할 수 있다.")
     void update() {
+        PasswordEncoderHolder passwordEncoder = new TestPasswordEncoderHolder();
         // given
         User user = User.builder()
                 .id(1L)
@@ -191,7 +193,7 @@ class UserTest {
                 .build();
 
         // when
-        user = user.update(request);
+        user = user.update(request, passwordEncoder);
 
         // then
         assertThat(user.getId()).isEqualTo(1L);

@@ -6,4 +6,6 @@ public interface JwtConfig {
 
     String[] getPermitUrisByFundraiser();
     String getSecret();
+
+    String[] getPermitUrisByDoner();
 }

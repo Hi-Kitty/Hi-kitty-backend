@@ -1,5 +1,6 @@
 package io.nuabo.hikitty.board.application;
 
+import io.nuabo.common.application.port.DefaultImageConfig;
 import io.nuabo.hikitty.amazons3.application.port.AWSConnection;
 import io.nuabo.hikitty.amazons3.domain.AmazonS3Upload;
 import io.nuabo.hikitty.board.application.port.*;

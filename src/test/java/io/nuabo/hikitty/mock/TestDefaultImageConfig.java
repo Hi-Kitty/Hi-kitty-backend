@@ -20,21 +20,21 @@ public class TestDefaultImageConfig implements DefaultImageConfig {
 
     @Override
     public String getDefaultImageDonerUrl() {
-        return null;
+        return defaultImageDonerUrl;
     }
 
     @Override
     public String getDefaultImageDonerOriginalName() {
-        return null;
+        return defaultImageDonerOriginalName;
     }
 
     @Override
     public String getDefaultImageFundraiserUrl() {
-        return null;
+        return defaultImageFundraiserUrl;
     }
 
     @Override
     public String getDefaultImageFundraiserOriginalName() {
-        return null;
+        return defaultImageFundraiserOriginalName;
     }
 }
