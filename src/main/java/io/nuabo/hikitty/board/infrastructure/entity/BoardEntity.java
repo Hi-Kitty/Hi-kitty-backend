@@ -40,6 +40,14 @@ public class BoardEntity extends BaseTimeEntity {
     @Column(nullable = false)
     private LocalDateTime endAt;
 
+    private Long fundraiserId;
+
+    private String fundraiserName;
+
+    private String fundraiserProfileName;
+
+    private String fundraiserProfileUrl;
+
     public static BoardEntity from(Board board) {
         BoardEntity boardEntity = new BoardEntity();
         boardEntity.id = board.getId();
@@ -49,6 +57,10 @@ public class BoardEntity extends BaseTimeEntity {
         boardEntity.targetAmount = board.getTargetAmount();
         boardEntity.currentAmount = board.getCurrentAmount();
         boardEntity.endAt = board.getEndAt();
+        boardEntity.fundraiserId = board.getFundraiserId();
+        boardEntity.fundraiserName = board.getFundraiserName();
+        boardEntity.fundraiserProfileName = board.getFundraiserProfileName();
+        boardEntity.fundraiserProfileUrl = board.getFundraiserProfileUrl();
         return boardEntity;
     }
 
@@ -61,6 +73,10 @@ public class BoardEntity extends BaseTimeEntity {
                 .targetAmount(targetAmount)
                 .currentAmount(currentAmount)
                 .endAt(endAt)
+                .fundraiserId(fundraiserId)
+                .fundraiserName(fundraiserName)
+                .fundraiserProfileName(fundraiserProfileName)
+                .fundraiserProfileUrl(fundraiserProfileUrl)
                 .createdAt(this.getCreateAt())
                 .build();
     }

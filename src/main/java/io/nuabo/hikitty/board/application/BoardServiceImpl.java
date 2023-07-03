@@ -26,7 +26,6 @@ public class BoardServiceImpl implements BoardService {
     private final BoardRepository boardRepository;
     private final ImageRepository imageRepository;
     private final PlanRepository planRepository;
-    private final FundraiserRepository fundraiserRepository;
     private final UserRepository userRepository;
     private final ProfileRepository profileRepository;
     private final AWSConnection awsConnection;
@@ -36,15 +35,15 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public BoardFundraiserImagePlan create(BoardCreateRequest boardCreateRequest, String email, MultipartFile multipartFile, List<PlanCreateRequest> planCreateRequests) {
 
-        Board board = Board.from(boardCreateRequest);
+        Fundraiser fundraiser = getFundraiser(email);
+        Board board = Board.from(boardCreateRequest, fundraiser);
+
         board = boardRepository.save(board);
-        Board finalBoard = board;
 
-        Fundraiser fundraiser = getFundraiser(email, board, finalBoard);
         Image image = getImage(multipartFile, board);
-        List<Plan> plans = getPlans(planCreateRequests, finalBoard);
+        List<Plan> plans = getPlans(planCreateRequests, board);
 
-        return BoardFundraiserImagePlan.from(board, fundraiser, image, plans);
+        return BoardFundraiserImagePlan.from(board, image, plans);
     }
 
     private List<Plan> getPlans(List<PlanCreateRequest> planCreateRequests, Board finalBoard) {
@@ -62,12 +61,10 @@ public class BoardServiceImpl implements BoardService {
         return image;
     }
 
-    private Fundraiser getFundraiser(String email, Board board, Board finalBoard) {
+    private Fundraiser getFundraiser(String email) {
         User user = userRepository.getByEmailAndStatus(email, UserStatus.ACTIVE);
-        Fundraiser fundraiser = profileRepository.findByUserId(user.getId()).map(
-                profile -> Fundraiser.from(finalBoard, user, profile)
-        ).orElse(Fundraiser.from(board, user, defaultImageConfig.getDefaultImageFundraiserOriginalName(), defaultImageConfig.getDefaultImageFundraiserUrl()));
-        fundraiser = fundraiserRepository.save(fundraiser);
-        return fundraiser;
+        return profileRepository.findByUserId(user.getId()).map(
+                profile -> Fundraiser.from(user, profile)
+        ).orElse(Fundraiser.from(user, defaultImageConfig.getDefaultImageFundraiserOriginalName(), defaultImageConfig.getDefaultImageFundraiserUrl()));
     }
 }
