@@ -37,7 +37,6 @@ public class BoardFundraiserImagePlanResponse {
 
     private final String ImageUrl;
 
-
     private final List<PlanResponse> planResponse;
 
     @Builder

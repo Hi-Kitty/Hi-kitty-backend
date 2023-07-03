@@ -8,6 +8,7 @@ import io.nuabo.hikitty.board.infrastructure.port.HeartJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -27,12 +28,6 @@ public class HeartRepositoryImpl implements HeartRepository {
     }
 
     @Override
-    public Heart getByBoardIdAndDonerId(Long boardId, Long donerId) {
-        return findByBoardIdAndDonerId(boardId, donerId).orElseThrow(
-                () -> new ResourceNotFoundException("heart", boardId));
-    }
-
-    @Override
     public Heart getById(Long heartId) {
         return findById(heartId).orElseThrow(
                 () -> new ResourceNotFoundException("heart", heartId));
@@ -41,6 +36,11 @@ public class HeartRepositoryImpl implements HeartRepository {
     @Override
     public Optional<Heart> findById(Long heartId) {
         return heartJpaRepository.findById(heartId).map(HeartEntity::toModel);
+    }
+
+    @Override
+    public List<Heart> findAllByBoardId(Long boardId) {
+        return heartJpaRepository.findAllByBoardEntityId(boardId).stream().map(HeartEntity::toModel).toList();
     }
 
 }

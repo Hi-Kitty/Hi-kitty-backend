@@ -174,7 +174,6 @@ public class GeneralExceptionHandler {
 
     @ExceptionHandler(HeartException.class)
     public ResponseEntity<?> handleHeartException(Exception e) {
-        log.error("Unexpected exception occurred: {}", e.getMessage(), e);
         return newResponse(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
 }

@@ -1,6 +1,5 @@
 package io.nuabo.hikitty.board.domain;
 
-import io.nuabo.hikitty.user.domain.Profile;
 import io.nuabo.hikitty.user.domain.User;
 import lombok.Builder;
 import lombok.Getter;
@@ -29,12 +28,10 @@ public class FundraiserCreate {
         this.createdAt = createdAt;
     }
 
-    public static FundraiserCreate from(User user, Profile profile) {
+    public static FundraiserCreate from(User user) {
         return FundraiserCreate.builder()
                 .id(user.getId())
                 .name(user.getName())
-                .profileName(profile.getOriginalName())
-                .profileUrl(profile.getUrl())
                 .build();
     }
 
