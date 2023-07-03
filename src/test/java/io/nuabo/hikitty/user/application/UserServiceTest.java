@@ -270,8 +270,8 @@ class UserServiceTest {
          UserProfileDto userProfileDto = userService.getUserAndProfile(email);
 
         // then
-        assertThat(userProfileDto.getUrl()).isEqualTo(null);
-        assertThat(userProfileDto.getOriginalName()).isEqualTo(null);
+        assertThat(userProfileDto.getUrl()).isEqualTo("defaultImageDonerUrl");
+        assertThat(userProfileDto.getOriginalName()).isEqualTo("defaultImageDonerOriginalName");
         assertThat(userProfileDto.getName()).isEqualTo("kok202");
         assertThat(userProfileDto.getEmail()).isEqualTo("test@naver.com");
     }
