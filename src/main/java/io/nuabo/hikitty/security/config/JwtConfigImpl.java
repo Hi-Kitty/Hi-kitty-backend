@@ -15,6 +15,9 @@ public class JwtConfigImpl implements JwtConfig{
     @Value("${security.premit-uris-by-fundraiser}")
     private String[] permitUrisByFundraiser;
 
+    @Value("${security.premit-uris-by-doner}")
+    private String[] permitUrisByDoner;
+
     @Override
     public String[] getDeniedUris() {
         return deniedUris;
@@ -28,5 +31,10 @@ public class JwtConfigImpl implements JwtConfig{
     @Override
     public String getSecret() {
         return secret;
+    }
+
+    @Override
+    public String[] getPermitUrisByDoner() {
+        return permitUrisByDoner;
     }
 }

@@ -73,7 +73,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserProfileDto update(String email, UserUpdateRequest userUpdate, MultipartFile img) {
         User user = getByEmail(email);
-        user = user.update(userUpdate);
+        user = user.update(userUpdate, passwordEncoder);
         user = userRepository.save(user);
         if (img != null) {
             AmazonS3Upload amazonS3Upload = awsConnection.sendFileToAWS(img);

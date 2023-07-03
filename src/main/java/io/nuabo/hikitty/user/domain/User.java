@@ -98,7 +98,7 @@ public class User {
                 .build();
     }
 
-    public User update(UserUpdateRequest userUpdate) {
+    public User update(UserUpdateRequest userUpdate, PasswordEncoderHolder passwordEncoder) {
         return User.builder()
                 .id(id)
                 .email(email)
@@ -107,7 +107,7 @@ public class User {
                 .status(status)
                 .lastLoginAt(lastLoginAt)
                 .role(role)
-                .password(userUpdate.getPassword() == null ? password : userUpdate.getPassword())
+                .password(userUpdate.getPassword() == null ? password : passwordEncoder.encode(userUpdate.getPassword()))
                 .build();
     }
 }

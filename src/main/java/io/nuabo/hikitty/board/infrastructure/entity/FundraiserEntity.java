@@ -36,6 +36,7 @@ public class FundraiserEntity extends BaseTimeEntity {
     @Column(nullable = false)
     private String profileUrl;
 
+
     public static FundraiserEntity from(Fundraiser fundraiser) {
         FundraiserEntity fundraiserEntity = new FundraiserEntity();
         fundraiserEntity.id = fundraiser.getId();

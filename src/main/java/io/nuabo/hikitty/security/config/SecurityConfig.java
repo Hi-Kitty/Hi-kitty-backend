@@ -44,6 +44,7 @@ public class SecurityConfig {
                 auth ->
                         auth
                                 .requestMatchers(jwtConfig.getPermitUrisByFundraiser()).hasRole("FUNDRAISER")
+                                .requestMatchers(jwtConfig.getPermitUrisByDoner()).hasRole("DONER")
                                 .requestMatchers(jwtConfig.getDeniedUris()).hasRole("DONER")
                                 .anyRequest().permitAll()
         );

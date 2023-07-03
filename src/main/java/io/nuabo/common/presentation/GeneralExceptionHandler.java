@@ -171,4 +171,10 @@ public class GeneralExceptionHandler {
         log.error("Unexpected exception occurred: {}", e.getMessage(), e);
         return newResponse(e.getMessage() + "데이터의 크기를 확인해주세요!!", HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(HeartException.class)
+    public ResponseEntity<?> handleHeartException(Exception e) {
+        log.error("Unexpected exception occurred: {}", e.getMessage(), e);
+        return newResponse(e.getMessage(), HttpStatus.BAD_REQUEST);
+    }
 }

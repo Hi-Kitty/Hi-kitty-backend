@@ -1,6 +1,7 @@
 package io.nuabo.hikitty.board.infrastructure.entity;
 
 import io.nuabo.common.infrastructure.BaseTimeEntity;
+import io.nuabo.hikitty.board.domain.Heart;
 import io.nuabo.hikitty.board.domain.Status;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -27,4 +28,42 @@ public class HeartEntity extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private Status status;
 
+    @Column(nullable = false)
+    private Long donerId;
+
+    @Column(nullable = false)
+    private String donerName;
+
+    @Comment("후원자 프로필 이름 - null 가능")
+    @Column
+    private String donerProfileName;
+
+    @Comment("후원자 프로필 사진 - null 가능")
+    @Column
+    private String donerProfileUrl;
+
+    public static HeartEntity from(Heart heart) {
+        HeartEntity heartEntity = new HeartEntity();
+        heartEntity.id = heart.getId();
+        heartEntity.boardEntity = BoardEntity.from(heart.getBoard());
+        heartEntity.status = heart.getStatus();
+        heartEntity.donerId = heart.getDonerId();
+        heartEntity.donerName = heart.getDonerName();
+        heartEntity.donerProfileName = heart.getDonerProfileName();
+        heartEntity.donerProfileUrl = heart.getDonerProfileUrl();
+        return heartEntity;
+    }
+
+    public Heart toModel() {
+        return Heart.builder()
+                .id(id)
+                .board(boardEntity.toModel())
+                .status(status)
+                .donerId(donerId)
+                .donerName(donerName)
+                .donerProfileName(donerProfileName)
+                .donerProfileUrl(donerProfileUrl)
+                .createdAt(this.getCreateAt())
+                .build();
+    }
 }
