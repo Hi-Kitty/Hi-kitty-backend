@@ -1,14 +1,13 @@
-package io.nuabo.hikitty.board.application.port;
+package io.nuabo.hikitty.board.domain;
 
 import io.nuabo.common.application.port.ClockHolder;
-import io.nuabo.hikitty.board.domain.Image;
 import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
 
 @Getter
-public class PageImageDto {
+public class PageImageGet {
     private final Long id;
 
     private final Long dDay;
@@ -27,7 +26,7 @@ public class PageImageDto {
     private final LocalDateTime endAt;
 
     @Builder
-    public PageImageDto(Long id, Long dDay, String title, Long fundraiserId, String fundraiserName, String percent, Long imageId, String imageUrl, String imageName, LocalDateTime createdAt, LocalDateTime endAt) {
+    public PageImageGet(Long id, Long dDay, String title, Long fundraiserId, String fundraiserName, String percent, Long imageId, String imageUrl, String imageName, LocalDateTime createdAt, LocalDateTime endAt) {
         this.id = id;
         this.dDay = dDay;
         this.title = title;
@@ -41,8 +40,8 @@ public class PageImageDto {
         this.endAt = endAt;
     }
 
-    public static PageImageDto from(Image image, ClockHolder clockHolder) {
-        return PageImageDto.builder()
+    public static PageImageGet from(Image image, ClockHolder clockHolder) {
+        return PageImageGet.builder()
                 .id(image.getId())
                 .dDay(clockHolder.calculateDDay(image.getBoard().getCreatedAt(), image.getBoard().getEndAt()))
                 .title(image.getBoard().getTitle())

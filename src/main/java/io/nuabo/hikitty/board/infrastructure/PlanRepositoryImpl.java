@@ -23,4 +23,9 @@ public class PlanRepositoryImpl implements PlanRepository {
     public List<Plan> saveAll(List<Plan> plans) {
         return planJpaRepository.saveAll(PlanEntity.froms(plans)).stream().map(PlanEntity::toModel).toList();
     }
+
+    @Override
+    public List<Plan> findAllByBoardId(Long boardId) {
+        return planJpaRepository.findAllByBoardEntityId(boardId).stream().map(PlanEntity::toModel).toList();
+    }
 }

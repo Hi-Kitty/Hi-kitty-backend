@@ -1,9 +1,12 @@
 package io.nuabo.hikitty.board.presentation.response;
 
+import io.nuabo.common.application.port.DefaultImageConfig;
 import io.nuabo.hikitty.board.domain.Heart;
 import io.nuabo.hikitty.board.domain.Status;
 import lombok.Builder;
 import lombok.Getter;
+
+import java.util.List;
 
 @Getter
 public class HeartResponse {
@@ -38,5 +41,23 @@ public class HeartResponse {
                 .donerProfileUrl(heart.getDonerProfileUrl())
                 .status(heart.getStatus())
                 .build();
+    }
+    public static HeartResponse from(Heart heart, DefaultImageConfig defaultImageConfig) {
+        return HeartResponse.builder()
+                .id(heart.getId())
+                .donerId(heart.getDonerId())
+                .donerName(heart.getDonerName())
+                .donerProfileName(heart.getDonerProfileName() == null ? defaultImageConfig.getDefaultImageDonerOriginalName() : heart.getDonerProfileName())
+                .donerProfileUrl(heart.getDonerProfileUrl() == null ? defaultImageConfig.getDefaultImageDonerUrl() : heart.getDonerProfileUrl())
+                .status(heart.getStatus())
+                .build();
+    }
+
+    public static List<HeartResponse> from(List<Heart> heart) {
+        return heart.stream().map(HeartResponse::from).toList();
+    }
+
+    public static List<HeartResponse> from(List<Heart> heart, DefaultImageConfig defaultImageConfig) {
+        return heart.stream().map(item -> from(item, defaultImageConfig)).toList();
     }
 }

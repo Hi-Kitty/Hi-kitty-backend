@@ -36,6 +36,8 @@ public class BoardServiceImpl implements BoardService {
     private final DefaultImageConfig defaultImageConfig;
 
     private final ClockHolder clockHolder;
+
+    private final HeartRepository heartRepository;
     @Transactional
     @Override
     public BoardFundraiserImagePlan create(BoardCreateRequest boardCreateRequest, String email, MultipartFile multipartFile, List<PlanCreateRequest> planCreateRequests) {
@@ -53,9 +55,19 @@ public class BoardServiceImpl implements BoardService {
 
     @Transactional(readOnly = true)
     @Override
-    public Page<PageImageDto> getPages(PageBoardRequest pageBoardRequest) {
+    public Page<PageImageGet> getPages(PageBoardRequest pageBoardRequest) {
         return imageRepository.findAll(getPageSortByCreatedAtDesc(pageBoardRequest))
-                .map(image -> PageImageDto.from(image, clockHolder));
+                .map(image -> PageImageGet.from(image, clockHolder));
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public ImagePlanHeartGet getById(Long boardId) {
+        Image image = imageRepository.getByBoardIdFetchJoinImage(boardId);
+        List<Plan> plans = planRepository.findAllByBoardId(boardId);
+        List<Heart> hearts = heartRepository.findAllByBoardId(boardId);
+
+        return ImagePlanHeartGet.from(image, plans, hearts, defaultImageConfig, clockHolder);
     }
 
     private PageRequest getPageSortByCreatedAtDesc(PageBoardRequest pageBoardRequest) {
@@ -80,7 +92,7 @@ public class BoardServiceImpl implements BoardService {
     private FundraiserCreate getFundraiser(String email) {
         User user = userRepository.getByEmailAndStatus(email, UserStatus.ACTIVE);
         return profileRepository.findByUserId(user.getId()).map(
-                profile -> FundraiserCreate.from(user, profile)
-        ).orElse(FundraiserCreate.from(user, defaultImageConfig.getDefaultImageFundraiserOriginalName(), defaultImageConfig.getDefaultImageFundraiserUrl()));
+                profile -> FundraiserCreate.from(user)
+        ).orElse(FundraiserCreate.from(user));
     }
 }

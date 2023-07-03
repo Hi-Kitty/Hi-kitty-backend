@@ -1,6 +1,7 @@
 package io.nuabo.hikitty.board.presentation.port;
 
-import io.nuabo.hikitty.board.application.port.PageImageDto;
+import io.nuabo.hikitty.board.domain.ImagePlanHeartGet;
+import io.nuabo.hikitty.board.domain.PageImageGet;
 import io.nuabo.hikitty.board.domain.BoardFundraiserImagePlan;
 import io.nuabo.hikitty.board.presentation.request.BoardCreateRequest;
 import io.nuabo.hikitty.board.presentation.request.PageBoardRequest;
@@ -13,5 +14,8 @@ import java.util.List;
 public interface BoardService {
     BoardFundraiserImagePlan create(BoardCreateRequest boardCreateRequest, String email, MultipartFile multipartFile, List<PlanCreateRequest> planCreateRequests);
 
-    Page<PageImageDto> getPages(PageBoardRequest pageBoardRequest);
+    Page<PageImageGet> getPages(PageBoardRequest pageBoardRequest);
+
+
+    ImagePlanHeartGet getById(Long boardId);
 }
