@@ -52,4 +52,9 @@ public class ImageRepositoryImpl implements ImageRepository {
         return imageJpaRepository.findByBoardIdFetchJoinImage(boardId).map(ImageEntity::toModel);
     }
 
+    @Override
+    public Page<Image> findAllByFundraiserId(Long fundraiserId, PageRequest pageSortByCreatedAtDesc) {
+        return imageJpaRepository.findAllByBoardEntityFundraiserIdFetchJoinBoard(fundraiserId, pageSortByCreatedAtDesc).map(ImageEntity::toModel);
+    }
+
 }

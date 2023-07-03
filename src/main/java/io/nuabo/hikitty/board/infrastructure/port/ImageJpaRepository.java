@@ -18,4 +18,7 @@ public interface ImageJpaRepository extends JpaRepository<ImageEntity, Long> {
 
     @Query("select i from image i join fetch i.boardEntity where i.boardEntity.id = :boardId")
     Optional<ImageEntity> findByBoardIdFetchJoinImage(Long boardId);
+
+    @Query("select i from image i join fetch i.boardEntity where i.boardEntity.fundraiserId = :fundraiserId")
+    Page<ImageEntity> findAllByBoardEntityFundraiserIdFetchJoinBoard(Long fundraiserId, Pageable page);
 }

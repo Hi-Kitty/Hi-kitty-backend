@@ -18,4 +18,6 @@ public interface ImageRepository {
     Image getByBoardIdFetchJoinImage(Long boardId);
 
     Optional<Image> findByBoardIdFetchJoinImage(Long boardId);
+
+    Page<Image> findAllByFundraiserId(Long fundraiserId, PageRequest pageSortByCreatedAtDesc);
 }

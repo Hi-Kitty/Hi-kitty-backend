@@ -18,4 +18,6 @@ public interface BoardService {
 
 
     ImagePlanHeartGet getById(Long boardId);
+
+    Page<PageImageGet> getPagesByFundraiserId(PageBoardRequest pageBoardRequest, String email);
 }
