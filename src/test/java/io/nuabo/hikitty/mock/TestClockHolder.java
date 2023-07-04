@@ -39,4 +39,9 @@ public class TestClockHolder implements ClockHolder {
     public String calculateProgressPercentage(long currentAmount, long totalAmount) {
         return null;
     }
+
+    @Override
+    public String hashedOrderId(Long userId, String name, Long amount) {
+        return null;
+    }
 }

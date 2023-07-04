@@ -48,22 +48,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                 UserDetails userDetails = userDetailsService.loadUserByUsername(userEmail);
-                log.info("UserDetails userDetails={}", userDetails);
                 if (jwtService.isTokenValid(jwt, userDetails)) {
-                    log.info("jwtService.isTokenValid=true");
                     UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                             userDetails,
                             null,
                             userDetails.getAuthorities()
                     );
-                    log.info("UsernamePasswordAuthenticationToken={}", authToken);
                     authToken.setDetails(
                             new WebAuthenticationDetailsSource().buildDetails(request)
                     );
-
                     SecurityContextHolder.getContext().setAuthentication(authToken);
-                    log.info("SecurityContextHolder.getContext().getAuthentication()={}",
-                            SecurityContextHolder.getContext().getAuthentication());
                 }
             }
         } catch (JwtException | MyUsernameNotFoundException e) {

@@ -52,13 +52,12 @@ public class FundraiserController {
                 .body(success(BoardFundraiserImagePlanResponse.from(boardFundraiserImagePlan)));
     }
 
-    @Operation(summary = "모금자 글쓴이 조회", description = "모금자가 작성한 게시글 가져오기")
+    @Operation(summary = "모금자 글쓴이 조회 - 쿼리 스트링입니다!", description = "모금자가 작성한 게시글 가져오기")
     @GetMapping(value = "/boards")
     public ResponseEntity<ApiResult<Page<PageImageGet>>> getBoards(
             @Valid @ModelAttribute PageBoardRequest pageBoardRequest
     ) {
         String email = authenticationService.getEmail();
-
         return ResponseEntity.ok().body(ApiUtils.success(boardService.getPagesByFundraiserId(pageBoardRequest, email)));
     }
 

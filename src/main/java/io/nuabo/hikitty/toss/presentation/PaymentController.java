@@ -1,0 +1,47 @@
+package io.nuabo.hikitty.toss.presentation;
+import io.nuabo.common.domain.utils.ApiUtils;
+import io.nuabo.common.domain.utils.ApiUtils.ApiResult;
+import io.nuabo.hikitty.security.presentation.port.AuthenticationService;
+import io.nuabo.hikitty.toss.presentation.port.PaymentService;
+import io.nuabo.hikitty.toss.presentation.request.PaymentQueryRequest;
+import io.nuabo.hikitty.toss.presentation.request.PaymentRequest;
+import io.nuabo.hikitty.toss.presentation.response.PaymentResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import lombok.Builder;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+@Slf4j
+@Tag(name = "결제 시스템 API")
+@SecurityRequirement(name = "Bearer Authentication")
+@Builder
+@RestController
+@RequestMapping("/api/v1/payments")
+@RequiredArgsConstructor
+public class PaymentController {
+
+    private final PaymentService paymentService;
+    private final AuthenticationService authenticationService;
+
+    @Operation(summary = "결제 요청", description = "기부하기 버튼을 누르면 해당 API를 전송해서 응답 값을 받으세요.")
+    @PostMapping
+    public ResponseEntity<ApiResult<PaymentResponse>> request(
+            @Valid @RequestBody PaymentRequest request
+    ) {
+        String email = authenticationService.getEmail();
+        return ResponseEntity.ok(ApiUtils.success(paymentService.request(request, email)));
+    }
+
+    @Operation(summary = "결제 성공 리다이렉트", description = "결제 성공 시 최종 결제 승인 요청을 보낸다.")
+    @GetMapping("/success")
+    public ResponseEntity<ApiResult<Boolean>> success(
+            @Valid @ModelAttribute PaymentQueryRequest request
+            ) {
+        paymentService.verify(request);
+        return ResponseEntity.ok(ApiUtils.success(true));
+    }
+}

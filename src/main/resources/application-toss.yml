@@ -1,0 +1,6 @@
+payment:
+  toss:
+    client-api-key: ${payment.toss.client-api-key}
+    client-secret-key: ${payment.toss.client-secret-key}
+    success-url: ${payment.toss.success-url}
+    fail-url: ${payment.toss.fail-url}

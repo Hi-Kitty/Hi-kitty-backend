@@ -26,7 +26,6 @@ import java.lang.module.ResolutionException;
 import java.security.SignatureException;
 
 
-
 @Slf4j
 @ControllerAdvice
 public class GeneralExceptionHandler {
@@ -84,17 +83,17 @@ public class GeneralExceptionHandler {
     public ResponseEntity<?> handleInsufficientAuthenticationException() {
         return newResponse("토큰의 값이 비었습니다. 확인해주세요", HttpStatus.NOT_FOUND);
     }
+
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<?> handleBadCredentialsException() {
         return newResponse("이메일과 비밀번호가 올바르지 않습니다. 다시 확인해주세요", HttpStatus.NOT_ACCEPTABLE);
     }
+
     @ExceptionHandler({UnauthorizedException.class
     })
     public ResponseEntity<?> handleUnauthorizedException(Exception e) {
         return newResponse(e, HttpStatus.UNAUTHORIZED);
     }
-
-
 
 
     @ExceptionHandler({
@@ -176,4 +175,10 @@ public class GeneralExceptionHandler {
     public ResponseEntity<?> handleHeartException(Exception e) {
         return newResponse(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(PaymentException.class)
+    public ResponseEntity<?> handlePaymentRequiredException(Exception e) {
+        return newResponse(e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
+    }
+
 }

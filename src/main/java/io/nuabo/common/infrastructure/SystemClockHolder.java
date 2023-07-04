@@ -7,6 +7,7 @@ import java.time.Clock;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
+import java.util.Objects;
 
 @Component
 public class SystemClockHolder implements ClockHolder {
@@ -44,5 +45,10 @@ public class SystemClockHolder implements ClockHolder {
 
         // %를 추가하여 문자열로 반환
         return String.format("%.2f%%", Math.min(100, percentage)); // 100%를 초과하지 않도록 보정
+    }
+
+    @Override
+    public String hashedOrderId(Long userId, String name, Long amount) {
+        return String.valueOf(Objects.hash(userId, name, amount, millis()));
     }
 }

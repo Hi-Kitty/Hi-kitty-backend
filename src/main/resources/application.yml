@@ -8,4 +8,4 @@ server:
 
 spring:
   profiles:
-    include: mysql, s3, mail, security, default
+    include: mysql, s3, mail, security, default, pg-module, toss
