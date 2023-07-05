@@ -1,12 +1,12 @@
-package io.nuabo.hikitty.amazons3.infrastructure;
+package io.nuabo.common.infrastructure;
 
 import com.amazonaws.services.s3.model.ObjectMetadata;
-import io.nuabo.hikitty.amazons3.application.port.ObjectMetadataHolder;
+import io.nuabo.common.application.port.ObjectHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 @Component
-public class SystemObjectMetadataHolder implements ObjectMetadataHolder {
+public class SystemObjectHolder implements ObjectHolder {
 
     @Override
     public ObjectMetadata initAmazonS3Upload(MultipartFile multipartFile) {
@@ -15,4 +15,5 @@ public class SystemObjectMetadataHolder implements ObjectMetadataHolder {
         objectMetadata.setContentType(multipartFile.getContentType());
         return objectMetadata;
     }
+
 }

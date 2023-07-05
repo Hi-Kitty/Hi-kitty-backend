@@ -181,4 +181,15 @@ public class GeneralExceptionHandler {
         return newResponse(e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
     }
 
+    @ExceptionHandler(JsonMapperException.class)
+    public ResponseEntity<?> handleJsonMapperException(Exception e) {
+        return newResponse(e.getMessage(), HttpStatus.NOT_IMPLEMENTED);
+    }
+
+    @ExceptionHandler(TossException.class)
+    public ResponseEntity<?> handleTossException(Exception e) {
+        return newResponse(e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
+    }
+
+
 }

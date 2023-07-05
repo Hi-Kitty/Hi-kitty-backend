@@ -2,9 +2,9 @@ package io.nuabo.hikitty.mock;
 
 
 import io.nuabo.common.application.port.UuidHolder;
-import lombok.Setter;
+import lombok.Getter;
 
-@Setter
+@Getter
 public class TestUuidHolder implements UuidHolder {
 
     private String uuid;
@@ -21,5 +21,10 @@ public class TestUuidHolder implements UuidHolder {
     @Override
     public String random() {
         return uuid;
+    }
+
+    @Override
+    public String encode(String key) {
+        return key;
     }
 }

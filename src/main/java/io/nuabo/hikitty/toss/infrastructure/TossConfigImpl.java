@@ -1,6 +1,6 @@
 package io.nuabo.hikitty.toss.infrastructure;
 
-import io.nuabo.hikitty.toss.application.port.TossConfig;
+import io.nuabo.hikitty.toss.infrastructure.port.TossConfig;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +18,14 @@ public class TossConfigImpl implements TossConfig {
 
     @Value("${payment.toss.fail-url}")
     private String failUrl;
+
+    @Value("${payment.toss.origin-url}")
+    private String tossOriginUrl;
+
+    @Override
+    public String getTossOriginUrl() {
+        return tossOriginUrl;
+    }
 
     @Override
     public String getClientApiKey() {

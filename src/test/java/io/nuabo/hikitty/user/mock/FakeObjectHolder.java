@@ -1,12 +1,13 @@
 package io.nuabo.hikitty.user.mock;
 
 import com.amazonaws.services.s3.model.ObjectMetadata;
-import io.nuabo.hikitty.amazons3.application.port.ObjectMetadataHolder;
+import io.nuabo.common.application.port.ObjectHolder;
 import org.springframework.web.multipart.MultipartFile;
 
-public class FakeObjectMetadataHolder implements ObjectMetadataHolder {
+public class FakeObjectHolder implements ObjectHolder {
     @Override
     public ObjectMetadata initAmazonS3Upload(MultipartFile multipartFile) {
         return null;
     }
+
 }

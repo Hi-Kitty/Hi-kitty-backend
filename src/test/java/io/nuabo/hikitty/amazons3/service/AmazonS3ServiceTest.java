@@ -9,14 +9,13 @@ import io.nuabo.hikitty.amazons3.mock.FakeAmazonS3Repository;
 import io.nuabo.hikitty.amazons3.mock.FakeFileName;
 import io.nuabo.hikitty.amazons3.mock.FakeAmazonS3ClientHolder;
 import io.nuabo.hikitty.user.mock.FakeAwsConnection;
-import io.nuabo.hikitty.user.mock.FakeObjectMetadataHolder;
+import io.nuabo.hikitty.user.mock.FakeObjectHolder;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockMultipartFile;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
@@ -36,7 +35,7 @@ class AmazonS3ServiceTest {
         FakeAmazonS3ClientHolder s3ClientHolder = new FakeAmazonS3ClientHolder(bucket);
         FakeAmazonS3Repository amazonS3Repository = new FakeAmazonS3Repository();
         TestUuidHolder uuidHolder = new TestUuidHolder("aaaaaaa-aaaa-aaaa-aaaaaaaaaaaa");
-        FakeObjectMetadataHolder fakeObjectMetadataHolder = new FakeObjectMetadataHolder();
+        FakeObjectHolder fakeObjectMetadataHolder = new FakeObjectHolder();
         AWSConnection fakeAwsConnection = new FakeAwsConnection(uuidHolder, fakeObjectMetadataHolder, s3ClientHolder);
         amazonS3Service = AmazonS3ServiceImpl.builder()
                 .awsConnection(fakeAwsConnection)

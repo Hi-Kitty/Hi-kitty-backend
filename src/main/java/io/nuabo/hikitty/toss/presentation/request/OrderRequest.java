@@ -8,7 +8,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class PaymentRequest {
+public class OrderRequest {
 
     @NotNull(message = "amount cannot be null")
     @Schema(description = "결제 금액",  example = "1000")
@@ -35,7 +35,7 @@ public class PaymentRequest {
 
 
     @Builder
-    public PaymentRequest(
+    public OrderRequest(
             PayType payType,
             Long amount,
             String orderName,

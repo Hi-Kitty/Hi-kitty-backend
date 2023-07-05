@@ -1,4 +1,4 @@
-package io.nuabo.hikitty.toss.application.port;
+package io.nuabo.hikitty.toss.infrastructure.port;
 
 public interface TossConfig {
     String getClientApiKey();
@@ -8,4 +8,6 @@ public interface TossConfig {
     String getSuccessUrl();
 
     String getFailUrl();
+
+    String getTossOriginUrl();
 }

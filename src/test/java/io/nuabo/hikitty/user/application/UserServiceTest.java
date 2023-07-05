@@ -39,7 +39,7 @@ class UserServiceTest {
 
         TestPasswordEncoderHolder passwordEncoderHolder = new TestPasswordEncoderHolder();
         TestUuidHolder testUuidHolder = new TestUuidHolder("aaaaaaa-aaaa-aaaa-aaaaaaaaaaaa");
-        FakeObjectMetadataHolder fakeObjectMetadataHolder = new FakeObjectMetadataHolder();
+        FakeObjectHolder fakeObjectMetadataHolder = new FakeObjectHolder();
         FakeAmazonS3ClientHolder fakeAmazonS3ClientHolder = new FakeAmazonS3ClientHolder("bucket");
         FakeProfileRepository fakeProfileRepository = new FakeProfileRepository();
         TestDefaultImageConfig testDefaultImageConfig = TestDefaultImageConfig.builder()

@@ -1,9 +1,10 @@
-package io.nuabo.hikitty.amazons3.application.port;
+package io.nuabo.common.application.port;
 
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import org.springframework.web.multipart.MultipartFile;
 
-public interface ObjectMetadataHolder {
+public interface ObjectHolder {
 
     ObjectMetadata initAmazonS3Upload(MultipartFile multipartFile);
+
 }

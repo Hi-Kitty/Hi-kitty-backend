@@ -105,4 +105,20 @@ public class Board {
                 .fundraiserId(fundraiserCreate.getId())
                 .build();
     }
+
+    public Board increasePaidAmount(Long amount) {
+        return Board.builder()
+                .id(this.id)
+                .title(this.title)
+                .subTitle(this.subTitle)
+                .content(this.content)
+                .targetAmount(this.targetAmount)
+                .endAt(this.endAt)
+                .currentAmount(this.currentAmount + amount)
+                .fundraiserProfileName(this.fundraiserProfileName)
+                .fundraiserName(this.fundraiserName)
+                .fundraiserProfileUrl(this.fundraiserProfileUrl)
+                .fundraiserId(this.fundraiserId)
+                .build();
+    }
 }

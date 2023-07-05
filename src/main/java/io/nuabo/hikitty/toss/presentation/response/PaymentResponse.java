@@ -1,63 +1,45 @@
 package io.nuabo.hikitty.toss.presentation.response;
 
-import io.nuabo.hikitty.toss.application.port.TossConfig;
-import io.nuabo.hikitty.toss.domain.PayType;
+import io.nuabo.hikitty.board.domain.Board;
 import io.nuabo.hikitty.toss.domain.Payment;
-import io.nuabo.hikitty.toss.domain.PaymentStatus;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.time.LocalDateTime;
-
 @Getter
 public class PaymentResponse {
-
-    private final PayType payType;
-
-    private final Long amount;
-
-    private final String orderName;
-
+    private final Long boardId;
     private final String customerName;
-
     private final String customerEmail;
+    private final String boardName;
+    private final String fundraiserName;
+    private final Long balanceAmount;
 
-    private final String orderId;
-
-    private final String successUrl;
-
-    private final String failUrl;
-
-    private final LocalDateTime createAt;
-
-    private final PaymentStatus paymentStatus;
+    private final Long paymentId;
+    private final Long orderId;
 
     @Builder
-    public PaymentResponse(PayType payType, Long amount, String orderName, String customerName, String customerEmail, String orderId, String successUrl, String failUrl, LocalDateTime createAt, PaymentStatus paymentStatus) {
-        this.payType = payType;
-        this.amount = amount;
-        this.orderName = orderName;
+    public PaymentResponse(Long boardId, String customerName, String customerEmail, String boardName, String fundraiserName, Long balanceAmount, Long paymentId, Long orderId) {
+        this.boardId = boardId;
         this.customerName = customerName;
         this.customerEmail = customerEmail;
+        this.boardName = boardName;
+        this.fundraiserName = fundraiserName;
+        this.balanceAmount = balanceAmount;
+        this.paymentId = paymentId;
         this.orderId = orderId;
-        this.successUrl = successUrl;
-        this.failUrl = failUrl;
-        this.createAt = createAt;
-        this.paymentStatus = paymentStatus;
     }
 
-    public static PaymentResponse from(Payment payment, TossConfig tossConfig) {
+    public static PaymentResponse from(Payment payment, Board board) {
         return PaymentResponse.builder()
-                .payType(payment.getPayType())
-                .amount(payment.getAmount())
-                .orderName(payment.getOrderNameType())
-                .customerName(payment.getCustomerName())
-                .customerEmail(payment.getCustomerEmail())
-                .orderId(payment.getOrderId())
-                .successUrl(tossConfig.getSuccessUrl())
-                .failUrl(tossConfig.getFailUrl())
-                .createAt(payment.getCreateAt())
-                .paymentStatus(payment.getPaymentStatus())
+                .boardId(board.getId())
+                .customerName(payment.getOrder().getCustomerName())
+                .customerEmail(payment.getOrder().getCustomerEmail())
+                .boardName(payment.getOrderName())
+                .fundraiserName(board.getFundraiserName())
+                .balanceAmount(payment.getBalanceAmount())
+                .paymentId(payment.getId())
+                .orderId(payment.getOrder().getId())
                 .build();
+
     }
 }

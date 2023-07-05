@@ -1,8 +1,8 @@
-package io.nuabo.hikitty.toss.infrastructure;
+package io.nuabo.hikitty.toss.infrastructure.entity;
 
 import io.nuabo.common.infrastructure.BaseTimeEntity;
 import io.nuabo.hikitty.toss.domain.PayType;
-import io.nuabo.hikitty.toss.domain.Payment;
+import io.nuabo.hikitty.toss.domain.Order;
 import io.nuabo.hikitty.toss.domain.PaymentStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -10,10 +10,10 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 @Getter
-@Entity(name = "payment")
-@SQLDelete(sql = "update payment set delete_at=now() where id=?")
+@Entity(name = "orders")
+@SQLDelete(sql = "update orders set delete_at=now() where id=?")
 @Where(clause = "delete_at is null")
-public class PaymentEntity extends BaseTimeEntity {
+public class OrderEntity extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,24 +50,24 @@ public class PaymentEntity extends BaseTimeEntity {
 
     private String paymentKey;
 
-    public static PaymentEntity from(Payment payment) {
-        PaymentEntity paymentEntity = new PaymentEntity();
-        paymentEntity.id = payment.getId();
-        paymentEntity.payType = payment.getPayType();
-        paymentEntity.amount = payment.getAmount();
-        paymentEntity.orderId = payment.getOrderId();
-        paymentEntity.orderNameType = payment.getOrderNameType();
-        paymentEntity.customerEmail = payment.getCustomerEmail();
-        paymentEntity.customerName = payment.getCustomerName();
-        paymentEntity.userId = payment.getUserId();
-        paymentEntity.boardId = payment.getBoardId();
-        paymentEntity.paymentStatus = payment.getPaymentStatus();
-        paymentEntity.paymentKey = payment.getPaymentKey();
-        return paymentEntity;
+    public static OrderEntity from(Order order) {
+        OrderEntity orderEntity = new OrderEntity();
+        orderEntity.id = order.getId();
+        orderEntity.payType = order.getPayType();
+        orderEntity.amount = order.getAmount();
+        orderEntity.orderId = order.getOrderId();
+        orderEntity.orderNameType = order.getOrderNameType();
+        orderEntity.customerEmail = order.getCustomerEmail();
+        orderEntity.customerName = order.getCustomerName();
+        orderEntity.userId = order.getUserId();
+        orderEntity.boardId = order.getBoardId();
+        orderEntity.paymentStatus = order.getPaymentStatus();
+        orderEntity.paymentKey = order.getPaymentKey();
+        return orderEntity;
     }
 
-    public Payment toModel() {
-        return Payment.builder()
+    public Order toModel() {
+        return Order.builder()
                 .id(id)
                 .payType(payType)
                 .amount(amount)
