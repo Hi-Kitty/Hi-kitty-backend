@@ -1,6 +1,7 @@
 package io.nuabo.hikitty.user.presentation;
 
 import io.nuabo.common.domain.utils.ApiUtils.ApiResult;
+import io.nuabo.common.presentation.port.RedirectUrlConfig;
 import io.nuabo.hikitty.security.application.AuthenticationServiceImpl;
 import io.nuabo.hikitty.user.domain.User;
 import io.nuabo.hikitty.user.presentation.port.UserService;
@@ -18,6 +19,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
+
 import static io.nuabo.common.domain.utils.ApiUtils.success;
 
 
@@ -31,6 +34,7 @@ public class UserController {
     private final UserService userService;
     private final AuthenticationServiceImpl authenticationServiceImpl;
 
+    private final RedirectUrlConfig redirectUrlConfig;
     @Operation(summary = "회원가입")
     @PostMapping
     public ResponseEntity<ApiResult<UserResponse>> create(@Valid @RequestBody UserCreateRequest userCreate) {
@@ -45,7 +49,8 @@ public class UserController {
             @PathVariable long id,
             @RequestParam String certificationCode) {
         userService.verifyEmail(id, certificationCode);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        return ResponseEntity.status(HttpStatus.FOUND)
+                .location(URI.create(redirectUrlConfig.userSave())).build();
     }
 
     @Operation(summary = "유저 정보 조회", description = "id 값을 입력하세요")
