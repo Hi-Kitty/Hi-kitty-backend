@@ -14,7 +14,7 @@ public interface ClockHolder {
     Date expirationAccess();
     long calculateDDay(LocalDateTime startDate, LocalDateTime endDate);
 
-    String calculateProgressPercentage(long currentAmount, long totalAmount);
+    Long calculateProgressPercentage(long currentAmount, long totalAmount);
 
     String hashedOrderId(Long userId, String name, Long amount);
 }
