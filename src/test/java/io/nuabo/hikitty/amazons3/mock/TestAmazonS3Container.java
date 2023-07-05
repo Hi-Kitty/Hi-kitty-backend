@@ -7,7 +7,7 @@ import io.nuabo.hikitty.amazons3.application.AmazonS3ServiceImpl;
 import io.nuabo.hikitty.amazons3.application.port.AmazonS3Repository;
 import io.nuabo.hikitty.amazons3.presentation.port.AmazonS3Service;
 import io.nuabo.hikitty.user.mock.FakeAwsConnection;
-import io.nuabo.hikitty.user.mock.FakeObjectMetadataHolder;
+import io.nuabo.hikitty.user.mock.FakeObjectHolder;
 import lombok.Builder;
 
 
@@ -22,7 +22,7 @@ public class TestAmazonS3Container {
     @Builder
     public TestAmazonS3Container(UuidHolder uuidHolder, String bucket) {
 
-        FakeObjectMetadataHolder fakeObjectMetadataHolder = new FakeObjectMetadataHolder();
+        FakeObjectHolder fakeObjectMetadataHolder = new FakeObjectHolder();
         FakeAmazonS3ClientHolder fakeAmazonS3ClientHolder = new FakeAmazonS3ClientHolder(bucket);
         AWSConnection fakeAwsConnection = new FakeAwsConnection(uuidHolder, fakeObjectMetadataHolder, fakeAmazonS3ClientHolder);
 

@@ -5,7 +5,7 @@ import io.nuabo.common.application.port.UuidHolder;
 import io.nuabo.common.domain.exception.MultipartFileException;
 import io.nuabo.hikitty.amazons3.application.port.AWSConnection;
 import io.nuabo.hikitty.amazons3.application.port.AmazonS3ClientHolder;
-import io.nuabo.hikitty.amazons3.application.port.ObjectMetadataHolder;
+import io.nuabo.common.application.port.ObjectHolder;
 import io.nuabo.hikitty.amazons3.domain.AmazonS3Upload;
 import io.nuabo.hikitty.amazons3.domain.FileName;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,7 @@ public class AWSConnectionImpl implements AWSConnection {
 
     private final UuidHolder uuidHolder;
 
-    private final ObjectMetadataHolder objectMetadataHolder;
+    private final ObjectHolder objectHolder;
 
     private final AmazonS3ClientHolder amazonS3ClientHolder;
 
@@ -44,7 +44,7 @@ public class AWSConnectionImpl implements AWSConnection {
             throw new MultipartFileException("AmazonS3ServiceImpl", multipartFile.getOriginalFilename());
         }
 
-        ObjectMetadata objectMetadata = objectMetadataHolder.initAmazonS3Upload(multipartFile);
+        ObjectMetadata objectMetadata = objectHolder.initAmazonS3Upload(multipartFile);
 
         amazonS3ClientHolder.saveAmazonS3FromAWS(objectMetadata, key, inputStream);
         String imgUrl = amazonS3ClientHolder.getAmazonS3FromAWS(key);
