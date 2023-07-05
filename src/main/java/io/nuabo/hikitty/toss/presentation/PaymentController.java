@@ -4,6 +4,7 @@ import io.nuabo.common.domain.utils.ApiUtils.ApiResult;
 import io.nuabo.hikitty.security.presentation.port.AuthenticationService;
 import io.nuabo.hikitty.toss.domain.Payment;
 import io.nuabo.hikitty.toss.presentation.port.PaymentService;
+import io.nuabo.hikitty.toss.presentation.request.PaymentFailRequest;
 import io.nuabo.hikitty.toss.presentation.request.PaymentQueryRequest;
 import io.nuabo.hikitty.toss.presentation.request.OrderRequest;
 import io.nuabo.hikitty.toss.presentation.response.OrderResponse;
@@ -46,5 +47,14 @@ public class PaymentController {
         Payment payment = paymentService.process(request);
 
         return ResponseEntity.ok(ApiUtils.success(paymentService.increaseBoard(payment)));
+    }
+
+    @Operation(summary = "결제 실패 리다이렉트", description = "결제 실패 시 최종 결제 승인 요청을 보낸다.")
+    @GetMapping("/fail")
+    public ResponseEntity<ApiResult<PaymentFailRequest>> fail(
+            @Valid @ModelAttribute PaymentFailRequest request
+            ) {
+        paymentService.fail(request);
+        return ResponseEntity.ok(ApiUtils.success(request));
     }
 }

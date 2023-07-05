@@ -11,6 +11,7 @@ import io.nuabo.hikitty.toss.domain.Payment;
 import io.nuabo.hikitty.toss.domain.PaymentStatus;
 import io.nuabo.hikitty.toss.infrastructure.port.TossConfig;
 import io.nuabo.hikitty.toss.presentation.port.PaymentService;
+import io.nuabo.hikitty.toss.presentation.request.PaymentFailRequest;
 import io.nuabo.hikitty.toss.presentation.request.PaymentQueryRequest;
 import io.nuabo.hikitty.toss.presentation.request.OrderRequest;
 import io.nuabo.hikitty.toss.presentation.response.OrderResponse;
@@ -49,14 +50,26 @@ public class PaymentServiceImpl implements PaymentService {
         return OrderResponse.from(order, tossConfig);
     }
 
-
-
     @Transactional
     @Override
     public Payment process(PaymentQueryRequest request) {
         Order order = verify(request);
         PaymentResHandleDto handleDto = tossServer.send(request, order);
         return create(handleDto);
+    }
+    @Transactional
+    @Override
+    public PaymentResponse increaseBoard(Payment payment) {
+        Board board = increaseAmountFromBoard(payment);
+        return PaymentResponse.from(payment, board);
+    }
+
+    @Transactional
+    @Override
+    public void fail(PaymentFailRequest request) {
+        Order order = orderRepository.getByOrderId(request.getOrderId());
+        order.setPaymentStatus(PaymentStatus.FAILED);
+        orderRepository.save(order);
     }
 
     private Order verify(PaymentQueryRequest request) {
@@ -84,13 +97,6 @@ public class PaymentServiceImpl implements PaymentService {
         return paymentRepository.save(payment);
     }
 
-
-    @Transactional
-    @Override
-    public PaymentResponse increaseBoard(Payment payment) {
-        Board board = increaseAmountFromBoard(payment);
-        return PaymentResponse.from(payment, board);
-    }
 
     private Board increaseAmountFromBoard(Payment payment) {
         Board board = boardRepository.getById(payment.getOrder().getBoardId());
