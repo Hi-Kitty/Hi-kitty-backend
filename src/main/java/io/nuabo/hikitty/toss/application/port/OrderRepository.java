@@ -18,4 +18,6 @@ public interface OrderRepository {
     List<Order> findAllByUserIdAndPaymentStatus(Long userId, PaymentStatus status);
 
     Page<Order> findPageAllByUserIdAndPaymentStatus(Long id, PaymentStatus paid, PageNationRequest pageNationRequest);
+
+    List<Order> findAllByBoardIdAndPaymentStatus(Long boardId, PaymentStatus paid);
 }

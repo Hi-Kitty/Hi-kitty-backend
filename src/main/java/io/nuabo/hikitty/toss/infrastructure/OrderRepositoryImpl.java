@@ -46,6 +46,11 @@ public class OrderRepositoryImpl implements OrderRepository {
         return orderJpaRepository.findAllByUserIdAndPaymentStatus(id, paid, getPageAndSize(pageNationRequest)).map(OrderEntity::toModel);
     }
 
+    @Override
+    public List<Order> findAllByBoardIdAndPaymentStatus(Long boardId, PaymentStatus paid) {
+        return orderJpaRepository.findAllByBoardIdAndPaymentStatus(boardId, paid).stream().map(OrderEntity::toModel).toList();
+    }
+
     private PageRequest getPageAndSize(PageNationRequest pageNationRequest) {
         return PageRequest.of(pageNationRequest.getPage(), pageNationRequest.getSize());
     }

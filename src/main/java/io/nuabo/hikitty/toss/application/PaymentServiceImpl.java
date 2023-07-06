@@ -11,14 +11,12 @@ import io.nuabo.hikitty.toss.domain.Order;
 import io.nuabo.hikitty.toss.domain.Payment;
 import io.nuabo.hikitty.toss.domain.PaymentStatus;
 import io.nuabo.hikitty.toss.infrastructure.port.TossConfig;
+import io.nuabo.hikitty.toss.presentation.BoardYearMonthlyAmounts;
 import io.nuabo.hikitty.toss.presentation.port.PaymentService;
 import io.nuabo.hikitty.toss.presentation.request.PaymentFailRequest;
 import io.nuabo.hikitty.toss.presentation.request.PaymentQueryRequest;
 import io.nuabo.hikitty.toss.presentation.request.OrderRequest;
-import io.nuabo.hikitty.toss.presentation.response.CompleteResponse;
-import io.nuabo.hikitty.toss.presentation.response.OrderResponse;
-import io.nuabo.hikitty.toss.presentation.response.PaymentResponse;
-import io.nuabo.hikitty.toss.presentation.response.TotalAmountResponse;
+import io.nuabo.hikitty.toss.presentation.response.*;
 import io.nuabo.hikitty.user.application.port.UserRepository;
 import io.nuabo.hikitty.user.domain.User;
 import io.nuabo.hikitty.user.domain.UserStatus;
@@ -106,7 +104,16 @@ public class PaymentServiceImpl implements PaymentService {
         User user = userRepository.getByEmailAndStatus(email, UserStatus.ACTIVE);
         Page<Order> orders = orderRepository.findPageAllByUserIdAndPaymentStatus(user.getId(), PaymentStatus.PAID, pageNationRequest);
 
-        return orders.map(order -> CompleteResponse.from(order));
+        return orders.map(CompleteResponse::from);
+    }
+    @Override
+    public BoardYearMonthlyAmounts checkByMonth(String email, Long boardId) {
+        Board board = boardRepository.getById(boardId);
+        List<Order> orders = orderRepository.findAllByBoardIdAndPaymentStatus(boardId, PaymentStatus.PAID);
+        TotalYearMonthlyAmounts totalYearMonthlyAmounts = TotalYearMonthlyAmounts.from(orders);
+
+        return BoardYearMonthlyAmounts.from(board, totalYearMonthlyAmounts);
+
     }
 
 
