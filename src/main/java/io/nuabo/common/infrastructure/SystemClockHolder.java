@@ -39,12 +39,12 @@ public class SystemClockHolder implements ClockHolder {
     }
 
     @Override
-    public String calculateProgressPercentage(long currentAmount, long totalAmount) {
+    public Long calculateProgressPercentage(long currentAmount, long totalAmount) {
         // 진행 기간의 퍼센트 계산
         double percentage = (double) currentAmount / totalAmount * 100;
 
-        // %를 추가하여 문자열로 반환
-        return String.format("%.2f%%", Math.min(100, percentage)); // 100%를 초과하지 않도록 보정
+
+        return Math.round(Math.min(100, percentage)); // 100%를 초과하지 않도록 보정, 반올림
     }
 
     @Override

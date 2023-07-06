@@ -15,7 +15,7 @@ public class PageImageGet {
 
     private final Long fundraiserId;
     private final String fundraiserName;
-    private final String percent;
+    private final Long percent;
 
     private final Long imageId;
     private final String imageUrl;
@@ -26,7 +26,7 @@ public class PageImageGet {
     private final LocalDateTime endAt;
 
     @Builder
-    public PageImageGet(Long id, Long dDay, String title, Long fundraiserId, String fundraiserName, String percent, Long imageId, String imageUrl, String imageName, LocalDateTime createdAt, LocalDateTime endAt) {
+    public PageImageGet(Long id, Long dDay, String title, Long fundraiserId, String fundraiserName, Long percent, Long imageId, String imageUrl, String imageName, LocalDateTime createdAt, LocalDateTime endAt) {
         this.id = id;
         this.dDay = dDay;
         this.title = title;

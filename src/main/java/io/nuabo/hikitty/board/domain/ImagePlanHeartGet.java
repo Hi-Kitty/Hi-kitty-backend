@@ -15,7 +15,7 @@ public class ImagePlanHeartGet {
     private final Long id;
     private final String title;
 
-    private final String percent;
+    private final Long percent;
 
     private final String subTitle;
 
@@ -47,7 +47,7 @@ public class ImagePlanHeartGet {
 
     @Builder
 
-    public ImagePlanHeartGet(Long id, String title, String percent, String subTitle, String content, Long targetAmount, Long currentAmount, LocalDateTime endAt, LocalDateTime createAt, Long fundraiserId, String fundraiserName, String profileName, String profileUrl, String imageOriginalName, String imageUrl, List<PlanResponse> planResponse, List<HeartResponse> heartResponses) {
+    public ImagePlanHeartGet(Long id, String title, Long percent, String subTitle, String content, Long targetAmount, Long currentAmount, LocalDateTime endAt, LocalDateTime createAt, Long fundraiserId, String fundraiserName, String profileName, String profileUrl, String imageOriginalName, String imageUrl, List<PlanResponse> planResponse, List<HeartResponse> heartResponses) {
         this.id = id;
         this.title = title;
         this.percent = percent;

@@ -17,16 +17,6 @@ public class MailSenderConfigImpl implements MailSenderConfig {
 
     @Value("${mail.content}")
     private String content;
-//
-//    @Value("${mail.template-name}")
-//    private String templateName;
-//
-//    @Value("${mail.template-value-name}")
-//    private String templateValueName;
-//
-//    @Value("${mail.template-value-certification-code}")
-//    private String templateValueCertificationCode;
-
 
     @Override
     public String getFirstUrl() {

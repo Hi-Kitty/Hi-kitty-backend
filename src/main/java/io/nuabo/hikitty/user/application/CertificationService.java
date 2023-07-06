@@ -22,22 +22,24 @@ public class CertificationService {
         mailSender.send(email, mailSenderConfig.getTitle(), result);
     }
 
-    public void sendMailFromTemplate(String email, String certificationCode, String username) {
-        HashMap<String, String> values = setTemplateValue(username, certificationCode);
+    public void sendMailFromTemplate(String email, String certificationCode, String username, Long userId) {
+        HashMap<String, String> values = setTemplateValue(username, certificationCode, userId);
         try {
             mailSender.sendMailFromTemplate(email, mailSenderConfig.getTitle(), values, mailSenderConfig.getTemplateName());
         } catch (MessagingException e) {
             throw new MessageException("Message Server", values.get("name"));
         }
     }
-    private HashMap<String, String> setTemplateValue(String name, String certificationCode) {
+    private HashMap<String, String> setTemplateValue(String name, String certificationCode, Long userId) {
         HashMap<String, String> map = new HashMap<>();
+        String certificationUrl = generateCertificationUrl(userId, certificationCode);
         map.put(mailSenderConfig.getTemplateValueName(), name);
-        map.put(mailSenderConfig.getTemplateValueCertificationCode(), certificationCode);
+        map.put(mailSenderConfig.getTemplateValueCertificationCode(), certificationUrl);
+
         return map;
     }
     private String generateCertificationUrl(long userId, String certificationCode) {
-        return certificationCode;
+        return mailSenderConfig.getFirstUrl() + userId  + mailSenderConfig.getSecondUrl() + certificationCode;
     }
 
 

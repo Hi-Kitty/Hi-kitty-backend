@@ -78,7 +78,7 @@ class UserControllerTest {
         ResponseEntity<Void> result = container.userController.verifyEmail(1L, "aaaaaaa-aaaa-aaaa-aaaaaaaaaaaa");
 
         // then
-        assertThat(result.getStatusCode()).isEqualTo(HttpStatusCode.valueOf(204));
+        assertThat(result.getStatusCode()).isEqualTo(HttpStatusCode.valueOf(302));
         assertThat(container.userRepository.getById(1).getStatus()).isEqualTo((UserStatus.ACTIVE));
     }
     @Test

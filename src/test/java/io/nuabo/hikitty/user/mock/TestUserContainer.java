@@ -45,6 +45,7 @@ public class TestUserContainer {
         this.userService = userService;
         this.userController = UserController.builder()
                 .userService(userService)
+                .redirectUrlConfig(new TestRedirectUrlConfig("http://localhost:3030/"))
                 .build();
 
     }

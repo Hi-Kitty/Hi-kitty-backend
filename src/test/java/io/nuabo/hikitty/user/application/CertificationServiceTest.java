@@ -33,7 +33,7 @@ class CertificationServiceTest {
         assertThat(fakeMailSender.email).isEqualTo("spring2@naver.com");
         assertThat(fakeMailSender.title).isEqualTo("제목입니다.");
         assertThat(fakeMailSender.content).isEqualTo("내용입니다: " +
-                "aaaaaaa-aaaa-aaaa-aaaaaaaaaaaa");
+                "http://localhost:8080/api/v0/users/1/verify?certificationCode=aaaaaaa-aaaa-aaaa-aaaaaaaaaaaa");
 
     }
 
@@ -54,13 +54,13 @@ class CertificationServiceTest {
         CertificationService certificationService = new CertificationService(fakeMailSender, fakeMailSenderConfig);
 
         // when
-        certificationService.sendMailFromTemplate("spring2@naver.com", "1278872", "template.html");
+        certificationService.sendMailFromTemplate("spring2@naver.com", "1278872", "1", 1L);
 
         //
         assertAll(
                 ()-> assertThat(fakeMailSender.email).isEqualTo("spring2@naver.com"),
                 () -> assertThat(fakeMailSender.title).isEqualTo("제목입니다."),
-                () -> assertThat(fakeMailSender.content).isEqualTo("template.html1278872")
+                () -> assertThat(fakeMailSender.content).isEqualTo("1http://localhost:8080/api/v0/users/1/verify?certificationCode=1278872")
         );
     }
 

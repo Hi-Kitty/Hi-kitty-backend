@@ -36,7 +36,7 @@ public class TestClockHolder implements ClockHolder {
     }
 
     @Override
-    public String calculateProgressPercentage(long currentAmount, long totalAmount) {
+    public Long calculateProgressPercentage(long currentAmount, long totalAmount) {
         return null;
     }
 
