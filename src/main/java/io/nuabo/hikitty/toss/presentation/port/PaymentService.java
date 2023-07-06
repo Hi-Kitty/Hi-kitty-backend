@@ -7,6 +7,7 @@ import io.nuabo.hikitty.toss.presentation.request.OrderRequest;
 import io.nuabo.hikitty.toss.presentation.response.CompleteResponse;
 import io.nuabo.hikitty.toss.presentation.response.OrderResponse;
 import io.nuabo.hikitty.toss.presentation.response.PaymentResponse;
+import io.nuabo.hikitty.toss.presentation.response.TotalAmountResponse;
 
 public interface PaymentService {
     OrderResponse request(OrderRequest request, String email);
@@ -20,4 +21,6 @@ public interface PaymentService {
     void increaseBoardNotResponse(Payment payment);
 
     CompleteResponse getByOrderId(String orderId);
+
+    TotalAmountResponse getByEmail(String email);
 }

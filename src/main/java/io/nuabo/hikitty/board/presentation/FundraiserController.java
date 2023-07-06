@@ -27,7 +27,7 @@ import java.util.List;
 
 import static io.nuabo.common.domain.utils.ApiUtils.success;
 
-@Tag(name = "모금자 - 권한용 API")
+@Tag(name = "모금자용 - 권한용 API")
 @SecurityRequirement(name = "Bearer Authentication")
 @Builder
 @RestController

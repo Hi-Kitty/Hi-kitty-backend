@@ -45,7 +45,7 @@ public class SecurityConfig {
                         auth
                                 .requestMatchers(jwtConfig.getPermitUrisByFundraiser()).hasRole("FUNDRAISER")
                                 .requestMatchers(jwtConfig.getPermitUrisByDoner()).hasRole("DONER")
-                                .requestMatchers(jwtConfig.getDeniedUris()).hasRole("DONER")
+                                .requestMatchers(jwtConfig.getDeniedUris()).hasAnyRole("DONER", "FUNDRAISER")
                                 .anyRequest().permitAll()
         );
         http.sessionManagement(

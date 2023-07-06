@@ -3,7 +3,6 @@ package io.nuabo.hikitty.toss.application;
 import io.nuabo.common.application.port.ClockHolder;
 import io.nuabo.common.domain.exception.PaymentException;
 import io.nuabo.hikitty.board.application.port.BoardRepository;
-import io.nuabo.hikitty.board.application.port.ImageRepository;
 import io.nuabo.hikitty.board.domain.Board;
 import io.nuabo.hikitty.toss.application.port.*;
 import io.nuabo.hikitty.toss.domain.Card;
@@ -18,6 +17,7 @@ import io.nuabo.hikitty.toss.presentation.request.OrderRequest;
 import io.nuabo.hikitty.toss.presentation.response.CompleteResponse;
 import io.nuabo.hikitty.toss.presentation.response.OrderResponse;
 import io.nuabo.hikitty.toss.presentation.response.PaymentResponse;
+import io.nuabo.hikitty.toss.presentation.response.TotalAmountResponse;
 import io.nuabo.hikitty.user.application.port.UserRepository;
 import io.nuabo.hikitty.user.domain.User;
 import io.nuabo.hikitty.user.domain.UserStatus;
@@ -25,6 +25,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Slf4j
 @Service
@@ -89,6 +91,15 @@ public class PaymentServiceImpl implements PaymentService {
         String name = user.getName();
 
         return CompleteResponse.from(order, name);
+    }
+
+    @Override
+    public TotalAmountResponse getByEmail(String email) {
+        User user = userRepository.getByEmailAndStatus(email, UserStatus.ACTIVE);
+        List<Order> orders = orderRepository.findAllByUserIdAndPaymentStatus(user.getId(), PaymentStatus.PAID);
+
+        int sum = orders.stream().mapToInt(order -> order.getAmount().intValue()).sum();
+        return TotalAmountResponse.from(orders.size(), sum);
     }
 
 

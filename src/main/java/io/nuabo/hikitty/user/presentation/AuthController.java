@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
-@Tag(name = "인증 인가")
+@Tag(name = "인증 인가 - 기부자 모금자 공통 API")
 @SecurityRequirement(name = "Bearer Authentication")
 @RestController
 @RequestMapping("/api/v1/auth")
