@@ -3,15 +3,19 @@ package io.nuabo.hikitty.board.presentation;
 import io.nuabo.common.domain.utils.ApiUtils.ApiResult;
 import io.nuabo.hikitty.board.domain.Heart;
 import io.nuabo.hikitty.board.presentation.port.HeartService;
+import io.nuabo.hikitty.board.presentation.request.PageNationRequest;
 import io.nuabo.hikitty.board.presentation.response.HeartResponse;
 import io.nuabo.hikitty.security.presentation.port.AuthenticationService;
 import io.nuabo.hikitty.toss.presentation.port.PaymentService;
+import io.nuabo.hikitty.toss.presentation.response.CompleteResponse;
 import io.nuabo.hikitty.toss.presentation.response.TotalAmountResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +28,7 @@ import static io.nuabo.common.domain.utils.ApiUtils.success;
 @RestController
 @RequestMapping("/api/v1/doners")
 @RequiredArgsConstructor
-public class DonerCreateController {
+public class DonerController {
 
     private final HeartService heartService;
 
@@ -58,6 +62,16 @@ public class DonerCreateController {
         String email = authenticationService.getEmail();
         return ResponseEntity.ok()
                 .body(success(paymentService.getByEmail(email)));
+    }
+
+    @Operation(summary= "후원한 기부 리스트", description = "어디다 후원을 했는지")
+    @GetMapping(value = "/orders")
+    public ResponseEntity<ApiResult<Page<CompleteResponse>>> getOrders(
+            @Valid @ModelAttribute PageNationRequest pageNationRequest
+    ) {
+        String email = authenticationService.getEmail();
+        return ResponseEntity.ok()
+                .body(success(paymentService.getOrderPageByEmail(email, pageNationRequest)));
     }
 
 }

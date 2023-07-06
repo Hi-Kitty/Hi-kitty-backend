@@ -34,8 +34,9 @@ public class Order {
 
     private final String paymentKey;
 
+    private final String fundraiserName;
     @Builder
-    public Order(Long id, PayType payType, Long amount, String orderId, String orderNameType, String customerEmail, String customerName, Long userId, Long boardId, LocalDateTime createAt, PaymentStatus paymentStatus, String paymentKey) {
+    public Order(Long id, PayType payType, Long amount, String orderId, String orderNameType, String customerEmail, String customerName, Long userId, Long boardId, LocalDateTime createAt, PaymentStatus paymentStatus, String paymentKey, String fundraiserName) {
         this.id = id;
         this.payType = payType;
         this.amount = amount;
@@ -48,9 +49,10 @@ public class Order {
         this.createAt = createAt;
         this.paymentStatus = paymentStatus;
         this.paymentKey = paymentKey;
+        this.fundraiserName = fundraiserName;
     }
 
-    public static Order from(OrderRequest request, ClockHolder clockHolder, Long userId) {
+    public static Order from(OrderRequest request, ClockHolder clockHolder, Long userId, String fundraiserName) {
         return Order.builder()
                 .payType(request.getPayType())
                 .amount(request.getAmount())
@@ -61,6 +63,7 @@ public class Order {
                 .userId(userId)
                 .boardId(request.getBoardId())
                 .paymentStatus(PaymentStatus.READY)
+                .fundraiserName(fundraiserName)
                 .build();
     }
 
@@ -78,6 +81,7 @@ public class Order {
                 .createAt(this.createAt)
                 .paymentStatus(this.paymentStatus)
                 .paymentKey(paymentKey)
+                .fundraiserName(this.fundraiserName)
                 .build();
     }
 
@@ -95,23 +99,7 @@ public class Order {
                 .createAt(this.createAt)
                 .paymentStatus(status)
                 .paymentKey(this.paymentKey)
-                .build();
-    }
-
-    public Order paid(PaymentStatus status) {
-        return Order.builder()
-                .id(this.id)
-                .payType(this.payType)
-                .amount(this.amount)
-                .orderId(this.orderId)
-                .orderNameType(this.orderNameType)
-                .customerEmail(this.customerEmail)
-                .customerName(this.customerName)
-                .userId(this.userId)
-                .boardId(this.boardId)
-                .createAt(this.createAt)
-                .paymentStatus(status)
-                .paymentKey(this.paymentKey)
+                .fundraiserName(this.fundraiserName)
                 .build();
     }
 }

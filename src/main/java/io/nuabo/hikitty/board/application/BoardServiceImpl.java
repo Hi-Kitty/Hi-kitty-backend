@@ -8,7 +8,7 @@ import io.nuabo.hikitty.board.application.port.*;
 import io.nuabo.hikitty.board.domain.*;
 import io.nuabo.hikitty.board.presentation.port.BoardService;
 import io.nuabo.hikitty.board.presentation.request.BoardCreateRequest;
-import io.nuabo.hikitty.board.presentation.request.PageBoardRequest;
+import io.nuabo.hikitty.board.presentation.request.PageNationRequest;
 import io.nuabo.hikitty.board.presentation.request.PlanCreateRequest;
 import io.nuabo.hikitty.user.application.port.ProfileRepository;
 import io.nuabo.hikitty.user.application.port.UserRepository;
@@ -55,8 +55,8 @@ public class BoardServiceImpl implements BoardService {
 
     @Transactional(readOnly = true)
     @Override
-    public Page<PageImageGet> getPages(PageBoardRequest pageBoardRequest) {
-        return imageRepository.findAll(getPageSortByCreatedAtDesc(pageBoardRequest))
+    public Page<PageImageGet> getPages(PageNationRequest pageNationRequest) {
+        return imageRepository.findAll(getPageSortByCreatedAtDesc(pageNationRequest))
                 .map(image -> PageImageGet.from(image, clockHolder));
     }
 
@@ -72,24 +72,24 @@ public class BoardServiceImpl implements BoardService {
 
     @Transactional(readOnly = true)
     @Override
-    public Page<PageImageGet> getPagesByFundraiserEmail(PageBoardRequest pageBoardRequest, String email) {
+    public Page<PageImageGet> getPagesByFundraiserEmail(PageNationRequest pageNationRequest, String email) {
         User fundraiser = userRepository.getByEmailAndStatus(email, UserStatus.ACTIVE);
 
-        return imageRepository.findAllByFundraiserId(fundraiser.getId(), getPageSortByCreatedAtDesc(pageBoardRequest))
+        return imageRepository.findAllByFundraiserId(fundraiser.getId(), getPageSortByCreatedAtDesc(pageNationRequest))
                 .map(image -> PageImageGet.from(image, clockHolder));
     }
 
     @Transactional(readOnly = true)
     @Override
-    public Page<PageImageGet>   getPagesByFundraiserId(Long fundraiserId, PageBoardRequest pageBoardRequest) {
+    public Page<PageImageGet>   getPagesByFundraiserId(Long fundraiserId, PageNationRequest pageNationRequest) {
         User fundraiser = userRepository.getByIdAndStatus(fundraiserId, UserStatus.ACTIVE);
-        return imageRepository.findAllByFundraiserId(fundraiser.getId(), getPageSortByCreatedAtDesc(pageBoardRequest))
+        return imageRepository.findAllByFundraiserId(fundraiser.getId(), getPageSortByCreatedAtDesc(pageNationRequest))
                 .map(image -> PageImageGet.from(image, clockHolder));
     }
 
 
-    private PageRequest getPageSortByCreatedAtDesc(PageBoardRequest pageBoardRequest) {
-        return PageRequest.of(pageBoardRequest.getPage(), pageBoardRequest.getSize());
+    private PageRequest getPageSortByCreatedAtDesc(PageNationRequest pageNationRequest) {
+        return PageRequest.of(pageNationRequest.getPage(), pageNationRequest.getSize());
     }
 
     private List<Plan> getPlans(List<PlanCreateRequest> planCreateRequests, Board finalBoard) {

@@ -6,7 +6,7 @@ import io.nuabo.hikitty.board.domain.BoardFundraiserImagePlan;
 import io.nuabo.hikitty.board.domain.PageImageGet;
 import io.nuabo.hikitty.board.presentation.port.BoardService;
 import io.nuabo.hikitty.board.presentation.request.BoardCreateRequest;
-import io.nuabo.hikitty.board.presentation.request.PageBoardRequest;
+import io.nuabo.hikitty.board.presentation.request.PageNationRequest;
 import io.nuabo.hikitty.board.presentation.request.PlanCreateRequest;
 import io.nuabo.hikitty.board.presentation.response.BoardFundraiserImagePlanResponse;
 import io.nuabo.hikitty.security.presentation.port.AuthenticationService;
@@ -55,10 +55,10 @@ public class FundraiserController {
     @Operation(summary = "모금자 프로필 - 쿼리 스트링입니다!", description = "모금자 이메일, 이름 + 모금자가 작성한 게시글 가져오기")
     @GetMapping(value = "/boards")
     public ResponseEntity<ApiResult<Page<PageImageGet>>> getBoards(
-            @Valid @ModelAttribute PageBoardRequest pageBoardRequest
+            @Valid @ModelAttribute PageNationRequest pageNationRequest
     ) {
         String email = authenticationService.getEmail();
-        return ResponseEntity.ok().body(ApiUtils.success(boardService.getPagesByFundraiserEmail(pageBoardRequest, email)));
+        return ResponseEntity.ok().body(ApiUtils.success(boardService.getPagesByFundraiserEmail(pageNationRequest, email)));
     }
 
 }

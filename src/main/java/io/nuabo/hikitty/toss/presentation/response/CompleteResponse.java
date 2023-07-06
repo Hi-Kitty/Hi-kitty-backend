@@ -29,13 +29,13 @@ public class CompleteResponse {
         this.paymentStatus = paymentStatus;
     }
 
-    public static CompleteResponse from(Order order, String name) {
+    public static CompleteResponse from(Order order) {
         return CompleteResponse.builder()
                 .orderId(order.getOrderId())
                 .orderName(order.getOrderNameType())
                 .customerName(order.getCustomerName())
                 .customerEmail(order.getCustomerEmail())
-                .fundraiserName(name)
+                .fundraiserName(order.getFundraiserName())
                 .amount(order.getAmount())
                 .boardId(order.getBoardId())
                 .paymentStatus(order.getPaymentStatus())

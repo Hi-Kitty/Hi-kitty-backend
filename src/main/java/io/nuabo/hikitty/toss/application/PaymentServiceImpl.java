@@ -4,6 +4,7 @@ import io.nuabo.common.application.port.ClockHolder;
 import io.nuabo.common.domain.exception.PaymentException;
 import io.nuabo.hikitty.board.application.port.BoardRepository;
 import io.nuabo.hikitty.board.domain.Board;
+import io.nuabo.hikitty.board.presentation.request.PageNationRequest;
 import io.nuabo.hikitty.toss.application.port.*;
 import io.nuabo.hikitty.toss.domain.Card;
 import io.nuabo.hikitty.toss.domain.Order;
@@ -23,6 +24,7 @@ import io.nuabo.hikitty.user.domain.User;
 import io.nuabo.hikitty.user.domain.UserStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -47,9 +49,10 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public OrderResponse request(OrderRequest request, String email) {
         User user = userRepository.getByEmailAndStatus(email, UserStatus.ACTIVE);
-        boardRepository.getById(request.getBoardId());
+        Board board = boardRepository.getById(request.getBoardId());
+
         // TODO: 원래는 검증 로직이 필요
-        Order order = Order.from(request, clockHolder, user.getId());
+        Order order = Order.from(request, clockHolder, user.getId(), board.getFundraiserName());
         order = orderRepository.save(order);
         return OrderResponse.from(order, tossConfig);
     }
@@ -86,11 +89,7 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public CompleteResponse getByOrderId(String orderId) {
         Order order = orderRepository.getByOrderId(orderId);
-        Board board = boardRepository.getById(order.getBoardId());
-        User user = userRepository.getByIdAndStatus(board.getFundraiserId(), UserStatus.ACTIVE);
-        String name = user.getName();
-
-        return CompleteResponse.from(order, name);
+        return CompleteResponse.from(order);
     }
 
     @Override
@@ -100,6 +99,14 @@ public class PaymentServiceImpl implements PaymentService {
 
         int sum = orders.stream().mapToInt(order -> order.getAmount().intValue()).sum();
         return TotalAmountResponse.from(orders.size(), sum);
+    }
+
+    @Override
+    public Page<CompleteResponse> getOrderPageByEmail(String email, PageNationRequest pageNationRequest) {
+        User user = userRepository.getByEmailAndStatus(email, UserStatus.ACTIVE);
+        Page<Order> orders = orderRepository.findPageAllByUserIdAndPaymentStatus(user.getId(), PaymentStatus.PAID, pageNationRequest);
+
+        return orders.map(order -> CompleteResponse.from(order));
     }
 
 
@@ -120,7 +127,7 @@ public class PaymentServiceImpl implements PaymentService {
     private Payment create(PaymentResHandleDto handleDto) {
 
         Order order = orderRepository.getByOrderId(handleDto.getOrderId());
-        order = order.paid(PaymentStatus.PAID);
+        order = order.setPaymentStatus(PaymentStatus.PAID);
         order = orderRepository.save(order);
         Card card = Card.from(handleDto.getCard());
         card = cardRepository.save(card);

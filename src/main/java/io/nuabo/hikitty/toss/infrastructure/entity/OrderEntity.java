@@ -32,7 +32,6 @@ public class OrderEntity extends BaseTimeEntity {
 
     @Column(nullable = false)
     private String orderNameType;
-
     private String customerEmail;
 
     @Column(nullable = false)
@@ -50,6 +49,8 @@ public class OrderEntity extends BaseTimeEntity {
 
     private String paymentKey;
 
+    private String fundraiserName;
+
     public static OrderEntity from(Order order) {
         OrderEntity orderEntity = new OrderEntity();
         orderEntity.id = order.getId();
@@ -63,6 +64,7 @@ public class OrderEntity extends BaseTimeEntity {
         orderEntity.boardId = order.getBoardId();
         orderEntity.paymentStatus = order.getPaymentStatus();
         orderEntity.paymentKey = order.getPaymentKey();
+        orderEntity.fundraiserName = order.getFundraiserName();
         return orderEntity;
     }
 
@@ -80,6 +82,8 @@ public class OrderEntity extends BaseTimeEntity {
                 .createAt(getCreateAt())
                 .paymentStatus(paymentStatus)
                 .paymentKey(paymentKey)
+                .orderId(orderId)
+                .fundraiserName(fundraiserName)
                 .build();
     }
 }
