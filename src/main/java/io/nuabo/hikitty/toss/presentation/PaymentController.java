@@ -8,6 +8,7 @@ import io.nuabo.hikitty.toss.presentation.port.PaymentService;
 import io.nuabo.hikitty.toss.presentation.request.PaymentFailRequest;
 import io.nuabo.hikitty.toss.presentation.request.PaymentQueryRequest;
 import io.nuabo.hikitty.toss.presentation.request.OrderRequest;
+import io.nuabo.hikitty.toss.presentation.response.CompleteResponse;
 import io.nuabo.hikitty.toss.presentation.response.OrderResponse;
 import io.nuabo.hikitty.toss.presentation.response.PaymentResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -66,5 +67,9 @@ public class PaymentController {
         return ResponseEntity.ok(ApiUtils.success(request));
     }
 
-
+    @Operation(summary = "결제 완료 결과 창", description = "결제 완료시 마지막으로 사용자에게 알린다.")
+    @GetMapping("/{orderId}")
+    public ResponseEntity<ApiResult<CompleteResponse>> complete(@PathVariable("orderId") String orderId) {
+        return ResponseEntity.ok(ApiUtils.success(paymentService.getByOrderId(orderId)));
+    }
 }

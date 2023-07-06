@@ -3,6 +3,7 @@ package io.nuabo.hikitty.toss.application;
 import io.nuabo.common.application.port.ClockHolder;
 import io.nuabo.common.domain.exception.PaymentException;
 import io.nuabo.hikitty.board.application.port.BoardRepository;
+import io.nuabo.hikitty.board.application.port.ImageRepository;
 import io.nuabo.hikitty.board.domain.Board;
 import io.nuabo.hikitty.toss.application.port.*;
 import io.nuabo.hikitty.toss.domain.Card;
@@ -14,6 +15,7 @@ import io.nuabo.hikitty.toss.presentation.port.PaymentService;
 import io.nuabo.hikitty.toss.presentation.request.PaymentFailRequest;
 import io.nuabo.hikitty.toss.presentation.request.PaymentQueryRequest;
 import io.nuabo.hikitty.toss.presentation.request.OrderRequest;
+import io.nuabo.hikitty.toss.presentation.response.CompleteResponse;
 import io.nuabo.hikitty.toss.presentation.response.OrderResponse;
 import io.nuabo.hikitty.toss.presentation.response.PaymentResponse;
 import io.nuabo.hikitty.user.application.port.UserRepository;
@@ -77,6 +79,19 @@ public class PaymentServiceImpl implements PaymentService {
     public void increaseBoardNotResponse(Payment payment) {
         increaseAmountFromBoard(payment);
     }
+
+    @Transactional(readOnly = true)
+    @Override
+    public CompleteResponse getByOrderId(String orderId) {
+        Order order = orderRepository.getByOrderId(orderId);
+        Board board = boardRepository.getById(order.getBoardId());
+        User user = userRepository.getByIdAndStatus(board.getFundraiserId(), UserStatus.ACTIVE);
+        String name = user.getName();
+
+        return CompleteResponse.from(order, name);
+    }
+
+
     private Order verify(PaymentQueryRequest request) {
         Order order = orderRepository.getByOrderId(request.getOrderId());
 

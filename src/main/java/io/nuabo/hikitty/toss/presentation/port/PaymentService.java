@@ -4,6 +4,7 @@ import io.nuabo.hikitty.toss.domain.Payment;
 import io.nuabo.hikitty.toss.presentation.request.PaymentFailRequest;
 import io.nuabo.hikitty.toss.presentation.request.PaymentQueryRequest;
 import io.nuabo.hikitty.toss.presentation.request.OrderRequest;
+import io.nuabo.hikitty.toss.presentation.response.CompleteResponse;
 import io.nuabo.hikitty.toss.presentation.response.OrderResponse;
 import io.nuabo.hikitty.toss.presentation.response.PaymentResponse;
 
@@ -17,4 +18,6 @@ public interface PaymentService {
     void fail(PaymentFailRequest request);
 
     void increaseBoardNotResponse(Payment payment);
+
+    CompleteResponse getByOrderId(String orderId);
 }

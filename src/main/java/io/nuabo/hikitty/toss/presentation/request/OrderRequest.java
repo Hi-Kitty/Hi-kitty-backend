@@ -15,7 +15,7 @@ public class OrderRequest {
     private final Long amount;
 
     @NotBlank(message = "orderName cannot be null")
-    @Schema(description = "주문명",  example = "주문명")
+    @Schema(description = "후원명 == 주문명",  example = "후원명 == 주문명")
     private final String orderName;
 
     @NotBlank(message = "customerName cannot be null")
