@@ -58,7 +58,7 @@ public class FundraiserController {
             @Valid @ModelAttribute PageBoardRequest pageBoardRequest
     ) {
         String email = authenticationService.getEmail();
-        return ResponseEntity.ok().body(ApiUtils.success(boardService.getPagesByFundraiserId(pageBoardRequest, email)));
+        return ResponseEntity.ok().body(ApiUtils.success(boardService.getPagesByFundraiserEmail(pageBoardRequest, email)));
     }
 
 }

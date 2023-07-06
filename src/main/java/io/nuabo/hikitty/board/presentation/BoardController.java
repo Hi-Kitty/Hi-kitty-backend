@@ -38,4 +38,13 @@ public class BoardController {
 
         return ResponseEntity.ok().body(boardService.getById(boardId));
     }
+
+    @Operation(summary = "모금자 글쓴이 프로필 조회 - 쿼리 스트링입니다!", description = "모금자가 작성한 게시글 가져오기")
+    @GetMapping(value = "/fundraisers/{fundraiserId}")
+    public ResponseEntity<ApiResult<Page<PageImageGet>>> getBoards(
+            @PathVariable Long fundraiserId,
+            @Valid @ModelAttribute PageBoardRequest pageBoardRequest
+    ) {
+        return ResponseEntity.ok().body(ApiUtils.success(boardService.getPagesByFundraiserId(fundraiserId, pageBoardRequest)));
+    }
 }

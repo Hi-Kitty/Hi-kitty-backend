@@ -19,5 +19,7 @@ public interface BoardService {
 
     ImagePlanHeartGet getById(Long boardId);
 
-    Page<PageImageGet> getPagesByFundraiserId(PageBoardRequest pageBoardRequest, String email);
+    Page<PageImageGet> getPagesByFundraiserEmail(PageBoardRequest pageBoardRequest, String email);
+
+    Page<PageImageGet> getPagesByFundraiserId(Long fundraiserId, PageBoardRequest pageBoardRequest);
 }

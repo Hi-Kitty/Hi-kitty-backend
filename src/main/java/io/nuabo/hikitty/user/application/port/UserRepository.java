@@ -19,4 +19,6 @@ public interface UserRepository {
 
     Optional<User> findByEmail(String email);
     User getByEmailAndStatus(String email, UserStatus active);
+
+    User getByIdAndStatus(Long fundraiserId, UserStatus active);
 }

@@ -72,12 +72,21 @@ public class BoardServiceImpl implements BoardService {
 
     @Transactional(readOnly = true)
     @Override
-    public Page<PageImageGet> getPagesByFundraiserId(PageBoardRequest pageBoardRequest, String email) {
+    public Page<PageImageGet> getPagesByFundraiserEmail(PageBoardRequest pageBoardRequest, String email) {
         User fundraiser = userRepository.getByEmailAndStatus(email, UserStatus.ACTIVE);
 
         return imageRepository.findAllByFundraiserId(fundraiser.getId(), getPageSortByCreatedAtDesc(pageBoardRequest))
                 .map(image -> PageImageGet.from(image, clockHolder));
     }
+
+    @Transactional(readOnly = true)
+    @Override
+    public Page<PageImageGet>   getPagesByFundraiserId(Long fundraiserId, PageBoardRequest pageBoardRequest) {
+        User fundraiser = userRepository.getByIdAndStatus(fundraiserId, UserStatus.ACTIVE);
+        return imageRepository.findAllByFundraiserId(fundraiser.getId(), getPageSortByCreatedAtDesc(pageBoardRequest))
+                .map(image -> PageImageGet.from(image, clockHolder));
+    }
+
 
     private PageRequest getPageSortByCreatedAtDesc(PageBoardRequest pageBoardRequest) {
         return PageRequest.of(pageBoardRequest.getPage(), pageBoardRequest.getSize());

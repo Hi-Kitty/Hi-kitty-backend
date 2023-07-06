@@ -51,4 +51,9 @@ public class UserRepositoryImpl implements UserRepository {
     public User getByEmailAndStatus(String email, UserStatus active) {
         return findByEmailAndStatus(email, active).orElseThrow(() -> new ResourceNotFoundException("users", email));
     }
+
+    @Override
+    public User getByIdAndStatus(Long fundraiserId, UserStatus active) {
+        return findByIdAndStatus(fundraiserId, active).orElseThrow(() -> new ResourceNotFoundException("users", fundraiserId));
+    }
 }
