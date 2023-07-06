@@ -50,7 +50,7 @@ public class UserController {
             @RequestParam String certificationCode) {
         userService.verifyEmail(id, certificationCode);
         return ResponseEntity.status(HttpStatus.FOUND)
-                .location(URI.create(redirectUrlConfig.userSave())).build();
+                .location(URI.create(redirectUrlConfig.getUserSave())).build();
     }
 
     @Operation(summary = "유저 정보 조회", description = "id 값을 입력하세요")

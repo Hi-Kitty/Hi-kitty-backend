@@ -15,4 +15,6 @@ public interface PaymentService {
     PaymentResponse increaseBoard(Payment payment);
 
     void fail(PaymentFailRequest request);
+
+    void increaseBoardNotResponse(Payment payment);
 }

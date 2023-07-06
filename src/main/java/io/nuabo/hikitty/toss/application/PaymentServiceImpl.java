@@ -72,6 +72,11 @@ public class PaymentServiceImpl implements PaymentService {
         orderRepository.save(order);
     }
 
+    @Transactional
+    @Override
+    public void increaseBoardNotResponse(Payment payment) {
+        increaseAmountFromBoard(payment);
+    }
     private Order verify(PaymentQueryRequest request) {
         Order order = orderRepository.getByOrderId(request.getOrderId());
 
