@@ -24,7 +24,7 @@ import java.net.URI;
 import static io.nuabo.common.domain.utils.ApiUtils.success;
 
 
-@Tag(name = "유저 - 기부자, 모금자 보완 관련 통합 API")
+@Tag(name = "유저 - 기부자, 모금자 공통 API")
 @Builder
 @RestController
 @RequestMapping("/api/v1/users")
@@ -50,7 +50,7 @@ public class UserController {
             @RequestParam String certificationCode) {
         userService.verifyEmail(id, certificationCode);
         return ResponseEntity.status(HttpStatus.FOUND)
-                .location(URI.create(redirectUrlConfig.userSave())).build();
+                .location(URI.create(redirectUrlConfig.getUserSave())).build();
     }
 
     @Operation(summary = "유저 정보 조회", description = "id 값을 입력하세요")

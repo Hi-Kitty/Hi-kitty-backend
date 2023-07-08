@@ -1,2 +1,3 @@
 redirect:
-  user-save: ${redirect.save}
+  user-save-url: ${redirect.save}
+  payment-url: ${redirect.payment}

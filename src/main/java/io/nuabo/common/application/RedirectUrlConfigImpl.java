@@ -7,11 +7,18 @@ import org.springframework.stereotype.Component;
 @Component
 public class RedirectUrlConfigImpl implements RedirectUrlConfig {
 
-    @Value("${redirect.user-save}")
+    @Value("${redirect.user-save-url}")
     private String userSave;
 
+    @Value("${redirect.payment-url}")
+    private String payment;
     @Override
-    public String userSave() {
+    public String getUserSave() {
         return userSave;
     }
+    @Override
+    public String getPayment() {
+        return payment;
+    }
+
 }

@@ -6,12 +6,18 @@ public class TestRedirectUrlConfig implements RedirectUrlConfig {
 
     private final String userSave;
 
+
     public TestRedirectUrlConfig(String userSave) {
         this.userSave = userSave;
     }
 
     @Override
-    public String userSave() {
+    public String getUserSave() {
         return userSave;
+    }
+
+    @Override
+    public String getPayment() {
+        return null;
     }
 }

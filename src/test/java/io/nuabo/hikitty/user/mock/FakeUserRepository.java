@@ -71,4 +71,10 @@ public class FakeUserRepository implements UserRepository {
         return findByEmailAndStatus(email, active).orElseThrow(()->
                 new ResourceNotFoundException("Users", email));
     }
+
+    @Override
+    public User getByIdAndStatus(Long fundraiserId, UserStatus active) {
+        return data.stream().filter(item->item.getId().equals(fundraiserId) && item.getStatus() == active).findFirst().orElseThrow(()->
+                new ResourceNotFoundException("Users", fundraiserId));
+    }
 }
