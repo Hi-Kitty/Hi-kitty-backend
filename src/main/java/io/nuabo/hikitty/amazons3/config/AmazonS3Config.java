@@ -7,6 +7,9 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
+import software.amazon.awssdk.regions.Region;
+import software.amazon.awssdk.services.cloudwatch.CloudWatchAsyncClient;
 
 @Configuration
 public class AmazonS3Config {
@@ -21,13 +24,31 @@ public class AmazonS3Config {
     private String region;
 
     @Bean
-    public AmazonS3Client amazonS3Client() {
-        BasicAWSCredentials awsCreds = new BasicAWSCredentials(accessKey, secretKey);
+    public BasicAWSCredentials basicAWSCredentials() {
+        return new BasicAWSCredentials(accessKey, secretKey);
+    }
+
+    @Bean
+    public AwsBasicCredentials awsBasicCredentials() {
+        return AwsBasicCredentials.create(accessKey, secretKey);
+    }
+
+    @Bean
+    public AmazonS3Client amazonS3Client(BasicAWSCredentials credentials) {
         return (AmazonS3Client) AmazonS3ClientBuilder.standard()
                 .withRegion(region)
-                .withCredentials(new AWSStaticCredentialsProvider(awsCreds))
+                .withCredentials(new AWSStaticCredentialsProvider(credentials))
                 .build();
     }
+
+    @Bean
+    public CloudWatchAsyncClient cloudWatchAsyncClient() {
+        return CloudWatchAsyncClient.builder()
+                .credentialsProvider(this::awsBasicCredentials)
+                .region(Region.AP_NORTHEAST_2)
+                .build();
+    }
+
 
 }
 

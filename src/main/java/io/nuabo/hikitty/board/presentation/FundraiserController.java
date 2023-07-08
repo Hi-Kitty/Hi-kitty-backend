@@ -10,7 +10,7 @@ import io.nuabo.hikitty.board.presentation.request.PageNationRequest;
 import io.nuabo.hikitty.board.presentation.request.PlanCreateRequest;
 import io.nuabo.hikitty.board.presentation.response.BoardFundraiserImagePlanResponse;
 import io.nuabo.hikitty.security.presentation.port.AuthenticationService;
-import io.nuabo.hikitty.toss.presentation.BoardYearMonthlyAmounts;
+import io.nuabo.hikitty.toss.presentation.response.BoardYearMonthlyAmounts;
 import io.nuabo.hikitty.toss.presentation.port.PaymentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;

@@ -23,8 +23,8 @@ spring:
 mail:
   first-url: ${mail.first.url}
   second-url: ${mail.second.url}
-  title: ${mail.title}
-  content: ${mail.content}
-  template: ${mail.template}
-  template-value-name: ${mail.template-value-name}
-  template-value-certification-code: ${mail.template-value-certification-code}
+  title-string: ${mail.title}
+  content-string: ${mail.content}
+  template-string: ${mail.template}
+  template-value-name-string: ${mail.template-value-name}
+  template-value-certification-code-string: ${mail.template-value-certification-code}

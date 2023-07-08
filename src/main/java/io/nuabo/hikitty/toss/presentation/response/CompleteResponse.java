@@ -5,6 +5,8 @@ import io.nuabo.hikitty.toss.domain.PaymentStatus;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
+
 @Getter
 public class CompleteResponse {
     private final String orderId;
@@ -17,8 +19,10 @@ public class CompleteResponse {
     private final Long boardId;
     private final PaymentStatus paymentStatus;
 
+    private final LocalDateTime createdAt;
+
     @Builder
-    public CompleteResponse(String orderId, String orderName, String customerName, String customerEmail, String fundraiserName, Long amount, Long boardId, PaymentStatus paymentStatus) {
+    public CompleteResponse(String orderId, String orderName, String customerName, String customerEmail, String fundraiserName, Long amount, Long boardId, PaymentStatus paymentStatus, LocalDateTime createdAt) {
         this.orderId = orderId;
         this.orderName = orderName;
         this.customerName = customerName;
@@ -27,6 +31,7 @@ public class CompleteResponse {
         this.amount = amount;
         this.boardId = boardId;
         this.paymentStatus = paymentStatus;
+        this.createdAt = createdAt;
     }
 
     public static CompleteResponse from(Order order) {
@@ -39,6 +44,7 @@ public class CompleteResponse {
                 .amount(order.getAmount())
                 .boardId(order.getBoardId())
                 .paymentStatus(order.getPaymentStatus())
+                .createdAt(order.getCreateAt())
                 .build();
     }
 }

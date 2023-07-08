@@ -1,5 +1,6 @@
 package io.nuabo.hikitty.toss.application;
 
+import io.micrometer.core.annotation.Timed;
 import io.nuabo.common.application.port.ClockHolder;
 import io.nuabo.common.domain.exception.PaymentException;
 import io.nuabo.hikitty.board.application.port.BoardRepository;
@@ -11,7 +12,7 @@ import io.nuabo.hikitty.toss.domain.Order;
 import io.nuabo.hikitty.toss.domain.Payment;
 import io.nuabo.hikitty.toss.domain.PaymentStatus;
 import io.nuabo.hikitty.toss.infrastructure.port.TossConfig;
-import io.nuabo.hikitty.toss.presentation.BoardYearMonthlyAmounts;
+import io.nuabo.hikitty.toss.presentation.response.BoardYearMonthlyAmounts;
 import io.nuabo.hikitty.toss.presentation.port.PaymentService;
 import io.nuabo.hikitty.toss.presentation.request.PaymentFailRequest;
 import io.nuabo.hikitty.toss.presentation.request.PaymentQueryRequest;
@@ -29,10 +30,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Slf4j
+@Timed("payment")
 @Service
 @RequiredArgsConstructor
 public class PaymentServiceImpl implements PaymentService {
-
     private final OrderRepository orderRepository;
     private final TossConfig tossConfig;
     private final UserRepository userRepository;
@@ -54,7 +55,6 @@ public class PaymentServiceImpl implements PaymentService {
         order = orderRepository.save(order);
         return OrderResponse.from(order, tossConfig);
     }
-
     @Transactional
     @Override
     public Payment process(PaymentQueryRequest request) {
@@ -68,7 +68,6 @@ public class PaymentServiceImpl implements PaymentService {
         Board board = increaseAmountFromBoard(payment);
         return PaymentResponse.from(payment, board);
     }
-
     @Transactional
     @Override
     public void fail(PaymentFailRequest request) {
@@ -90,6 +89,7 @@ public class PaymentServiceImpl implements PaymentService {
         return CompleteResponse.from(order);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public TotalAmountResponse getByEmail(String email) {
         User user = userRepository.getByEmailAndStatus(email, UserStatus.ACTIVE);
@@ -99,6 +99,7 @@ public class PaymentServiceImpl implements PaymentService {
         return TotalAmountResponse.from(orders.size(), sum);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Page<CompleteResponse> getOrderPageByEmail(String email, PageNationRequest pageNationRequest) {
         User user = userRepository.getByEmailAndStatus(email, UserStatus.ACTIVE);
@@ -106,6 +107,7 @@ public class PaymentServiceImpl implements PaymentService {
 
         return orders.map(CompleteResponse::from);
     }
+    @Transactional(readOnly = true)
     @Override
     public BoardYearMonthlyAmounts checkByMonth(String email, Long boardId) {
         Board board = boardRepository.getById(boardId);

@@ -45,7 +45,7 @@ public class AuthController {
     @Operation(summary = "유저 정보 수정", description = "토큰 값을 입력하고 이미지, 닉네임 비밀번호를 입력하세요.")
     @PutMapping(value = "/users", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<ApiResult<UserAndProfileResponse>> updatePassword(
-            @Valid @RequestPart UserUpdateRequest request,
+            @Valid @RequestPart(required = false) UserUpdateRequest request,
             @RequestPart(value = "img", required = false) MultipartFile img
     ) {
         String email = authenticationService.getEmail();
