@@ -2,7 +2,7 @@ package io.nuabo.hikitty.toss.presentation.port;
 
 import io.nuabo.hikitty.board.presentation.request.PageNationRequest;
 import io.nuabo.hikitty.toss.domain.Payment;
-import io.nuabo.hikitty.toss.presentation.BoardYearMonthlyAmounts;
+import io.nuabo.hikitty.toss.presentation.response.BoardYearMonthlyAmounts;
 import io.nuabo.hikitty.toss.presentation.request.PaymentFailRequest;
 import io.nuabo.hikitty.toss.presentation.request.PaymentQueryRequest;
 import io.nuabo.hikitty.toss.presentation.request.OrderRequest;

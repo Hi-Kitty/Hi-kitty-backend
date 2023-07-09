@@ -12,10 +12,10 @@ public class MailSenderConfigImpl implements MailSenderConfig {
     @Value("${mail.second-url}")
     private String secondUrl;
 
-    @Value("${mail.title}")
+    @Value("${mail.title-string}")
     private String title;
 
-    @Value("${mail.content}")
+    @Value("${mail.content-string}")
     private String content;
 
     @Override

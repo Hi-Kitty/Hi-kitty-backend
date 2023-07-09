@@ -9,7 +9,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Getter
 public class BoardCreateRequest {
@@ -35,7 +35,7 @@ public class BoardCreateRequest {
     @NotNull(message = "endAt cannot be null, future is possible")
     @Future(message = "종료일은 현재보다 미래여야 합니다.")
     @Schema(description = "endAt",  example = "종료일을 입력해주세요.")
-    private final LocalDateTime endAt;
+    private final LocalDate endAt;
 
 
     @Builder
@@ -44,7 +44,7 @@ public class BoardCreateRequest {
             @JsonProperty("subTitle") String subTitle,
             @JsonProperty("content") String content,
             @JsonProperty("targetAmount") Long targetAmount,
-            @JsonProperty("endAt") LocalDateTime endAt) {
+            @JsonProperty("endAt") LocalDate endAt) {
         this.title = title;
         this.subTitle = subTitle;
         this.content = content;

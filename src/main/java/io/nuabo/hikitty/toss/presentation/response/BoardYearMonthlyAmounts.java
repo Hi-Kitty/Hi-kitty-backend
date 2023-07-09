@@ -1,7 +1,6 @@
-package io.nuabo.hikitty.toss.presentation;
+package io.nuabo.hikitty.toss.presentation.response;
 
 import io.nuabo.hikitty.board.domain.Board;
-import io.nuabo.hikitty.toss.presentation.response.TotalYearMonthlyAmounts;
 import lombok.Builder;
 import lombok.Getter;
 

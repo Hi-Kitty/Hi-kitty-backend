@@ -1,5 +1,6 @@
 package io.nuabo.hikitty.user.application;
 
+import io.micrometer.core.annotation.Timed;
 import io.nuabo.common.application.port.DefaultImageConfig;
 import io.nuabo.common.application.port.UuidHolder;
 import io.nuabo.common.domain.exception.ResourceNotFoundException;
@@ -25,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
 
+@Timed("user")
 @Slf4j
 @Builder
 @Service
@@ -73,8 +75,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserProfileDto update(String email, UserUpdateRequest userUpdate, MultipartFile img) {
         User user = getByEmail(email);
-        user = user.update(userUpdate, passwordEncoder);
-        user = userRepository.save(user);
+        if (userUpdate != null) {
+            user = user.update(userUpdate, passwordEncoder);
+            user = userRepository.save(user);
+        }
         if (img != null) {
             AmazonS3Upload amazonS3Upload = awsConnection.sendFileToAWS(img);
             Profile newProfile = Profile.from(amazonS3Upload, user);
