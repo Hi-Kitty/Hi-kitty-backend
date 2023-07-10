@@ -1,5 +1,6 @@
 package io.nuabo.hikitty.board.domain;
 
+import io.nuabo.hikitty.amazons3.domain.AmazonS3Upload;
 import io.nuabo.hikitty.user.domain.Profile;
 import io.nuabo.hikitty.user.domain.User;
 import lombok.Builder;
@@ -79,5 +80,19 @@ public class Heart {
                 .donerProfileName(donerProfileName)
                 .donerProfileUrl(donerProfileUrl)
                 .build();
+    }
+
+    public Heart updateImg(AmazonS3Upload amazonS3Upload) {
+        return Heart.builder(
+                ).id(id)
+                .board(board)
+                .status(status)
+                .createdAt(createdAt)
+                .donerId(donerId)
+                .donerName(donerName)
+                .donerProfileName(amazonS3Upload.getOriginalName())
+                .donerProfileUrl(amazonS3Upload.getUrl())
+                .build();
+
     }
 }

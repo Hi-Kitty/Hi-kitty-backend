@@ -15,4 +15,8 @@ public interface HeartRepository {
     Optional<Heart> findById(Long heartId);
 
     List<Heart> findAllByBoardId(Long boardId);
+
+    List<Heart> getAllByUserId(Long id);
+
+    void saveAll(List<Heart> hearts);
 }
