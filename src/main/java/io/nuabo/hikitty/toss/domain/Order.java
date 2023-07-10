@@ -1,7 +1,9 @@
 package io.nuabo.hikitty.toss.domain;
 
 import io.nuabo.common.application.port.ClockHolder;
+import io.nuabo.hikitty.board.domain.Board;
 import io.nuabo.hikitty.toss.presentation.request.OrderRequest;
+import io.nuabo.hikitty.user.domain.User;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -52,18 +54,18 @@ public class Order {
         this.fundraiserName = fundraiserName;
     }
 
-    public static Order from(OrderRequest request, ClockHolder clockHolder, Long userId, String fundraiserName) {
+    public static Order from(OrderRequest request, ClockHolder clockHolder, User user, Board board) {
         return Order.builder()
                 .payType(request.getPayType())
                 .amount(request.getAmount())
-                .orderId(userId + "_" + clockHolder.hashedOrderId(userId, request.getCustomerName(), request.getAmount()))
-                .orderNameType(request.getOrderName())
-                .customerEmail(request.getCustomerEmail())
-                .customerName(request.getCustomerName())
-                .userId(userId)
-                .boardId(request.getBoardId())
+                .orderId(user.getId() + "_" + clockHolder.hashedOrderId(user.getId(), user.getName(), request.getAmount()))
+                .orderNameType(board.getTitle())
+                .customerEmail(user.getEmail())
+                .customerName(user.getName())
+                .userId(user.getId())
+                .boardId(board.getId())
                 .paymentStatus(PaymentStatus.READY)
-                .fundraiserName(fundraiserName)
+                .fundraiserName(board.getFundraiserName())
                 .build();
     }
 

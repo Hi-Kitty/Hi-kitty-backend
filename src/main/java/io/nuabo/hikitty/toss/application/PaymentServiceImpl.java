@@ -51,7 +51,7 @@ public class PaymentServiceImpl implements PaymentService {
         Board board = boardRepository.getById(request.getBoardId());
 
         // TODO: 원래는 검증 로직이 필요
-        Order order = Order.from(request, clockHolder, user.getId(), board.getFundraiserName());
+        Order order = Order.from(request, clockHolder, user, board);
         order = orderRepository.save(order);
         return OrderResponse.from(order, tossConfig);
     }
