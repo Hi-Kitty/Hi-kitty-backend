@@ -56,6 +56,8 @@ class UserServiceTest {
                 .passwordEncoder(passwordEncoderHolder)
                 .profileRepository(fakeProfileRepository)
                 .awsConnection(new FakeAwsConnection(testUuidHolder, fakeObjectMetadataHolder, fakeAmazonS3ClientHolder))
+                .heartRepository(new FakeHeartRepository())
+                .boardRepository(new FakeBoardRepository())
                 .build();
         User user = User.builder()
                 .id(1L)
@@ -207,9 +209,8 @@ class UserServiceTest {
         assertThat(result.getEmail()).isEqualTo("spring2@naver.com");
         assertThat(userProfileDto.getUrl()).isEqualTo("https://bucket.s3.ap-northeast-2.amazonaws.com/nuabo/aaaaaaa-aaaa-aaaa-aaaaaaaaaaaa.jpg");
         assertThat(userProfileDto.getOriginalName()).isEqualTo("testImg.jpg");
-
-
-    } @Test
+    }
+    @Test
     @DisplayName("userUpdate로 인해 user의 이메일과 패스워드가 변경된다.")
     void updateNotImg() {
         // given
