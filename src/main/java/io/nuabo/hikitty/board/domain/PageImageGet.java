@@ -25,8 +25,11 @@ public class PageImageGet {
 
     private final LocalDateTime endAt;
 
+    private final String fundraiserProfileUrl;
+    private final String fundraiserProfileName;
+
     @Builder
-    public PageImageGet(Long id, Long dDay, String title, Long fundraiserId, String fundraiserName, Long percent, Long imageId, String imageUrl, String imageName, LocalDateTime createdAt, LocalDateTime endAt) {
+    public PageImageGet(Long id, Long dDay, String title, Long fundraiserId, String fundraiserName, Long percent, Long imageId, String imageUrl, String imageName, LocalDateTime createdAt, LocalDateTime endAt, String fundraiserProfileUrl, String fundraiserProfileName) {
         this.id = id;
         this.dDay = dDay;
         this.title = title;
@@ -38,6 +41,8 @@ public class PageImageGet {
         this.imageName = imageName;
         this.createdAt = createdAt;
         this.endAt = endAt;
+        this.fundraiserProfileUrl = fundraiserProfileUrl;
+        this.fundraiserProfileName = fundraiserProfileName;
     }
 
     public static PageImageGet from(Image image, ClockHolder clockHolder) {
@@ -53,6 +58,8 @@ public class PageImageGet {
                 .imageName(image.getOriginalName())
                 .createdAt(image.getBoard().getCreatedAt())
                 .endAt(image.getBoard().getEndAt())
+                .fundraiserProfileUrl(image.getBoard().getFundraiserProfileUrl())
+                .fundraiserProfileName(image.getBoard().getFundraiserProfileName())
                 .build();
 
     }
