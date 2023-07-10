@@ -8,6 +8,7 @@ import io.nuabo.hikitty.board.infrastructure.port.BoardJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -33,4 +34,13 @@ public class BoardRepositoryImpl implements BoardRepository {
         return boardJpaRepository.findById(id).map(BoardEntity::toModel);
     }
 
+    @Override
+    public List<Board> getAllByUserId(Long id) {
+        return boardJpaRepository.findAllByFundraiserId(id).stream().map(BoardEntity::toModel).toList();
+    }
+
+    @Override
+    public void saveAll(List<Board> boards) {
+        boardJpaRepository.saveAll(boards.stream().map(BoardEntity::from).toList());
+    }
 }

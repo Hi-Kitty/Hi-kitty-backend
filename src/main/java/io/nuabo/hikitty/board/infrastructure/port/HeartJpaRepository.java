@@ -11,4 +11,6 @@ public interface HeartJpaRepository extends JpaRepository<HeartEntity, Long> {
     Optional<HeartEntity> findByBoardEntityIdAndDonerId(Long boardId, Long donerId);
 
     List<HeartEntity> findAllByBoardEntityId(Long boardId);
+
+    List<HeartEntity> findAllByDonerId(Long id);
 }

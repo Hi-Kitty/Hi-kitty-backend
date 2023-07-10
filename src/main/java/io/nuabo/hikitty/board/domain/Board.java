@@ -1,5 +1,6 @@
 package io.nuabo.hikitty.board.domain;
 
+import io.nuabo.hikitty.amazons3.domain.AmazonS3Upload;
 import io.nuabo.hikitty.board.presentation.request.BoardCreateRequest;
 import io.nuabo.hikitty.user.domain.Profile;
 import io.nuabo.hikitty.user.domain.User;
@@ -118,6 +119,21 @@ public class Board {
                 .fundraiserProfileName(this.fundraiserProfileName)
                 .fundraiserName(this.fundraiserName)
                 .fundraiserProfileUrl(this.fundraiserProfileUrl)
+                .fundraiserId(this.fundraiserId)
+                .build();
+    }
+    public Board updateImg(AmazonS3Upload amazonS3Upload) {
+        return Board.builder()
+                .id(this.id)
+                .title(this.title)
+                .subTitle(this.subTitle)
+                .content(this.content)
+                .targetAmount(this.targetAmount)
+                .endAt(this.endAt)
+                .currentAmount(this.currentAmount)
+                .fundraiserProfileName(amazonS3Upload.getOriginalName())
+                .fundraiserName(this.fundraiserName)
+                .fundraiserProfileUrl(amazonS3Upload.getUrl())
                 .fundraiserId(this.fundraiserId)
                 .build();
     }

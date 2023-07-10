@@ -6,6 +6,10 @@ import io.nuabo.common.application.port.UuidHolder;
 import io.nuabo.common.domain.exception.ResourceNotFoundException;
 import io.nuabo.hikitty.amazons3.application.port.AWSConnection;
 import io.nuabo.hikitty.amazons3.domain.AmazonS3Upload;
+import io.nuabo.hikitty.board.application.port.BoardRepository;
+import io.nuabo.hikitty.board.application.port.HeartRepository;
+import io.nuabo.hikitty.board.domain.Board;
+import io.nuabo.hikitty.board.domain.Heart;
 import io.nuabo.hikitty.security.application.port.PasswordEncoderHolder;
 import io.nuabo.hikitty.user.application.port.ProfileRepository;
 import io.nuabo.hikitty.user.application.port.UserProfileDto;
@@ -24,6 +28,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.Optional;
 
 @Timed("user")
@@ -41,7 +46,9 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoderHolder passwordEncoder;
     private final AWSConnection awsConnection;
 
+    private final BoardRepository boardRepository;
     private final DefaultImageConfig defaultImageConfig;
+    private final HeartRepository heartRepository;
     @Transactional
     @Override
     public User create(UserCreateRequest userCreateRequest) {
@@ -88,6 +95,22 @@ public class UserServiceImpl implements UserService {
                 newProfile = profile.get().update(newProfile, user);
             }
             newProfile = profileRepository.save(newProfile, user);
+
+            if (user.getRole() == Role.ROLE_FUNDRAISER) {
+                List<Board> boards = boardRepository.getAllByUserId(user.getId());
+                if (boards != null) {
+                    boards = boards.stream().map(board -> board.updateImg(amazonS3Upload)).toList();
+                    boardRepository.saveAll(boards);
+                }
+            }
+            if (user.getRole() == Role.ROLE_DONER) {
+                List<Heart> hearts = heartRepository.getAllByUserId(user.getId());
+                if (hearts != null) {
+                    hearts = hearts.stream().map(heart -> heart.updateImg(amazonS3Upload)).toList();
+                    heartRepository.saveAll(hearts);
+                }
+            }
+
             return UserProfileDto.merge(newProfile, user);
         }
         User finalUser = user;

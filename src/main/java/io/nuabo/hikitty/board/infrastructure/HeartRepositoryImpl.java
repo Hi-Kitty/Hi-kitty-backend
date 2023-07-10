@@ -43,4 +43,14 @@ public class HeartRepositoryImpl implements HeartRepository {
         return heartJpaRepository.findAllByBoardEntityId(boardId).stream().map(HeartEntity::toModel).toList();
     }
 
+    @Override
+    public List<Heart> getAllByUserId(Long id) {
+        return heartJpaRepository.findAllByDonerId(id).stream().map(HeartEntity::toModel).toList();
+    }
+
+    @Override
+    public void saveAll(List<Heart> hearts) {
+        heartJpaRepository.saveAll(hearts.stream().map(HeartEntity::from).toList());
+    }
+
 }
