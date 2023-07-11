@@ -22,10 +22,8 @@ public class PaymentResHandleDto {
     private final String useEscrow;
     private final String cultureExpense;
 
-    private final PaymentResHandleCardDto card;
-
     @Builder
-    public PaymentResHandleDto(String mId, String version, String paymentKey, String orderId, String orderName, String currency, String method, Long totalAmount, Long balanceAmount, Long suppliedAmount, Long vat, String status, String requestedAt, String approvedAt, String useEscrow, String cultureExpense, PaymentResHandleCardDto card) {
+    public PaymentResHandleDto(String mId, String version, String paymentKey, String orderId, String orderName, String currency, String method, Long totalAmount, Long balanceAmount, Long suppliedAmount, Long vat, String status, String requestedAt, String approvedAt, String useEscrow, String cultureExpense) {
         this.mId = mId;
         this.version = version;
         this.paymentKey = paymentKey;
@@ -42,6 +40,5 @@ public class PaymentResHandleDto {
         this.approvedAt = approvedAt;
         this.useEscrow = useEscrow;
         this.cultureExpense = cultureExpense;
-        this.card = card;
     }
 }

@@ -7,7 +7,6 @@ import io.nuabo.hikitty.board.application.port.BoardRepository;
 import io.nuabo.hikitty.board.domain.Board;
 import io.nuabo.hikitty.board.presentation.request.PageNationRequest;
 import io.nuabo.hikitty.toss.application.port.*;
-import io.nuabo.hikitty.toss.domain.Card;
 import io.nuabo.hikitty.toss.domain.Order;
 import io.nuabo.hikitty.toss.domain.Payment;
 import io.nuabo.hikitty.toss.domain.PaymentStatus;
@@ -39,7 +38,6 @@ public class PaymentServiceImpl implements PaymentService {
     private final UserRepository userRepository;
     private final ClockHolder clockHolder;
     private final BoardRepository boardRepository;
-    private final CardRepository cardRepository;
     private final PaymentRepository paymentRepository;
 
     private final TossServer tossServer;
@@ -138,9 +136,9 @@ public class PaymentServiceImpl implements PaymentService {
         Order order = orderRepository.getByOrderId(handleDto.getOrderId());
         order = order.setPaymentStatus(PaymentStatus.PAID);
         order = orderRepository.save(order);
-        Card card = Card.from(handleDto.getCard());
-        card = cardRepository.save(card);
-        Payment payment = Payment.from(handleDto, order, card);
+//        Card card = Card.from(handleDto.getCard());
+//        card = cardRepository.save(card);
+        Payment payment = Payment.from(handleDto, order);
         return paymentRepository.save(payment);
     }
 
