@@ -1,4 +1,6 @@
-
+block:
+  chain:
+    url: ${blockchain.url}
 
 springdoc:
   swagger-ui:

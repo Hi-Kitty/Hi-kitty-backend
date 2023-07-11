@@ -1,4 +1,5 @@
 package io.nuabo.hikitty.toss.presentation;
+import io.nuabo.blockchain.application.ChainService;
 import io.nuabo.common.domain.utils.ApiUtils;
 import io.nuabo.common.domain.utils.ApiUtils.ApiResult;
 import io.nuabo.common.presentation.port.RedirectUrlConfig;
@@ -37,6 +38,8 @@ public class PaymentController {
 
     private final RedirectUrlConfig redirectUrlConfig;
 
+    private final ChainService chainService;
+
     @SecurityRequirement(name = "Bearer Authentication")
     @Operation(summary = "결제 요청", description = "기부하기 버튼을 누르면 해당 API를 전송해서 응답 값을 받으세요.")
     @PostMapping("/request")
@@ -70,6 +73,8 @@ public class PaymentController {
     @Operation(summary = "결제 완료 결과 창", description = "결제 완료시 마지막으로 사용자에게 알린다.")
     @GetMapping("/{orderId}")
     public ResponseEntity<ApiResult<CompleteResponse>> complete(@PathVariable("orderId") String orderId) {
-        return ResponseEntity.ok(ApiUtils.success(paymentService.getByOrderId(orderId)));
+        CompleteResponse completeResponse = paymentService.getByOrderId(orderId);
+        chainService.sendTransaction(completeResponse);
+        return ResponseEntity.ok(ApiUtils.success(completeResponse));
     }
 }
