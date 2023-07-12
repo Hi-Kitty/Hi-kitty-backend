@@ -117,6 +117,7 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
 
+
     private Order verify(PaymentQueryRequest request) {
         Order order = orderRepository.getByOrderId(request.getOrderId());
 
