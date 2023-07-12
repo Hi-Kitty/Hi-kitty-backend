@@ -12,6 +12,9 @@ public class RedirectUrlConfigImpl implements RedirectUrlConfig {
 
     @Value("${redirect.payment-url}")
     private String payment;
+
+    @Value("${redirect.fail-url}")
+    private String fail;
     @Override
     public String getUserSave() {
         return userSave;
@@ -19,6 +22,11 @@ public class RedirectUrlConfigImpl implements RedirectUrlConfig {
     @Override
     public String getPayment() {
         return payment;
+    }
+
+    @Override
+    public String getFail() {
+        return fail;
     }
 
 }

@@ -20,4 +20,9 @@ public class TestRedirectUrlConfig implements RedirectUrlConfig {
     public String getPayment() {
         return null;
     }
+
+    @Override
+    public String getFail() {
+        return null;
+    }
 }

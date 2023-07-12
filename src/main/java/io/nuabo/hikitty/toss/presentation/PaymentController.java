@@ -67,7 +67,8 @@ public class PaymentController {
             @Valid @ModelAttribute PaymentFailRequest request
             ) {
         paymentService.fail(request);
-        return ResponseEntity.ok(ApiUtils.success(request));
+        return ResponseEntity.status(HttpStatus.OK)
+                .location(URI.create(redirectUrlConfig.getFail())).build();
     }
 
     @Operation(summary = "결제 완료 결과 창", description = "결제 완료시 마지막으로 사용자에게 알린다.")
