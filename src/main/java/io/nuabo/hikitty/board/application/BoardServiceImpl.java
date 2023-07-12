@@ -17,7 +17,6 @@ import io.nuabo.hikitty.user.domain.UserStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -90,7 +89,7 @@ public class BoardServiceImpl implements BoardService {
 
 
     private PageRequest getPageSortByCreatedAtDesc(PageNationRequest pageNationRequest) {
-        return PageRequest.of(pageNationRequest.getPage(), pageNationRequest.getSize(), Sort.by("createdAt").descending());
+        return PageRequest.of(pageNationRequest.getPage(), pageNationRequest.getSize());
     }
 
     private List<Plan> getPlans(List<PlanCreateRequest> planCreateRequests, Board finalBoard) {

@@ -6,12 +6,14 @@ import io.nuabo.hikitty.board.domain.Image;
 import io.nuabo.hikitty.board.infrastructure.entity.ImageEntity;
 import io.nuabo.hikitty.board.infrastructure.port.ImageJpaRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+@Slf4j
 @Repository
 @RequiredArgsConstructor
 public class ImageRepositoryImpl implements ImageRepository {
@@ -54,6 +56,7 @@ public class ImageRepositoryImpl implements ImageRepository {
 
     @Override
     public Page<Image> findAllByFundraiserId(Long fundraiserId, PageRequest pageSortByCreatedAtDesc) {
+        log.info("findAllByFundraiserId: {}", fundraiserId);
         return imageJpaRepository.findAllByBoardEntityFundraiserIdFetchJoinBoard(fundraiserId, pageSortByCreatedAtDesc).map(ImageEntity::toModel);
     }
 
