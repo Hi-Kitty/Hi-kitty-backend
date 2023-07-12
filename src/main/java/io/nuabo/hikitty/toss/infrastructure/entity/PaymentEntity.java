@@ -38,12 +38,6 @@ public class PaymentEntity extends BaseTimeEntity {
     @JoinColumn(name = "orders_id")
     private OrderEntity order;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "card_id")
-    private CardEntity card;
-
-
-
     public static PaymentEntity from(Payment payment) {
         PaymentEntity paymentEntity = new PaymentEntity();
         paymentEntity.mId = payment.getMId();
@@ -61,7 +55,6 @@ public class PaymentEntity extends BaseTimeEntity {
         paymentEntity.useEscrow = payment.getUseEscrow();
         paymentEntity.cultureExpense = payment.getCultureExpense();
         paymentEntity.order = OrderEntity.from(payment.getOrder());
-        paymentEntity.card = CardEntity.from(payment.getCard());
         return paymentEntity;
     }
 
@@ -83,7 +76,6 @@ public class PaymentEntity extends BaseTimeEntity {
                 .useEscrow(useEscrow)
                 .cultureExpense(cultureExpense)
                 .order(order.toModel())
-                .card(card.toModel())
                 .build();
     }
 }

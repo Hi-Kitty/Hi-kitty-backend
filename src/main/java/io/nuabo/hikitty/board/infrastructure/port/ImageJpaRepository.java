@@ -11,7 +11,7 @@ import java.util.Optional;
 
 public interface ImageJpaRepository extends JpaRepository<ImageEntity, Long> {
 
-    @Query("select i from image i join fetch i.boardEntity ORDER BY i.createAt DESC")
+    @Query("select i from image i join fetch i.boardEntity order by FUNCTION('DATEDIFF', i.boardEntity.createAt, i.boardEntity.endAt) desc")
     Page<ImageEntity> findAll(Pageable pageable);
 
     Optional<ImageEntity> findByBoardEntityId(Long boardId);
@@ -19,6 +19,6 @@ public interface ImageJpaRepository extends JpaRepository<ImageEntity, Long> {
     @Query("select i from image i join fetch i.boardEntity where i.boardEntity.id = :boardId")
     Optional<ImageEntity> findByBoardIdFetchJoinImage(Long boardId);
 
-    @Query("select i from image i join fetch i.boardEntity where i.boardEntity.fundraiserId = :fundraiserId")
+    @Query("select i from image i join fetch i.boardEntity where i.boardEntity.fundraiserId = :fundraiserId order by FUNCTION('DATEDIFF', i.boardEntity.createAt, i.boardEntity.endAt) desc ")
     Page<ImageEntity> findAllByBoardEntityFundraiserIdFetchJoinBoard(Long fundraiserId, Pageable page);
 }

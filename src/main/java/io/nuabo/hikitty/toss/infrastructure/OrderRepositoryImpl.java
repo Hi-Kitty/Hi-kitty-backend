@@ -10,6 +10,7 @@ import io.nuabo.hikitty.toss.infrastructure.port.OrderJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -52,6 +53,6 @@ public class OrderRepositoryImpl implements OrderRepository {
     }
 
     private PageRequest getPageAndSize(PageNationRequest pageNationRequest) {
-        return PageRequest.of(pageNationRequest.getPage(), pageNationRequest.getSize());
+        return PageRequest.of(pageNationRequest.getPage(), pageNationRequest.getSize(), Sort.by("createAt").descending());
     }
 }

@@ -26,9 +26,8 @@ public class Payment {
     private final String cultureExpense; // "cultureExpense", 문화비 지원 금액
 
     private final Order order;
-    private final Card card;
     @Builder
-    public Payment(Long id, String mId, String version, String orderName, String currency, String method, Long totalAmount, Long balanceAmount, Long suppliedAmount, Long vat, String status, String requestedAt, String approvedAt, String useEscrow, String cultureExpense, Order order, Card card) {
+    public Payment(Long id, String mId, String version, String orderName, String currency, String method, Long totalAmount, Long balanceAmount, Long suppliedAmount, Long vat, String status, String requestedAt, String approvedAt, String useEscrow, String cultureExpense, Order order) {
         this.id = id;
         this.mId = mId;
         this.version = version;
@@ -45,10 +44,9 @@ public class Payment {
         this.useEscrow = useEscrow;
         this.cultureExpense = cultureExpense;
         this.order = order;
-        this.card = card;
     }
 
-    public static Payment from(PaymentResHandleDto handleDto, Order order, Card card) {
+    public static Payment from(PaymentResHandleDto handleDto, Order order) {
         return Payment.builder()
                 .mId(handleDto.getMId())
                 .version(handleDto.getVersion())
@@ -65,7 +63,6 @@ public class Payment {
                 .useEscrow(handleDto.getUseEscrow())
                 .cultureExpense(handleDto.getCultureExpense())
                 .order(order)
-                .card(card)
                 .build();
     }
 }

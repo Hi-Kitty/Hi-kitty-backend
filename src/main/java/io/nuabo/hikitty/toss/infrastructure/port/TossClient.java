@@ -19,5 +19,4 @@ public interface TossClient {
             @PathVariable("paymentKey") String paymentKey,
             @RequestBody TossDto tossDto
     );
-
 }

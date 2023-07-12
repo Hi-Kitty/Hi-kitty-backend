@@ -5,5 +5,7 @@ public interface RedirectUrlConfig {
     String getUserSave();
 
     String getPayment();
+
+    String getFail();
 }
 
