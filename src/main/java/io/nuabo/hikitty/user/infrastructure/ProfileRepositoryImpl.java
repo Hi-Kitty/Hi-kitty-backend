@@ -24,6 +24,11 @@ public class ProfileRepositoryImpl implements ProfileRepository {
     }
 
     @Override
+    public Profile save(Profile profile) {
+        return null;
+    }
+
+    @Override
     public Optional<Profile> findById(long id) {
         return profileJpaRepository.findById(id).map(ProfileEntity::toModel);
     }

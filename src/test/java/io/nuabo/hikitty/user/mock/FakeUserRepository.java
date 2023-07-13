@@ -49,11 +49,10 @@ public class FakeUserRepository implements UserRepository {
                     .build();
             data.add(newUser);
             return newUser;
-        } else {
-            data.removeIf(item -> Objects.equals(item.getId(), user.getId()));
-            data.add(user);
-            return user;
         }
+        data.removeIf(item -> Objects.equals(item.getId(), user.getId()));
+        data.add(user);
+        return user;
     }
 
     @Override

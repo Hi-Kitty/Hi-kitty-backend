@@ -41,7 +41,7 @@ public class Heart {
     public static Heart from(Board board, User user, Profile profile) {
         return Heart.builder()
                 .board(board)
-                .status(Status.INACTIVE)
+                .status(Status.ACTIVE)
                 .donerId(user.getId())
                 .donerName(user.getName())
                 .donerProfileName(profile.getOriginalName())
@@ -52,7 +52,7 @@ public class Heart {
     public static Heart from(Board board, User user) {
         return Heart.builder()
                 .board(board)
-                .status(Status.INACTIVE)
+                .status(Status.ACTIVE)
                 .donerId(user.getId())
                 .donerName(user.getName())
                 .build();

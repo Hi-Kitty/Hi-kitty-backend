@@ -1,5 +1,6 @@
 package io.nuabo.hikitty.board.domain;
 
+import io.nuabo.hikitty.board.presentation.request.PlanCreateRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -15,12 +16,12 @@ class PlanTest {
         Board board = Board.builder()
                 .id(1L)
                 .build();
-        // when
-        Plan plan = Plan.builder()
-                .board(board)
+        PlanCreateRequest planCreateRequest = PlanCreateRequest.builder()
                 .amount(10000L)
                 .reason("설명")
                 .build();
+        // when
+        Plan plan = Plan.from(board, planCreateRequest);
         // then
         assertAll(
                 () -> assertThat(plan.getAmount()).isEqualTo(10000L),

@@ -3,6 +3,7 @@ package io.nuabo.hikitty.board.infrastructure;
 import io.nuabo.common.domain.exception.ResourceNotFoundException;
 import io.nuabo.hikitty.board.application.port.HeartRepository;
 import io.nuabo.hikitty.board.domain.Heart;
+import io.nuabo.hikitty.board.domain.Status;
 import io.nuabo.hikitty.board.infrastructure.entity.HeartEntity;
 import io.nuabo.hikitty.board.infrastructure.port.HeartJpaRepository;
 import lombok.RequiredArgsConstructor;
@@ -51,6 +52,11 @@ public class HeartRepositoryImpl implements HeartRepository {
     @Override
     public void saveAll(List<Heart> hearts) {
         heartJpaRepository.saveAll(hearts.stream().map(HeartEntity::from).toList());
+    }
+
+    @Override
+    public List<Heart> findAllByBoardIdAndStatus(Long boardId, Status status) {
+        return heartJpaRepository.findAllByBoardEntityIdAndStatus(boardId, status).stream().map(HeartEntity::toModel).toList();
     }
 
 }

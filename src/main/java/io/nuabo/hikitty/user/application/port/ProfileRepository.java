@@ -12,6 +12,8 @@ public interface ProfileRepository {
      */
     Profile save(Profile profile, User user);
 
+    Profile save(Profile profile);
+
     Optional<Profile> findById(long id);
 
     Profile getById(long id);

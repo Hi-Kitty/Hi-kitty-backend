@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
@@ -19,6 +20,7 @@ public class PlanCreateRequest {
     @Schema(description = "amount", example = "1000")
     private final Long amount;
 
+    @Builder
     public PlanCreateRequest(
             @JsonProperty("reason") String reason,
             @JsonProperty("amount") Long amount) {
