@@ -48,7 +48,7 @@ class HeartTest {
         // then
         assertAll(
                 () -> assertThat(heart.getBoard()).isEqualTo(board),
-                () -> assertThat(heart.getStatus()).isEqualTo(Status.INACTIVE),
+                () -> assertThat(heart.getStatus()).isEqualTo(Status.ACTIVE),
                 () -> assertThat(heart.getDonerId()).isEqualTo(1L),
                 () -> assertThat(heart.getDonerName()).isEqualTo("기부자 이름"),
                 () -> assertThat(heart.getDonerProfileUrl()).isEqualTo("프로필 url"),
@@ -57,7 +57,7 @@ class HeartTest {
     }
 
     @Test
-    @DisplayName("Heart를 Board와 User를 이용하여 상태를 INACTIVE로 생성한다.")
+    @DisplayName("Heart를 Board와 User를 이용하여 상태를 ACTIVE로 생성한다.")
     void testFrom() {
         // given
         Board board = Board.builder()
@@ -84,7 +84,7 @@ class HeartTest {
         // then
         assertAll(
                 () -> assertThat(heart.getBoard()).isEqualTo(board),
-                () -> assertThat(heart.getStatus()).isEqualTo(Status.INACTIVE),
+                () -> assertThat(heart.getStatus()).isEqualTo(Status.ACTIVE),
                 () -> assertThat(heart.getDonerId()).isEqualTo(1L),
                 () -> assertThat(heart.getDonerName()).isEqualTo("기부자 이름"),
                 () -> assertThat(heart.getDonerProfileUrl()).isNull(),
