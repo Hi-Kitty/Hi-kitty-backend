@@ -1,6 +1,6 @@
 package io.nuabo.hikitty.board.application;
 
-import io.nuabo.common.domain.exception.HeartException;
+import io.nuabo.common.domain.exception.ResourceNotFoundException;
 import io.nuabo.hikitty.board.application.port.BoardRepository;
 import io.nuabo.hikitty.board.application.port.HeartRepository;
 import io.nuabo.hikitty.board.domain.Board;
@@ -11,12 +11,13 @@ import io.nuabo.hikitty.user.application.port.ProfileRepository;
 import io.nuabo.hikitty.user.application.port.UserRepository;
 import io.nuabo.hikitty.user.domain.User;
 import io.nuabo.hikitty.user.domain.UserStatus;
+import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
 
+@Builder
 @Service
 @RequiredArgsConstructor
 public class HeartServiceImpl implements HeartService {
@@ -32,35 +33,24 @@ public class HeartServiceImpl implements HeartService {
         Board board = boardRepository.getById(boardId);
         User user = userRepository.getByEmailAndStatus(email, UserStatus.ACTIVE);
 
-        Optional<Heart> beforeHeart = heartRepository.findByBoardIdAndDonerId(boardId, user.getId());
-        if (beforeHeart.isPresent()) {
-            Heart heart = beforeHeart.get();
-            if (heart.getStatus().equals(Status.ACTIVE)) {
-                throw new HeartException("Heart를 이미 하트를 누른 게시글입니다.");
-            }
-            heart = heart.active();
-            heartRepository.save(heart);
-            return heart;
-        }
-
-        Heart heart = profileRepository.findByUserId(user.getId())
-                .map(profile -> Heart.from(board, user, profile))
-                .orElse(Heart.from(board, user));
-        heart = heartRepository.save(heart);
-
-        return heart;
+        return heartRepository.findByBoardIdAndDonerId(boardId, user.getId())
+                .filter(heart -> heart.getStatus().equals(Status.ACTIVE))
+                .filter(heart -> heart.getStatus().equals(Status.INACTIVE))
+                .map(Heart::active)
+                .orElseGet(() -> {
+                    Heart heart = profileRepository.findByUserId(user.getId())
+                            .map(profile -> Heart.from(board, user, profile))
+                            .orElse(Heart.from(board, user));
+                    return heartRepository.save(heart);
+                });
     }
 
     @Transactional
     @Override
     public Heart deleteHeart(Long heartId) {
-
-        Heart heart = heartRepository.getById(heartId);
-        if (heart.getStatus().equals(Status.INACTIVE)) {
-            throw new HeartException("Heart를 이미 취소한 게시글입니다.");
-        }
-        heart = heart.inActivce();
-        heart = heartRepository.save(heart);
-        return heart;
+        return heartRepository.findById(heartId)
+                .filter(heart -> heart.getStatus().equals(Status.ACTIVE))
+                .map(heart -> heartRepository.save(heart.inActivce()))
+                .orElseThrow(() -> new ResourceNotFoundException("Heart", heartId));
     }
 }

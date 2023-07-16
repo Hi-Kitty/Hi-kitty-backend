@@ -3,6 +3,8 @@ package io.nuabo.hikitty.user.application;
 import io.nuabo.common.domain.exception.CertificationCodeNotMatchedException;
 import io.nuabo.common.domain.exception.ResourceNotFoundException;
 import io.nuabo.hikitty.amazons3.mock.FakeAmazonS3ClientHolder;
+import io.nuabo.hikitty.board.mock.FakeBoardRepository;
+import io.nuabo.hikitty.board.mock.FakeHeartRepository;
 import io.nuabo.hikitty.mock.TestDefaultImageConfig;
 import io.nuabo.hikitty.mock.TestUuidHolder;
 import io.nuabo.hikitty.user.application.port.UserProfileDto;
@@ -26,7 +28,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class UserServiceTest {
     private UserServiceImpl userService;
-    @BeforeEach()
+    @BeforeEach
     void init() {
         FakeMailSender fakeMailSender = new FakeMailSender();
         FakeUserRepository fakeUserRepository = new FakeUserRepository();
