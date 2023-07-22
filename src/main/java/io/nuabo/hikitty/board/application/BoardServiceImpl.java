@@ -14,6 +14,7 @@ import io.nuabo.hikitty.user.application.port.ProfileRepository;
 import io.nuabo.hikitty.user.application.port.UserRepository;
 import io.nuabo.hikitty.user.domain.User;
 import io.nuabo.hikitty.user.domain.UserStatus;
+import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
+@Builder
 @Service
 @RequiredArgsConstructor
 public class BoardServiceImpl implements BoardService {
