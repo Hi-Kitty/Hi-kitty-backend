@@ -13,7 +13,21 @@ import org.springframework.context.annotation.Configuration;
         title = "Hi Kitty 프로젝트!!",
         version = "v1",
         description = "Hi Kitty의 API 명세서입니다."
-))
+),
+servers = {
+        @io.swagger.v3.oas.annotations.servers.Server(
+                description = "Local Server",
+                url = "http://localhost:8080"
+        ),
+        @io.swagger.v3.oas.annotations.servers.Server(
+                description = "Dev Server",
+                url = "http://hikitty.ap-northeast-2.elasticbeanstalk.com"
+        ),
+        @io.swagger.v3.oas.annotations.servers.Server(
+                description = "Prod Server",
+                url = "https://www.nanum.site"
+        )
+})
 @Configuration
 public class OpenAPIConfig {
 
